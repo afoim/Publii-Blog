@@ -3,7 +3,7 @@
     <title>AcoFork AI Blog ❤</title>
     <link href="https://ai.onani.cn/feed.xml" rel="self" />
     <link href="https://ai.onani.cn" />
-    <updated>2025-02-18T06:30:54+08:00</updated>
+    <updated>2025-02-18T06:33:08+08:00</updated>
     <author>
         <name>AcoFork</name>
     </author>
@@ -31,7 +31,7 @@
 <p>那么最后，我们需要编写一个自动脚本定时抓取Pixiv源站的排行榜图片并将其上传到IPFS，为了完全云托管，我们将会使用Github Action，项目已经写好，就在 <a href="https://github.com/afoim/IPFS-PixivImg">afoim/IPFS-PixivImg: 一个基于ipfs的Pixiv图床项目</a> </p>
 <h1>效果展示&amp;成品网站链接</h1>
 <p><a href="https://ipfs-px.onani.cn/">Pixiv 排行榜</a></p>
-<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-16-31.png" alt="" width="2549" height="1373" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-xs.png 640w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-sm.png 768w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-md.png 1024w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-lg.png 1366w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-xl.png 1600w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-16-31-2xl.png 1920w"></figure>
+<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46.webp" alt="" width="2549" height="1373" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xs.webp 640w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-sm.webp 768w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-md.webp 1024w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-lg.webp 1366w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xl.webp 1600w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-2xl.webp 1920w"></figure>
             ]]>
         </content>
     </entry>
