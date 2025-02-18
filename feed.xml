@@ -3,7 +3,7 @@
     <title>AcoFork AI Blog ❤</title>
     <link href="https://ai.onani.cn/feed.xml" rel="self" />
     <link href="https://ai.onani.cn" />
-    <updated>2025-02-18T06:33:08+08:00</updated>
+    <updated>2025-02-18T09:21:25+08:00</updated>
     <author>
         <name>AcoFork</name>
     </author>
@@ -16,15 +16,19 @@
         </author>
         <link href="https://ai.onani.cn/ipfs-pixiv.html"/>
         <id>https://ai.onani.cn/ipfs-pixiv.html</id>
+        <media:content url="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" medium="image" />
+            <category term="开发"/>
 
         <updated>2025-02-18T06:17:08+08:00</updated>
             <summary>
                 <![CDATA[
+                        <img src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" alt="" />
                     基本思路&amp;原理 IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了&hellip;
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
+                    <p><img src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" class="type:primaryImage" alt="" /></p>
                 <h1>基本思路&amp;原理</h1>
 <p>IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了 ipfs.io 这个主网关，我们可以使用其他网关，如：ipfs.crossbell.io 。本次介绍的项目也会使用这个网关来进行上传/读取Pixiv的图片</p>
 <p>既然图床已经就绪，接下来就是制作一个美观的展示界面，这里我使用 <a href="https://www.mdui.org/zh-cn/">MDUI</a> 。这是一个简洁优雅的UI组件库，我们不需要自己重新编写CSS样式，就可以直接制作出风格统一的网页。无需担心上手难度，你可以直接使用 <a href="https://github.com/features/copilot">GitHub Copilot</a> ，让AI帮你完成一切工作</p>

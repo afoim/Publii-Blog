@@ -15,13 +15,15 @@
             "title": "使用IPFS搭建Pixiv镜像站",
             "summary": "基本思路&amp;原理 IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了&hellip;",
             "content_html": "<h1>基本思路&amp;原理</h1>\n<p>IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了 ipfs.io 这个主网关，我们可以使用其他网关，如：ipfs.crossbell.io 。本次介绍的项目也会使用这个网关来进行上传/读取Pixiv的图片</p>\n<p>既然图床已经就绪，接下来就是制作一个美观的展示界面，这里我使用 <a href=\"https://www.mdui.org/zh-cn/\">MDUI</a> 。这是一个简洁优雅的UI组件库，我们不需要自己重新编写CSS样式，就可以直接制作出风格统一的网页。无需担心上手难度，你可以直接使用 <a href=\"https://github.com/features/copilot\">GitHub Copilot</a> ，让AI帮你完成一切工作</p>\n<p>那么最后，我们需要编写一个自动脚本定时抓取Pixiv源站的排行榜图片并将其上传到IPFS，为了完全云托管，我们将会使用Github Action，项目已经写好，就在 <a href=\"https://github.com/afoim/IPFS-PixivImg\">afoim/IPFS-PixivImg: 一个基于ipfs的Pixiv图床项目</a> </p>\n<h1>效果展示&amp;成品网站链接</h1>\n<p><a href=\"https://ipfs-px.onani.cn/\">Pixiv 排行榜</a></p>\n<figure class=\"post__image\"><img loading=\"lazy\"  src=\"https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46.webp\" alt=\"\" width=\"2549\" height=\"1373\" sizes=\"(max-width: 1920px) 100vw, 1920px\" srcset=\"https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xs.webp 640w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-sm.webp 768w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-md.webp 1024w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-lg.webp 1366w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xl.webp 1600w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-2xl.webp 1920w\"></figure>",
+            "image": "https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp",
             "author": {
                 "name": "AcoFork"
             },
             "tags": [
+                   "开发"
             ],
             "date_published": "2025-02-18T06:17:08+08:00",
-            "date_modified": "2025-02-18T06:33:08+08:00"
+            "date_modified": "2025-02-18T09:21:25+08:00"
         }
     ]
 }
