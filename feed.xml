@@ -3,12 +3,70 @@
     <title>AcoFork AI Blog ❤</title>
     <link href="https://ai.onani.cn/feed.xml" rel="self" />
     <link href="https://ai.onani.cn" />
-    <updated>2025-02-21T05:04:01+08:00</updated>
+    <updated>2025-02-21T06:05:53+08:00</updated>
     <author>
         <name>AcoFork</name>
     </author>
     <id>https://ai.onani.cn</id>
 
+    <entry>
+        <title>谷歌广告的坑点</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://ai.onani.cn/fk-google-ads.html"/>
+        <id>https://ai.onani.cn/fk-google-ads.html</id>
+            <category term="开发"/>
+
+        <updated>2025-02-21T06:04:33+08:00</updated>
+            <summary>
+                <![CDATA[
+                    如何接入谷歌广告的博文已经有很多了，我也不想炒冷饭，这里就列出一些别人没有说的坑点 1. 验证网站所有权推荐不仅注入head头，而且部署ads.txt文件。这样你在谷歌广告管理页面就能看到ads.txt文件状态为已授权而不是未部署 2.
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                <p>如何接入谷歌广告的博文已经有很多了，我也不想炒冷饭，这里就列出一些别人没有说的坑点</p>
+<p>1. 验证网站所有权推荐不仅注入head头，而且部署ads.txt文件。这样你在谷歌广告管理页面就能看到ads.txt文件状态为已授权而不是未部署</p>
+<p>2. 网站最好不要使用任何现代框架，特别是解决JavaScript水合类的Astro，谷歌广告爬虫根本无法爬取页面。具体的可以直接去广告预览处预览<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/20/Snipaste_2025-02-21_06-00-22.webp" alt="" width="1928" height="1036" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-xs.webp 640w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-sm.webp 768w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-md.webp 1024w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-lg.webp 1366w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-xl.webp 1600w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-2xl.webp 1920w"></figure>
+<p>3. 只有根域通过后才能添加子域名，建议将你的根域名直接指向最权威的网站</p>
+<p>4. 填写付款信息请填写真实地址，谷歌会邮寄验证码到你的地址，如果收不到验证码就不能提现</p>
+<p>最后祝大家都能通过审核<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/20/Snipaste_2025-02-21_05-59-45.webp" alt="" width="1237" height="951" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-xs.webp 640w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-sm.webp 768w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-md.webp 1024w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-lg.webp 1366w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-xl.webp 1600w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-2xl.webp 1920w"></figure>
+            ]]>
+        </content>
+    </entry>
+    <entry>
+        <title>GTA5佩里克岛从零开始最大化效率不被发现必完成精英挑战，一次1小时100w</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://ai.onani.cn/gta5-plkd.html"/>
+        <id>https://ai.onani.cn/gta5-plkd.html</id>
+            <category term="游戏"/>
+
+        <updated>2025-02-21T05:41:38+08:00</updated>
+            <summary>
+                <![CDATA[
+                    1. 首先去地图上的佩里克岛抢劫图标 2. 去音乐柜和指定的人见面&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                <p>1. 首先去地图上的<strong>佩里克岛抢劫</strong>图标</p>
+<p>2. 去<strong>音乐柜</strong>和指定的人见面</p>
+<p>3. 解锁虎鲸。<strong>购买虎鲸，</strong>不需要改装</p>
+<p>4. 跟着任务流程走，第一次上岛</p>
+<p>5. 主线侦察完毕后去金发老大豪宅背面，也就是背面海域，往下游，会有一个排水管道，<strong>只要看到了</strong>，你的左下角就会多一个：已侦察新入口：排水管道。之后我们从这里进去就不会被发现</p>
+<p>6. 其他没什么需要注意的，顺利把侦查任务做完就行了。骇入通信塔的解密是左边三个数通过右边的：不变，x2，x10后刚好等于下面给定的数，多试即可。骇入摄像头后第一次必是<strong>马德拉索文件</strong>，110w。之后不会再刷出，并且会在西西米托（63w），红宝石项链（70w），债券（77w），粉钻（130w）中随机刷一个。其实还有猎豹雕像（190w），但是只会在GTA官方公布的猎豹周刷新</p>
+<p>7. 侦查完毕后我们选择上岛方式为<strong>梅杜莎：飞机</strong>，工具<strong>除了爆破弹都拿（一定要拿割炬！）</strong>，然后武器装备选<strong>神枪手</strong>（大狙），并且购买<strong>消音器</strong>，增援选择<strong>武器藏匿品</strong></p>
+<p>8. 正式开始佩里克岛抢劫任务，一个人做最多，一次100w。首先从小机场下来，过场动画结束后进入小机场先拿武器，然后开左边的叉车将右边的木箱叉起来移到最高处并且抵住右边的铁门。拿<strong>割炬</strong>直接开锁进去拿次要目标（现金，绿砖和冰随机刷，也有可能桌子上空空啥也没有），然后爬上叉车和木箱翻入二楼，右手边也有个铁门，同样拿割炬开锁，拿次要目标，拿完后直接出机场跳海（别摔死了），拿大狙狙杀一个开船的幸运儿，然后开船到金发老大豪宅背后的海域，如果你足够靠近，地图上会有一个黄色的排水管道图标，下潜，进入，拿割炬直接割开排水管道（按<strong>G</strong>戴上呼吸机防止淹死）。OK，已经溜进豪宅了，接下来就是躲避视野不被发现潜入豪宅三楼，<strong>你只有站在保安正前方才会被发现</strong>，左右侧和后侧都不会，你可以拿消音器或者肘击将保安杀死，但是被监控或者别的保安发现尸体会直接触发警报。建议能不杀就不杀。然后在豪宅二楼会有个移动的保安，贴着墙，等他走到你面前然后从背后绕过去上三楼，进入三楼后，先看看有没有画可以割（一张15w左右，占半格背包，俗称大号厕纸），然后到电梯对面的左边墙上开保险柜（5w，不占背包）。到电梯左手，破解指纹，这个解密的指纹顺序是按顺序的，你可以将所有格子都改为第一个指纹，然后对第n个格子按n-1下。进入地下室后直接向前，有个铁门，拿割炬开锁，然后保险箱密码会在左下角发给你没看到就打开手机查看信息，然后开保险箱（如果你不是第一次上岛了，就需要割玻璃，会叫你按<strong>Page UP</strong>，如果按了没反应就先按<strong>Alt+Enter</strong>将GTA改为窗口化，然后按<strong>Ctrl+Alt+Delete</strong>点击打开任务管理器，然后按<strong>Ctrl+Win+O</strong>打开屏幕键盘，这个时候按Page UP就有效果了）拿完主要目标后直接返回，跑出豪宅，然后跳海往外游就出去了（不要往豪宅背面游！你可以在地图上看到浅浅的城区，那就是圣安地列斯，往那边游！）</p>
+<p>9. 精英挑战完成+7w，条件分别为：15分钟内完成，满载而归（包装满），不被发现（不触发警报）</p>
+<p>10. 每次单人上岛结束后大概有1个小时冷却，多人冷却会少一点，大概44分钟</p>
+<p>11. 在冷却结束后一个小时内再次上岛则会触发困难模式，钱更多，部分解密难度增加，比如豪宅内去地下室的电梯要破译的指纹从3个变成4个</p>
+<figure class="post__image">下图取自：<a href="https://www.bilibili.com/video/BV1m1421k722" target="_blank" rel="noopener noreferrer">一个视频让你明白佩里科岛所有目标价值</a><img loading="lazy"  src="https://ai.onani.cn/media/posts/19/Snipaste_2025-02-21_05-26-41.webp" alt="" width="2560" height="1299" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-xs.webp 640w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-sm.webp 768w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-md.webp 1024w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-lg.webp 1366w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-xl.webp 1600w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-2xl.webp 1920w"></figure>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>静态博客存图的多种方式以及利弊</title>
         <author>
@@ -21,7 +79,7 @@
         <updated>2025-02-21T04:36:36+08:00</updated>
             <summary>
                 <![CDATA[
-                    1. 不做管理，直接将图片存入Git仓库&hellip;
+                    1. 不做管理，直接将图片存入Git仓库 如果你是使用GIthub进行版本管理，然后使用静态构建服务提供商（如Cloudflare Page、Vercel）来构建你的博客，则这种方法是0配置的，开箱即用的。&hellip;
                 ]]>
             </summary>
         <content type="html">
@@ -275,7 +333,7 @@ if __name__ == "__main__":
             <summary>
                 <![CDATA[
                         <img src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" alt="" />
-                    基本思路&amp;原理 IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了&hellip;
+                    基本思路&amp;原理 IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了 ipfs.io 这个主网关，我们可以使用其他网关，如：ipfs.crossbell.io&hellip;
                 ]]>
             </summary>
         <content type="html">
