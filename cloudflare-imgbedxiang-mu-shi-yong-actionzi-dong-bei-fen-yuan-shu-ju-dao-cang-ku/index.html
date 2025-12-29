@@ -1,0 +1,755 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cloudflare-imgbed项目使用Action自动备份元数据到仓库 - AcoFork Blog (Beta)</title><meta name="description" content="本文由 https://github.com/afoim/fuwari/pull/40&hellip;"><meta name="generator" content="Publii Open-Source CMS for Static Site"><script type="gdpr-blocker/analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-GCK58D6070"></script><script type="gdpr-blocker/analytics">window.dataLayer = window.dataLayer || [];
+				  function gtag(){dataLayer.push(arguments);}
+				  gtag('js', new Date());
+				  gtag('config', 'G-GCK58D6070' , { 'anonymize_ip': true });</script><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid-invert-filter.css"><meta name="theme-color" content="#17181E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#D73A42" media="(prefers-color-scheme: light)"><meta name="msapplication-navbutton-color" content="#D73A42"><meta name="apple-mobile-web-app-status-bar-style" content="#D73A42"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-black.css"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.css"><script async defer="defer" type="gdpr-blocker/analytics" src="https://umami.acofork.com/script.js" data-website-id="a3c761fb-d328-4521-9bcb-98c6e076b1bb" data-auto-track="true" data-do-not-track="true" data-cache="false"></script><link rel="canonical" href="https://beta.acofork.com/cloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku/"><link rel="alternate" type="application/atom+xml" href="https://beta.acofork.com/feed.xml" title="AcoFork Blog (Beta) - RSS"><link rel="alternate" type="application/json" href="https://beta.acofork.com/feed.json" title="AcoFork Blog (Beta) - JSON"><meta property="og:title" content="cloudflare-imgbed项目使用Action自动备份元数据到仓库"><meta property="og:image" content="https://beta.acofork.com/media/posts/26/Ping-Mu-Jie-Tu-2025-08-16-233807.png"><meta property="og:image:width" content="1715"><meta property="og:image:height" content="932"><meta property="og:site_name" content="AcoFork Blog (Beta)"><meta property="og:description" content="本文由 https://github.com/afoim/fuwari/pull/40&hellip;"><meta property="og:url" content="https://beta.acofork.com/cloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku/"><meta property="og:type" content="article"><link rel="shortcut icon" href="https://beta.acofork.com/media/website/b_53bb4f7fa91d684e72b6604e3fcc189.jpg" type="image/x-icon"><link rel="stylesheet" href="https://beta.acofork.com/assets/css/style.css?v=bb5e85e6ce5f66a897d88a8939c26399"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://beta.acofork.com/cloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku/"},"headline":"cloudflare-imgbed项目使用Action自动备份元数据到仓库","datePublished":"2025-08-21T16:05+08:00","dateModified":"2025-12-29T16:05+08:00","image":{"@type":"ImageObject","url":"https://beta.acofork.com/media/posts/26/Ping-Mu-Jie-Tu-2025-08-16-233807.png","height":932,"width":1715},"description":"本文由 https://github.com/afoim/fuwari/pull/40&hellip;","author":{"@type":"Person","name":"AcoFork","url":"https://beta.acofork.com/authors/acofork/"},"publisher":{"@type":"Organization","name":"AcoFork"}}</script><noscript><style>img[loading] {
+                    opacity: 1;
+                }</style></noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>(function () {
+  function enhancePostImages() {
+    const images = document.querySelectorAll(".post__image img");
+
+    images.forEach(img => {
+      // 已经被 <a> 包裹，跳过
+      if (img.parentElement && img.parentElement.tagName === "A") return;
+
+      const src = img.currentSrc || img.src;
+      if (!src) return;
+
+      // 排除极小图片（icon 等）
+      if (img.complete && img.naturalWidth && img.naturalWidth < 120) return;
+
+      const a = document.createElement("a");
+      a.href = src;
+      a.dataset.fancybox = "post-gallery";
+
+      if (img.alt) {
+        a.dataset.caption = img.alt;
+      }
+
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // 首次执行
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhancePostImages);
+  } else {
+    enhancePostImages();
+  }
+
+  // 监听 SPA / 动态渲染
+  const observer = new MutationObserver(enhancePostImages);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // FancyBox 初始化
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.Fancybox) return;
+
+    Fancybox.bind('[data-fancybox="post-gallery"]', {
+      animated: true,
+      dragToClose: true,
+      placeFocusBack: false,
+      Toolbar: {
+        display: ["zoom", "slideshow", "fullscreen", "close"]
+      },
+      Images: {
+        zoom: true
+      }
+    });
+
+    // ✅ 唯一保留的日志
+    console.log("%cFancyBox 已加载 √", "color:#16a34a;font-weight:bold");
+  });
+})();</script><style>.extlink::after {
+				background-color: currentColor;
+				content: "";
+				display: inline-block;
+				height: 16px;
+				margin-left: 5px;
+				position: relative;
+				top: 0px;
+				width: 16px;
+			}
+		
+					.extlink.extlink-icon-1::after {
+						mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>");
+						mask-repeat: no-repeat;
+						mask-size: contain;
+					}</style></head><body class="post-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="post"><article class="content"><div class="hero"><header class="hero__content"><div class="wrapper"><h1>cloudflare-imgbed项目使用Action自动备份元数据到仓库</h1><div class="feed__meta content__meta"><a href="https://beta.acofork.com/authors/acofork/" class="feed__author">AcoFork</a> <time datetime="2025-08-21T16:05" class="feed__date">25/08/21 16:05:00 </time><span class="reading-time" aria-label="3 min read">3 min read</span></div></div></header><figure class="hero__image"><div class="hero__image-wrapper"><img src="https://beta.acofork.com/media/posts/26/Ping-Mu-Jie-Tu-2025-08-16-233807.png" srcset="https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-xs.webp 640w, https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-sm.webp 768w, https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-md.webp 1024w, https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-lg.webp 1366w, https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-xl.webp 1600w, https://beta.acofork.com/media/posts/26/responsive/Ping-Mu-Jie-Tu-2025-08-16-233807-2xl.webp 1920w" sizes="88vw" loading="eager" height="932" width="1715" alt=""></div></figure></div><div class="entry-wrapper content__entry"><blockquote><p>本文由 <a href="https://github.com/afoim/fuwari/pull/40" class="extlink extlink-icon-1">https://github.com/afoim/fuwari/pull/40</a> 提供，非站长原创</p></blockquote><p><a href="https://github.com/yunsen2025/cloudflare-imgbed-auto-backup" class="extlink extlink-icon-1">https://github.com/yunsen2025/cloudflare-imgbed-auto-backup</a> <a href="https://github.com/MarSeventh/CloudFlare-ImgBed" class="extlink extlink-icon-1">CloudFlare-ImgBed项目</a>用基于GitHub Actions定期自动备份数据脚本</p><blockquote><p>[!IMPORTANT]</p><h2 id="🚨-重要安全提醒-🚨">🚨 重要安全提醒 🚨</h2><p><strong>⚠️ 在备份文件中包含重要的敏感信息数据！</strong></p><ul><li>为了保护您的数据安全，程序内置了仓库隐私检查功能：</li><li>每次运行前自动检查仓库是否为 <strong>私有</strong> ；</li><li>因此，在使用本项目前请确保您已将仓库<strong>解除复刻网络</strong>并更改为<strong>私有</strong></li><li>如果仓库为公开状态，程序将拒绝执行并显示安全警告<br><strong>步骤：你的仓库➡Settings➡General➡（划到最下面）Danger➡Leave fork network➡Change repository visibility</strong><br>(其实公开仓库不会执行actions)</li></ul></blockquote><h2 id="功能特性">功能特性</h2><ul><li>🕒 <strong>定时备份</strong>: 每天UTC+8的2：00自动执行备份任务</li><li>🔐 <strong>安全认证</strong>: 通过仓库机密统一管理</li><li>🛡️ <strong>隐私保护</strong>: 强制检查仓库隐私状态，防止敏感数据泄露</li><li>📁 <strong>自动管理</strong>: 自动保存和管理备份文件</li><li>🚀 <strong>GitHub Actions</strong>: 完全基于GitHub Actions运行</li><li>🧹 <strong>自动清理</strong>: 自动清理旧备份文件（默认保留最近100个，可自定义）</li><li>🔍 <strong>智能检测</strong>: 通过MD5自动检测数据变化，只在有变更时保存备份</li></ul><h2 id="快速开始">快速开始</h2><p>请确保你的cloudflare-imgbed版本大于V2.0.3</p><h3 id="1-🔒-确保仓库为私有">1. 🔒 确保仓库为私有</h3><p><strong>重要：请务必确保您的仓库设置为私有（Private）状态！</strong></p><ol><li>前往您的GitHub仓库主页</li><li>点击 <code>Settings</code> 选项卡</li><li>滚动到页面底部的 <code>Danger Zone</code> 区域</li><li>点击 <code>Leave fork network</code> 将你的仓库脱离复刻网络<figure class="post__image"><img decoding="async" loading="lazy" src="https://imgbed.112601.xyz/file/cloudflare-imgbed-auto-backup/1755364661684.png" alt="alt text" data-is-external-image="true"></figure></li><li>点击 <code>Change repository visibility</code> 选择 <code>Make private</code> 将仓库设为私有<figure class="post__image"><img decoding="async" loading="lazy" src="https://imgbed.112601.xyz/file/cloudflare-imgbed-auto-backup/1755365226055.png" alt="alt text" data-is-external-image="true"></figure></li></ol><h3 id="2-配置github仓库机密">2. 配置GitHub仓库机密</h3><p>在你的GitHub仓库中，进入 <code>Settings</code> -&gt; <code>Secrets and variables</code> -&gt; <code>Actions</code>，添加以下机密：</p><figure class="post__image"><img decoding="async" loading="lazy" src="https://imgbed.112601.xyz/file/cloudflare-imgbed-auto-backup/1755366168729.png" alt="alt text" data-is-external-image="true"></figure><strong>必需配置</strong>:<p></p><table><thead><tr><th>机密名称</th><th>说明</th><th>示例值</th></tr></thead><tbody><tr><td><code>BACKUP_URL</code></td><td>网站完整URL（包含协议和端口）</td><td><code>cfbed.1314883.xyz</code></td></tr><tr><td><code>BACKUP_USERNAME</code></td><td>登录用户名（BASIC_USER）</td><td><code>your_username</code></td></tr><tr><td><code>BACKUP_PASSWORD</code></td><td>登录密码（BASIC_PASS）</td><td><code>your_password</code></td></tr></tbody></table><p><strong>可选配置</strong> (不设置将使用默认值):</p><table><thead><tr><th>机密名称</th><th>说明</th><th>示例值</th><th>默认值</th></tr></thead><tbody><tr><td><code>MAX_BACKUPS</code></td><td>最大保留备份文件数量</td><td><code>1145</code></td><td><code>100</code></td></tr><tr><td><code>ENABLE_CHANGE_DETECTION</code></td><td>启用智能变更检测</td><td><code>true/false</code></td><td><code>true</code></td></tr></tbody></table><h3 id="2-启用github-actions">2. 启用GitHub Actions</h3><p>确保你的仓库已启用GitHub Actions功能。</p><p><strong>注意</strong>: 程序会自动将你提供的URL拼接成完整的API路径：</p><ul><li>输入: <code>cfbed.1314883.xyz</code></li><li>自动拼接为: <code>https://cfbed.1314883.xyz/api/manage/sysConfig/backup?action=backup</code></li><li>支持 HTTP 和 HTTPS 协议，会保持你指定的协议类型<blockquote><p>[!IMPORTANT]<br>如果你是http/非标准端口，请在变量中填完整的URL，如：<code>http://cfbed.1314883.xyz:11451</code><br>默认拼接为https</p></blockquote></li></ul><h3 id="3-执行备份">3. 执行备份</h3><p>备份程序会：</p><ul><li><strong>自动执行</strong>: 每天北京时间02:00自动运行</li><li><strong>手动触发</strong>: 你也可以在Actions页面手动触发备份 如果您是第一次部署本项目，请在Action中手动执行一次确保执行正常<figure class="post__image"><img decoding="async" loading="lazy" src="https://imgbed.112601.xyz/file/cloudflare-imgbed-auto-backup/1755367335196.png" alt="alt text" data-is-external-image="true"></figure>正确输出：<br><figure class="post__image"><img decoding="async" loading="lazy" src="https://imgbed.112601.xyz/file/cloudflare-imgbed-auto-backup/1755368429729.png" alt="正确输出" data-is-external-image="true"></figure></li></ul><h2 id="文件结构">文件结构</h2><pre><code>cloudflare-imgbed-auto-backup/
+├── .github/
+│   └── workflows/
+│       └── backup.yml          # GitHub Actions工作流配置
+├── backups/                    # 备份文件存储目录
+│   ├──.privacy_verified        # 安全性证明文件
+│   ├── backup_20240816_100000.json
+│   ├── backup_20240817_100000.json
+│   └── latest_backup.json      # 最新备份文件
+├── backup_script.py            # 主备份脚本
+├── requirements.txt            # Python依赖
+└── README.md                   # 说明文档
+</code></pre><h2 id="备份文件说明">备份文件说明</h2><ul><li><strong>带时间标志的备份文件</strong>: <code>backup_YYYYMMDD_HHMMSS.json</code></li><li><strong>最新备份文件</strong>: <code>latest_backup.json</code> (始终指向最新的备份)</li><li><strong>自动清理</strong>: 程序会自动保留最近的指定数量个备份文件（默认100个）</li></ul><h2 id="🔍-智能变更检测">🔍 智能变更检测</h2><p>程序默认启用智能变更检测功能，只有在数据发生变化时才会保存新的备份文件：</p><h3 id="检测原理">检测原理</h3><ul><li>使用MD5哈希算法计算JSON数据的指纹</li><li>将新下载的数据与最新备份文件进行对比</li><li>只有当哈希值不同时才保存新的备份文件</li></ul><h3 id="优势">优势</h3><ul><li><strong>节省存储空间</strong>: 避免保存重复的备份文件</li><li><strong>减少提交噪音</strong>: GitHub仓库不会产生无意义的提交</li><li><strong>提高效率</strong>: 跳过无变化的备份操作</li></ul><h3 id="控制选项">控制选项</h3><ul><li><strong>启用</strong>: <code>ENABLE_CHANGE_DETECTION=true</code> （默认）</li><li><strong>禁用</strong>: <code>ENABLE_CHANGE_DETECTION=false</code> （强制每次都备份）</li></ul><h3 id="特殊情况处理">特殊情况处理</h3><ul><li><strong>首次备份</strong>: 没有历史数据时，总是保存备份</li><li><strong>计算错误</strong>: 无法计算哈希时，为安全起见会强制保存备份</li><li><strong>文件缺失</strong>: 找不到最新备份文件时，会保存新的备份</li></ul><h2 id="🛡️-仓库隐私保护功能">🛡️ 仓库隐私保护功能</h2><p>为了防止敏感数据泄露，程序内置了强制的仓库隐私检查功能。 <a href="https://github.com/yunsen2025/cloudflare-imgbed-auto-backup/blob/main/SECURITY_FEATURES.md" class="extlink extlink-icon-1">详见</a></p><ul><li><strong>强制执行，无配置选项可以禁用此功能</strong></li></ul><h3 id="常见问题">常见问题</h3><p><strong>Q: 为什么需要这个功能？</strong><br>A: 在导出的JSON文件中，包含TG变量与S3端点信息等，属于十分敏感的信息，为安全起见，本项目仅允许私有仓库使用。公开仓库会让任何人都能访问这些数据，造成严重的安全风险。</p><p><strong>Q: 可以禁用这个检查吗？</strong><br>A: 不可以。为了确保数据安全，此功能强制执行，无法禁用。</p><p><strong>Q: 检查失败了怎么办？</strong><br>A: 按照错误提示将仓库设置为私有，然后重新运行备份任务。程序会自动重新检查。如还有错误请提起<a href="https://github.com/yunsen2025/cloudflare-imgbed-auto-backup/issues" class="extlink extlink-icon-1">ISSUE</a>，请不要提交有关隐私的信息</p><h2 id="🌐-httphttps-协议支持">🌐 HTTP/HTTPS 协议支持</h2><p>程序支持 HTTP 和 HTTPS 两种协议，并能智能处理不同的网络环境：</p><h3 id="http-协议特殊情况">HTTP 协议特殊情况</h3><h4 id="1-混合内容问题">1. <strong>混合内容问题</strong></h4><ul><li>在 GitHub Actions 环境中，HTTP 连接可能会受到安全策略限制</li><li>如果遇到连接问题，建议优先使用 HTTPS</li></ul><h4 id="2-端口配置">2. <strong>端口配置</strong></h4><ul><li>HTTP 默认端口：80</li><li>HTTPS 默认端口：443</li><li>自定义端口：如 <code>http://example.com:8080/</code></li><li>程序会保持你指定的端口号</li></ul><h4 id="3-ssltls-证书问题">3. <strong>SSL/TLS 证书问题</strong></h4><ul><li>HTTP 连接不涉及证书验证</li><li>如果你的 HTTPS 使用自签名证书，可能需要特殊处理，懒得写这块了<del>也没人给图床用自签吧</del></li></ul><h4 id="4-连接超时设置">4. <strong>连接超时设置</strong></h4><ul><li>程序默认超时时间：30秒</li><li>对于较慢的服务器，可能需要调整超时时间</li></ul><h3 id="常见问题解决">常见问题解决</h3><ol><li><p><strong>“Connection refused” 错误</strong></p><pre><code class="language-bash"># 检查服务是否运行
+netstat -tulpn | grep 40968
+
+# 检查防火墙状态
+sudo ufw status
+</code></pre></li><li><p><strong>“Certificate verify failed” 错误</strong></p><ul><li>这通常发生在 HTTPS 连接中</li><li>确保证书有效或使用 HTTP 协议</li></ul></li><li><p><strong>“Timeout” 错误</strong></p><ul><li>检查网络连接</li><li>确认服务器响应时间</li><li>考虑增加超时时间</li></ul></li></ol><h2 id="本地运行">本地运行</h2><p>如果你想在本地运行备份脚本：</p><ol><li>安装依赖：</li></ol><pre><code class="language-bash">pip install -r requirements.txt
+</code></pre><ol start="2"><li>设置环境变量：</li></ol><pre><code class="language-bash">export BACKUP_URL=&quot;http://&quot;
+export BACKUP_USERNAME=&quot;your_username&quot;
+export BACKUP_PASSWORD=&quot;your_password&quot;
+export MAX_BACKUPS=&quot;100&quot;  # 可选，默认100
+export ENABLE_CHANGE_DETECTION=&quot;true&quot;  # 可选，默认true
+
+# 本地运行时需要设置以下变量进行隐私检查：
+export GITHUB_TOKEN=&quot;your_github_token&quot;  # GitHub Personal Access Token
+export GITHUB_REPOSITORY=&quot;username/repo-name&quot;  # 仓库名称
+</code></pre><p><strong>本地运行说明</strong>：</p><ul><li>本地运行时也会执行隐私检查，需要设置有效的 <code>GITHUB_TOKEN</code> 和 <code>GITHUB_REPOSITORY</code></li><li>如果您需要在测试环境中跳过检查，请修改源代码 <code>self.force_private_repo</code> 值</li></ul><ol start="3"><li>运行脚本：</li></ol><pre><code class="language-bash">python backup_script.py
+</code></pre><h2 id="故障排除">故障排除</h2><h3 id="常见问题-1">常见问题</h3><ol><li><p>*<strong>� 仓库隐私检查失败</strong></p><ul><li><strong>问题</strong>: 显示”仓库当前为公开状态”错误</li><li><strong>解决</strong>: 将仓库设置为私有<ol><li>前往 GitHub 仓库设置: <code>https://github.com/用户名/仓库名/settings</code></li><li>滚动到底部 <code>Danger Zone</code> 区域</li><li>点击 <code>Change repository visibility</code> → <code>Make private</code></li></ol></li><li><strong>注意</strong>: 程序会拒绝在公开仓库中备份敏感数据</li></ul></li><li><p><strong>GitHub API 访问失败</strong></p><ul><li><strong>问题</strong>: “无法验证仓库隐私状态”</li><li><strong>原因</strong>: GitHub Token 权限不足或网络问题</li><li><strong>解决</strong>: 确认 Actions 有足够权限访问仓库信息（通常 <code>GITHUB_TOKEN</code> 自动提供）</li></ul></li><li><p><strong>认证失败</strong></p><ul><li>检查用户名和密码是否正确</li><li>确认GitHub机密设置正确</li></ul></li><li><p><strong>网络连接问题</strong></p><ul><li>检查完整URL是否正确（http与非标准端口需要填写完整URL）</li><li>确认服务器端口是否开放</li><li>确认网站的完整API路径可访问</li><li>确保使用版本支持导出</li><li>确认网站没有IP限制</li><li>如果使用HTTP，确保服务器支持HTTP连接</li><li><strong>HTTP特有问题</strong>：某些网络环境可能阻止HTTP连接，建议先测试HTTPS</li></ul></li><li><p><strong>协议相关问题</strong></p><ul><li><strong>HTTP</strong>: 检查是否被防火墙或代理阻止</li><li><strong>HTTPS</strong>: 检查SSL证书是否有效</li><li><strong>端口</strong>: 确认自定义端口已正确开放</li><li><strong>超时</strong>: 如果服务器响应慢，可能需要增加超时时间</li></ul></li><li><p><strong>JSON解析错误</strong></p><ul><li>确认版本大于2.0.3</li><li>检查API是否正常工作</li></ul></li><li><p><strong>变更检测问题</strong></p><ul><li>如果怀疑变更检测有误，可以设置 <code>ENABLE_CHANGE_DETECTION=false</code> 强制备份</li><li>检查 <code>latest_backup.json</code> 文件是否存在且格式正确</li></ul></li><li><p><strong>配置错误</strong></p><ul><li>如果看到 <code>invalid literal for int()</code> 错误，检查 <code>MAX_BACKUPS</code> 是否设置了有效数字</li><li>可选配置项如果不需要可以不设置，程序会使用默认值</li></ul></li></ol><h3 id="本地测试方法">本地测试方法</h3><p>在配置GitHub Actions之前，建议先在本地测试连接：</p><pre><code class="language-bash"># 测试HTTP连接
+curl -v -u &quot;username:password&quot; &quot;http:///api/manage/sysConfig/backup?action=backup&quot;
+
+# 测试HTTPS连接（如果支持）
+curl -v -u &quot;username:password&quot; &quot;https:///api/manage/sysConfig/backup?action=backup&quot;
+
+# 检查端口是否开放
+telnet 11
+</code></pre><h3 id="查看日志">查看日志</h3><p>在GitHub Actions页面可以查看详细的执行日志，包括：</p><ul><li>认证过程</li><li>下载进度</li><li>变更检测结果</li><li>文件保存状态</li><li>错误信息</li></ul><h2 id="自定义配置">自定义配置</h2><p>你可以修改以下设置：</p><h3 id="修改备份时间">修改备份时间</h3><p>编辑 <code>.github/workflows/backup.yml</code> 中的cron表达式：</p><pre><code class="language-yaml">schedule:
+  - cron: &#39;0 18 * * *&#39;  # 每天UTC时间18:00（北京时间02:00）
+</code></pre><h3 id="修改保留备份数量">修改保留备份数量</h3><p>编辑 <code>backup_script.py</code> 中的清理逻辑，或者在GitHub仓库机密中设置 <code>MAX_BACKUPS</code>：</p><pre><code class="language-python"># 默认保留最近的100个备份文件
+self.max_backups = int(os.getenv(&#39;MAX_BACKUPS&#39;, &#39;100&#39;))
+</code></pre><h3 id="禁用变更检测">禁用变更检测</h3><p>如果你希望每次都强制保存（不管数据是否变化），可以设置：</p><pre><code class="language-yaml"># 在GitHub仓库机密中设置
+ENABLE_CHANGE_DETECTION: false
+</code></pre><h2 id="安全注意事项">安全注意事项</h2><ol><li><p>*<strong>� 仓库隐私保护</strong>:</p><ul><li><strong>强制私有仓库</strong>: 程序强制要求仓库必须设置为私有状态，无法禁用</li><li><strong>自动检查机制</strong>: 程序会在每次运行前检查仓库隐私状态</li><li><strong>拒绝公开备份</strong>: 检测到公开仓库时会立即终止备份任务</li></ul></li><li><p><strong>机密管理</strong>:</p><ul><li>永远不要在代码中硬编码用户名和密码</li><li>使用GitHub Secrets安全存储敏感信息</li><li>定期轮换密码和访问令牌</li></ul></li><li><p><strong>访问权限</strong>:</p><ul><li>确保GitHub仓库的访问权限设置合适</li><li>仅向必要人员授予仓库访问权限</li><li>考虑启用分支保护规则</li></ul></li><li><p><strong>备份内容</strong>:</p><ul><li>备份文件可能包含用户数据、配置信息、API密钥等敏感信息</li><li>定期审查备份内容，确保没有意外包含不应备份的敏感数据</li><li>考虑对备份文件进行额外的加密处理</li></ul></li><li><p><strong>监控和审计</strong>:</p><ul><li>定期检查Actions运行日志</li><li>监控仓库访问记录</li><li>及时响应任何安全警告</li></ul></li></ol><p><strong>⚠️ 重要提醒</strong>: 数据安全是您的责任。虽然程序提供了多重保护机制，但请始终保持安全意识，确保正确配置和使用。</p><h2 id="贡献">贡献</h2><p>欢迎提交<a href="https://github.com/yunsen2025/cloudflare-imgbed-auto-backup/issues" class="extlink extlink-icon-1">Issues</a>和<a href="https://github.com/yunsen2025/cloudflare-imgbed-auto-backup/pulls" class="extlink extlink-icon-1">Pull Requests</a>来改进这个项目！</p><h2 id="许可证">许可证</h2><p>MIT License</p></div><footer class="content__footer"><div class="entry-wrapper"><p class="content__updated">This article was updated on 25/12/29 16:05:32</p><div class="content__actions"><div class="content__share"><button class="btn--icon content__share-button js-content__share-button"><svg width="20" height="20" aria-hidden="true"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#share"></use></svg> <span>Share It</span></button><div class="content__share-popup js-content__share-popup"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F" class="js-share facebook" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#facebook"/></svg> <span>Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F&amp;via=AcoFork%20Blog%20(Beta)&amp;text=cloudflare-imgbed%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Action%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%B0%E4%BB%93%E5%BA%93" class="js-share twitter" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#twitter"/></svg> <span>Twitter</span> </a><a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F&amp;media=https%3A%2F%2Fbeta.acofork.com%2Fmedia%2Fposts%2F26%2FPing-Mu-Jie-Tu-2025-08-16-233807.png&amp;description=cloudflare-imgbed%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Action%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%B0%E4%BB%93%E5%BA%93" class="js-share pinterest" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#pinterest"/></svg> <span>Pinterest</span> </a><a href="https://mix.com/add?url=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F" class="js-share mix" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#mix"/></svg> <span>Mix</span> </a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F" class="js-share linkedin" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#linkedin"/></svg> <span>LinkedIn</span> </a><a href="https://buffer.com/add?text=cloudflare-imgbed%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Action%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%B0%E4%BB%93%E5%BA%93&amp;url=https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F" class="js-share buffer" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#buffer"/></svg> <span>Buffer</span> </a><a href="https://api.whatsapp.com/send?text=cloudflare-imgbed%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Action%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%85%83%E6%95%B0%E6%8D%AE%E5%88%B0%E4%BB%93%E5%BA%93 https%3A%2F%2Fbeta.acofork.com%2Fcloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku%2F" class="js-share whatsapp" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#whatsapp"/></svg> <span>WhatsApp</span></a></div></div></div><div class="content__bio bio"><div><h3 class="h4 bio__name"><a href="https://beta.acofork.com/authors/acofork/" rel="author">AcoFork</a></h3></div></div></div><nav class="content__nav"><div class="wrapper"><div class="content__nav-inner"><div class="content__nav-prev"><a href="https://beta.acofork.com/atpxcom-yi-ge-you-qu-de-shen-mi-bo-ke/" class="content__nav-link" rel="prev"><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/12/responsive/2025-08-13-18-46-20-image.BFFFAZHI-xs.webp" class="lazyload" loading="lazy" alt="" height="730" width="730"></figure><div><span>Previous</span> atpx.com 一个有趣的神秘博客</div></a></div><div class="content__nav-next"><a href="https://beta.acofork.com/ji-lu-jie-bao-chen-bai-jin-qu-yi-huo-de-se-secg/" class="content__nav-link" rel="next"><div><span>Next</span> 记录解包尘白禁区以获得涩涩（？）CG</div><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/16/responsive/2025-08-24-01-13-41-3824c5ece06cc56241688f4a4aacbcbd.t2hYbuVO-xs.webp" class="lazyload" loading="lazy" alt="" height="1000" width="1000"></figure></a></div></div></div></nav></footer></article><div class="banner banner--after-content"><div class="wrapper"><script src="https://giscus.app/client.js" data-repo="afoim/giscus-fuwari" data-repo-id="R_kgDOOi8quw" data-category="Announcements" data-category-id="DIC_kwDOOi8qu84CprDV" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script></div></div></main><footer class="footer footer--glued"><div class="wrapper"><div class="footer__copyright"><p>Powered by <a href="https://getpublii.com">Publii</a> / <a href="https://beian.miit.gov.cn/#/Integrated/index">皖ICP备2025099787号-2</a></p></div><button id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg width="20" height="20"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#toparrow"/></svg></button></div></footer><script defer="defer" src="https://beta.acofork.com/assets/js/scripts.min.js?v=700105c316933a8202041b6415abb233"></script><script>window.publiiThemeMenuConfig={mobileMenuMode:'sidebar',animationSpeed:300,submenuWidth: 'auto',doubleClickTime:500,mobileMenuExpandableSubmenus:true,relatedContainerForOverlayMenuSelector:'.top'};</script><script>var images = document.querySelectorAll('img[loading]');
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].complete) {
+                images[i].classList.add('is-loaded');
+            } else {
+                images[i].addEventListener('load', function () {
+                    this.classList.add('is-loaded');
+                }, false);
+            }
+        }</script><script>(function() {
+			var originalTitle = document.title;
+			var timeout;
+			document.addEventListener("visibilitychange", function() {
+				if (document.hidden) {
+					document.title = "👀 我想你了！快回来吧！";
+				} else {
+					clearTimeout(timeout);
+					document.title = "🎉 欢迎回来！";
+							setTimeout(function() {
+								document.title = originalTitle;
+							}, 2000);
+				}
+			});
+		})();</script><script src="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid.min.js"></script><script>mermaid.initialize({ startOnLoad: true, theme: "default" });</script><script src="https://beta.acofork.com/media/plugins/pagePrefetching/quicklink.umd.js"></script><script>window.addEventListener('load', () => {
+					quicklink.listen({
+						prerender: false,
+						el: document.querySelector('body'),
+						delay: 0,
+						limit: Infinity,
+						throttle: Infinity,
+						timeout: 2000
+					});
+				});</script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-line-numbers.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-copy-to-clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-autolinker.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-show-invisibles.min.js"></script><div class="pcb" data-behaviour="badge" data-behaviour-link="#cookie-settings" data-revision="1" data-config-ttl="90" data-debug-mode="false"><div role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-title" aria-describedby="pcb-txt" class="pcb__banner"><div class="pcb__inner"><div id="pcb-title" role="heading" aria-level="2" class="pcb__title">本网站使用Cookie！</div><div id="pcb-txt" class="pcb__txt">通过下面的复选框选择您同意接收的 Cookie；我们的网站使用 Cookie 来分析网站流量和用户在本站的活动，用于营销以及提供社交媒体功能。</div><div class="pcb__buttons"><button type="button" class="pcb__btn pcb__btn--link pcb__btn--configure" aria-haspopup="dialog"></button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button></div></div></div><div class="pcb__popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-popup-title"><div class="pcb__popup__wrapper"><div class="pcb__inner pcb__popup__inner"><div class="pcb__popup__heading"><div id="pcb-popup-title" role="heading" aria-level="2" class="pcb__title">Cookie设置</div><button class="pcb__popup__close" aria-label="Close"></button></div><div class="pcb__popup__content"><div class="pcb__txt pcb__popup__txt">我们使用 cookies 来提升您的浏览体验，提供个性化广告或内容，并分析我们的流量。点击“全部接受”即表示您同意我们使用 cookies。</div><ul class="pcb__groups"><li class="pcb__group"><details><summary class="pcb__group__title">站点分析</summary><p class="pcb__group__txt">允许发送匿名访问数据至第三方统计服务，用于网站分析（不包含任何隐私信息）。</p></details><div class="pcb__popup__switch"><input type="checkbox" data-group-name="analytics" id="analytics-cookies"> <label for="analytics-cookies">站点分析</label></div></li></ul></div><div class="pcb__buttons pcb__popup__buttons"><button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--save">保存设置</button></div></div></div></div><div class="pcb__overlay" aria-hidden="true"></div><button class="pcb__badge" aria-label="Cookie 设置" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 23 23" fill="currentColor"><path d="M21.41 12.71c-.08-.01-.15 0-.22 0h-.03c-.03 0-.05 0-.08.01-.07 0-.13.01-.19.04-.52.21-1.44.19-2.02-.22-.44-.31-.65-.83-.62-1.53a.758.758 0 0 0-.27-.61.73.73 0 0 0-.65-.14c-1.98.51-3.49.23-4.26-.78-.82-1.08-.73-2.89.24-4.49.14-.23.14-.52 0-.75a.756.756 0 0 0-.67-.36c-.64.03-1.11-.1-1.31-.35-.19-.26-.13-.71-.01-1.29.04-.18.06-.38.03-.59-.05-.4-.4-.7-.81-.66C5.1 1.54 1 6.04 1 11.48 1 17.28 5.75 22 11.6 22c5.02 0 9.39-3.54 10.39-8.42.08-.4-.18-.78-.58-.87Zm-9.81 7.82c-5.03 0-9.12-4.06-9.12-9.06 0-4.34 3.05-8 7.25-8.86-.08.7.05 1.33.42 1.81.24.32.66.67 1.38.84-.76 1.86-.65 3.78.36 5.11.61.81 2.03 2 4.95 1.51.18.96.71 1.54 1.18 1.87.62.43 1.38.62 2.1.62.05 0 .09 0 .13-.01-1.23 3.64-4.7 6.18-8.64 6.18ZM13 17c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1Zm5.29-12.3a.99.99 0 0 1-.29-.71c0-.55.45-.99 1-.99a1 1 0 0 1 .71.3c.19.19.29.44.29.71 0 .55-.45.99-1 .99a1 1 0 0 1-.71-.3ZM9 13.5c0 .83-.67 1.5-1.5 1.5S6 14.33 6 13.5 6.67 12 7.5 12s1.5.67 1.5 1.5Zm3.25.81a.744.744 0 0 1-.06-1.05c.28-.32.75-.34 1.05-.06.31.28.33.75.05 1.06-.15.16-.35.25-.56.25-.18 0-.36-.06-.5-.19ZM8.68 7.26c.41.37.44 1 .07 1.41-.2.22-.47.33-.75.33a.96.96 0 0 1-.67-.26c-.41-.37-.44-1-.07-1.41.37-.42 1-.45 1.41-.08Zm11.48 1.88c.18-.19.52-.19.7 0 .05.04.09.1.11.16.03.06.04.12.04.19 0 .13-.05.26-.15.35-.09.1-.22.15-.35.15s-.26-.05-.35-.15a.355.355 0 0 1-.11-.16.433.433 0 0 1-.04-.19c0-.13.05-.26.15-.35Zm-4.93-1.86a.75.75 0 1 1 1.059-1.06.75.75 0 0 1-1.059 1.06Z"/></svg></button></div><script>(function(win) {
+    if (!document.querySelector('.pcb')) {
+        return;
+    }
+
+    var cbConfig = {
+        behaviour: document.querySelector('.pcb').getAttribute('data-behaviour'),
+        behaviourLink: document.querySelector('.pcb').getAttribute('data-behaviour-link'),
+        revision: document.querySelector('.pcb').getAttribute('data-revision'),
+        configTTL: parseInt(document.querySelector('.pcb').getAttribute('data-config-ttl'), 10),
+        debugMode: document.querySelector('.pcb').getAttribute('data-debug-mode') === 'true',
+        initialState: null,
+        initialLsState: null,
+        previouslyAccepted: []
+    };
+
+    var cbUI = {
+        wrapper: document.querySelector('.pcb'),
+        banner: {
+            element: null,
+            btnAccept: null,
+            btnReject: null,
+            btnConfigure: null
+        },
+        popup: {
+            element: null,
+            btnClose: null,
+            btnSave: null,
+            btnAccept: null,
+            btnReject: null,
+            checkboxes: null,
+        },
+        overlay: null,
+        badge: null,
+        blockedScripts: document.querySelectorAll('script[type^="gdpr-blocker/"]'),
+        triggerLinks: cbConfig.behaviourLink ? document.querySelectorAll('a[href*="' + cbConfig.behaviourLink + '"]') : null
+    };
+
+    function initUI () {
+        // setup banner elements
+        cbUI.banner.element = cbUI.wrapper.querySelector('.pcb__banner');
+        cbUI.banner.btnAccept = cbUI.banner.element.querySelector('.pcb__btn--accept');
+        cbUI.banner.btnReject = cbUI.banner.element.querySelector('.pcb__btn--reject');
+        cbUI.banner.btnConfigure = cbUI.banner.element.querySelector('.pcb__btn--configure');
+
+        // setup popup elements
+        if (cbUI.wrapper.querySelector('.pcb__popup')) {
+            cbUI.popup.element = cbUI.wrapper.querySelector('.pcb__popup');
+            cbUI.popup.btnClose = cbUI.wrapper.querySelector('.pcb__popup__close');
+            cbUI.popup.btnSave = cbUI.popup.element.querySelector('.pcb__btn--save');
+            cbUI.popup.btnAccept = cbUI.popup.element.querySelector('.pcb__btn--accept');
+            cbUI.popup.btnReject = cbUI.popup.element.querySelector('.pcb__btn--reject');
+            cbUI.popup.checkboxes = cbUI.popup.element.querySelector('input[type="checkbox"]');
+            // setup overlay
+            cbUI.overlay = cbUI.wrapper.querySelector('.pcb__overlay');
+        }
+
+        cbUI.badge = cbUI.wrapper.querySelector('.pcb__badge');
+
+        if (cbConfig.behaviour.indexOf('link') > -1) {
+            for (var i = 0; i < cbUI.triggerLinks.length; i++) {
+                cbUI.triggerLinks[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showBannerOrPopup();
+                });
+            }
+        }
+    }
+
+    function initState () {
+        var lsKeyName = getConfigName();
+        var currentConfig = localStorage.getItem(lsKeyName);
+        var configIsFresh = checkIfConfigIsFresh();
+
+        if (!configIsFresh || currentConfig === null) {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config not found, or configuration expired');
+            }
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                    'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                    'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                    'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                    'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                    'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                    'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                });  
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                        'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                        'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                        'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                        'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                        'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                        'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                    }));
+                }
+            }
+
+            showBanner();
+        } else if (typeof currentConfig === 'string') {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config founded');
+            }
+
+            cbConfig.initialLsState = currentConfig.split(',');
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                    'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                    'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                    'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                    'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                    'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                    'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                });
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                        'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                        'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                        'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                        'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                        'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                        'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                    }));
+                }
+            }
+
+            showBadge();
+
+            if (cbUI.popup.element) {
+                var allowedGroups = currentConfig.split(',');
+                var checkedCheckboxes = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+
+                for (var j = 0; j < checkedCheckboxes.length; j++) {
+                    var name = checkedCheckboxes[j].getAttribute('data-group-name');
+
+                    if (name && name !== '-' && allowedGroups.indexOf(name) === -1) {
+                        checkedCheckboxes[j].checked = false;
+                    }
+                }
+
+                for (var i = 0; i < allowedGroups.length; i++) {
+                    var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + allowedGroups[i] + '"]');
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+
+                    allowCookieGroup(allowedGroups[i]);
+                }
+            }
+        }
+
+        setTimeout(function () {
+            cbConfig.initialState = getInitialStateOfConsents();
+        }, 0);
+    }
+
+    function checkIfConfigIsFresh () {
+        var lastConfigSave = localStorage.getItem('publii-gdpr-cookies-config-save-date');
+
+        if (lastConfigSave === null) {
+            return false;
+        }
+
+        lastConfigSave = parseInt(lastConfigSave, 10);
+
+        if (lastConfigSave === 0) {
+            return true;
+        }
+
+        if (+new Date() - lastConfigSave < cbConfig.configTTL * 24 * 60 * 60 * 1000) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function getDefaultConsentState (currentConfig, consentGroup) {
+        let configGroups = currentConfig.split(',');
+
+        for (let i = 0; i < configGroups.length; i++) {
+            let groupName = configGroups[i];
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === groupName);
+
+            if (group && group[consentGroup]) {
+                return 'granted';
+            }
+        }  
+        
+        if (window.publiiCBGCM.defaultState[consentGroup]) {
+            return 'granted'; 
+        }
+        
+        return 'denied';
+    }
+
+    function initBannerEvents () {
+        cbUI.banner.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('banner');
+            showBadge();
+        }, false);
+
+        if (cbUI.banner.btnReject) {
+            cbUI.banner.btnReject.addEventListener('click', function (e) {
+                e.preventDefault();
+                rejectAllCookies();
+                showBadge();
+            }, false);
+        }
+
+        if (cbUI.banner.btnConfigure) {
+            cbUI.banner.btnConfigure.addEventListener('click', function (e) {
+                e.preventDefault();
+                hideBanner();
+                showAdvancedPopup();
+                showBadge();
+            }, false);
+        }
+    }
+
+    function initPopupEvents () {
+        if (!cbUI.popup.element) {
+            return;
+        }
+
+        cbUI.overlay.addEventListener('click', function (e) {
+            hideAdvancedPopup();
+        }, false);
+
+        cbUI.popup.element.addEventListener('click', function (e) {
+            e.stopPropagation();
+        }, false);
+
+        cbUI.popup.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('popup');
+        }, false);
+
+        cbUI.popup.btnReject.addEventListener('click', function (e) {
+            e.preventDefault();
+            rejectAllCookies();
+        }, false);
+
+        cbUI.popup.btnSave.addEventListener('click', function (e) {
+            e.preventDefault();
+            saveConfiguration();
+        }, false);
+
+        cbUI.popup.btnClose.addEventListener('click', function (e) {
+            e.preventDefault();
+            hideAdvancedPopup();
+        }, false);
+    }
+
+    function initBadgeEvents () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.addEventListener('click', function (e) {
+            showBannerOrPopup();
+        }, false);
+    }
+
+    initUI();
+    initState();
+    initBannerEvents();
+    initPopupEvents();
+    initBadgeEvents();
+
+    /**
+     * API
+     */
+    function addScript (src, inline) {
+        var newScript = document.createElement('script');
+
+        if (src) {
+            newScript.setAttribute('src', src);
+        }
+
+        if (inline) {
+            newScript.text = inline;
+        }
+
+        document.body.appendChild(newScript);
+    }
+
+    function allowCookieGroup (allowedGroup) {
+        var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + allowedGroup + '"]');
+        cbConfig.previouslyAccepted.push(allowedGroup);
+    
+        for (var j = 0; j < scripts.length; j++) {
+            addScript(scripts[j].src, scripts[j].text);
+        }
+
+        var groupEvent = new Event('publii-cookie-banner-unblock-' + allowedGroup);
+        document.body.dispatchEvent(groupEvent);
+        unlockEmbeds(allowedGroup);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Allowed group: ' + allowedGroup);
+        }
+
+        if (window.publiiCBGCM && (!cbConfig.initialLsState || cbConfig.initialLsState.indexOf(allowedGroup) === -1)) {
+            let consentResult = {};
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === allowedGroup);
+
+            if (group) {
+                let foundSomeConsents = false;
+
+                Object.keys(group).forEach(key => {
+                    if (key !== 'cookieGroup' && group[key] === true) {
+                        consentResult[key] = 'granted';
+                        foundSomeConsents = true;
+                    }
+                });
+
+                if (foundSomeConsents) {
+                    gtag('consent', 'update', consentResult);   
+
+                    if (cbConfig.debugMode) {
+                        console.log('🍪 GCMv2 UPDATE: ' + JSON.stringify(consentResult));
+                    }
+                }
+            }
+        }
+    }
+
+    function showBannerOrPopup () {
+        if (cbUI.popup.element) {
+            showAdvancedPopup();
+        } else {
+            showBanner();
+        }
+    }
+
+    function showAdvancedPopup () {
+        cbUI.popup.element.classList.add('is-visible');
+        cbUI.overlay.classList.add('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'false');
+        cbUI.overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideAdvancedPopup () {
+        cbUI.popup.element.classList.remove('is-visible');
+        cbUI.overlay.classList.remove('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'true');
+        cbUI.overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBanner () {
+        cbUI.banner.element.classList.add('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideBanner () {
+        cbUI.banner.element.classList.remove('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBadge () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.classList.add('is-visible');
+        cbUI.badge.setAttribute('aria-hidden', 'false');
+    }
+
+    function getConfigName () {
+        var lsKeyName = 'publii-gdpr-allowed-cookies';
+
+        if (cbConfig.revision) {
+            lsKeyName = lsKeyName + '-v' + parseInt(cbConfig.revision, 10);
+        }
+
+        return lsKeyName;
+    }
+
+    function storeConfiguration (allowedGroups) {
+        var lsKeyName = getConfigName();
+        var dataToStore = allowedGroups.join(',');
+        localStorage.setItem(lsKeyName, dataToStore);
+
+        if (cbConfig.configTTL === 0) {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', 0);
+
+            if (cbConfig.debugMode) {
+                console.log('🍪 Store never expiring configuration');
+            }
+        } else {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', +new Date());
+        }
+    }
+
+    function getInitialStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Initial state: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getCurrentStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 State to save: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getAllGroups () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        return groups;
+    }
+
+    function acceptAllCookies (source) {
+        var groupsToAccept = getAllGroups();
+        storeConfiguration(groupsToAccept);
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        if (cbUI.popup.element) {
+            var checkboxesToCheck = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+
+            for (var j = 0; j < checkboxesToCheck.length; j++) {
+                checkboxesToCheck[j].checked = true;
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Accept all cookies: ', groupsToAccept.join(', '));
+        }
+
+        if (source === 'popup') {
+            hideAdvancedPopup();
+        } else if (source === 'banner') {
+            hideBanner();
+        }
+    }
+
+    function rejectAllCookies () {
+        if (cbConfig.debugMode) {
+            console.log('🍪 Reject all cookies');
+        }
+
+        storeConfiguration([]);
+        setTimeout(function () {
+            window.location.reload();
+        }, 100);
+    }
+
+    function saveConfiguration () {
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+
+        if (reloadIsNeeded(groupsToAccept)) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 100);
+            return;
+        }
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        hideAdvancedPopup();
+    }
+
+    function reloadIsNeeded (groupsToAccept) {
+        // check if user rejected consent for initial groups
+        var initialGroups = cbConfig.initialState;
+        var previouslyAcceptedGroups = cbConfig.previouslyAccepted;
+        var groupsToCheck = initialGroups.concat(previouslyAcceptedGroups);
+
+        for (var i = 0; i < groupsToCheck.length; i++) {
+            var groupToCheck = groupsToCheck[i];
+
+            if (groupToCheck !== '' && groupsToAccept.indexOf(groupToCheck) === -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Reload is needed due lack of: ', groupToCheck);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function unlockEmbeds (cookieGroup) {
+        var iframesToUnlock = document.querySelectorAll('.pec-wrapper[data-consent-group-id="' + cookieGroup + '"]');
+
+        for (var i = 0; i < iframesToUnlock.length; i++) {
+            var iframeWrapper = iframesToUnlock[i];
+            iframeWrapper.querySelector('.pec-overlay').classList.remove('is-active');
+            iframeWrapper.querySelector('.pec-overlay').setAttribute('aria-hidden', 'true');
+            var iframe = iframeWrapper.querySelector('iframe');
+            iframe.setAttribute('src', iframe.getAttribute('data-consent-src'));
+        }
+    }
+
+    win.publiiEmbedConsentGiven = function (cookieGroup) {
+        // it will unlock embeds
+        allowCookieGroup(cookieGroup);
+
+        var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + cookieGroup + '"]');
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+    }
+})(window);</script></body></html>

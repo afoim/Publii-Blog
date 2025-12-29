@@ -1,9 +1,377 @@
 [
   {
-    "url": "file:///C:\\Users\\af\\Documents\\Publii\\sites\\acofork-blog-beta\\preview/jia-qun-xiang-dao/index.html",
+    "url": "https://beta.acofork.com/jia-qun-xiang-dao/",
     "id": 1,
     "title": "加群向导",
-    "excerpt": "官方 Telegram群组 Telegram: Join Group Chat [2x.nz] 为什么仅QQ群需要赞助？因为QQ作为国内平台，很容易被内鬼举报致使封群，但相对的，门槛更低，交流更方便。当然，如果您是高级用户，可以加入非QQ群。 请先 赞助 至少 10 CNY 后加群。赞助时建议留备注，加群问题填写你留的备注或者交易订单号 点击链接加入群聊【2x.nz】： QQ群 粉丝自建 Telegram: View @blog2x",
+    "excerpt": "官方 Telegram群组&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/zi-jian-you-ju-tai-ma-fanlai-yong-wang-yi-mian-fei-qi-ye-youbang-ding-ni-de-yu-ming-shou-fa-zi-ru/",
+    "id": 3,
+    "title": "自建邮局太麻烦？来用网易免费企业邮！绑定你的域名收发自如！",
+    "excerpt": "引言 最早我开始知道域名邮箱是因为偶然在一位我朋友的开发群内看到他的微软账户绑定的邮箱是admin@他网站的域名.com。&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/gong-kai-jia-gouwo-de-er-ci-yuan-sui-ji-tu-apishi-zen-me-zuo-de/",
+    "id": 4,
+    "title": "公开架构，我的二次元随机图API是怎么做的",
+    "excerpt": "API端点 门户：&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/jiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou/",
+    "id": 5,
+    "title": "究极喂饭教程，手把手教你内网穿透",
+    "excerpt": "经实测，Zerotier的打洞能力明显优于Tailscale，所以建议通过Zerotier来实现内网穿透 详细报表：&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/aixie-bu-chu-you-zhi-de-dai-maqi-shi-shi-ni-yin-dao-cuo-liao/",
+    "id": 6,
+    "title": "AI写不出优质的代码？其实是你引导错了！",
+    "excerpt": "正确的引导方法 先搞清楚你自己具体的需求。比如代码用什么语言编写？用什么技术栈？要具体实现什么功能？应用的场景是什么？是前端、后端还是全栈等等&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/li-yong-a-li-yun-yun-han-shu-fc-da-jian-alisthou-duanmei-yue-jin-xu-5mao/",
+    "id": 7,
+    "title": "利用阿里云云函数 FC 搭建AList后端，每月仅需5毛！",
+    "excerpt": "还是建议购买一个便宜的云服务器来部署或者用家里云，这种方法很灵车 推荐Akile：https://akile.io/register?aff_code=503fe5ea-e7c5-4d68-ae05-6de99513680e&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/jiao-ni-ba-alistde-qian-duan-bu-shu-dao-cf-pagesrang-ni-de-alistmiao-jia-zai/",
+    "id": 8,
+    "title": "教你把AList的前端部署到CF Pages！让你的AList秒加载！",
+    "excerpt": "前情提要# 本教程不是&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shang-shou-mi-ha-you-airan-hou-ba-ta-ni-liao/",
+    "id": 9,
+    "title": "上手米哈游AI，然后把它逆了！",
+    "excerpt": "这是What 这是橘猫，会哈气（见封面&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shi-yong-archisteamfarmjin-xing-steamzi-dong-gua-qia/",
+    "id": 10,
+    "title": "使用ArchiSteamFarm进行Steam自动挂卡",
+    "excerpt": "可用的目标作业系统 Windows&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/li-yong-astrov3de-yuan-sheng-chong-ding-xiang-lai-shi-xian-ge-zhong-ge-yang-de-gao-ji-chong-ding-xiang/",
+    "id": 11,
+    "title": "利用Astrov3的原生重定向来实现各种各样的高级重定向！",
+    "excerpt": "正式开始 Astro&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/atpxcom-yi-ge-you-qu-de-shen-mi-bo-ke/",
+    "id": 12,
+    "title": "atpx.com 一个有趣的神秘博客",
+    "excerpt": "今天偶然找到一个神秘博客，还挺有意思的，于是捐了 100&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/quan-zi-dong-icpcha-xun-api/",
+    "id": 13,
+    "title": "全自动ICP查询API",
+    "excerpt": "原理 由&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/jiao-ni-da-jian-zi-ji-de-fan-ju-kushi-xian-zi-dong-zhui-fan/",
+    "id": 14,
+    "title": "教你搭建自己的番剧库，实现自动追番！",
+    "excerpt": "实现流程： 每当新番更新时AutoBangumi自动向qb推送种子下载并且重命名&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/rao-guo-ustcde-liu-lan-qi-jsyan-zheng/",
+    "id": 15,
+    "title": "绕过USTC的浏览器JS验证",
+    "excerpt": "前言 当我们去下载类似于&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/ji-lu-jie-bao-chen-bai-jin-qu-yi-huo-de-se-secg/",
+    "id": 16,
+    "title": "记录解包尘白禁区以获得涩涩（？）CG",
+    "excerpt": "参考了 虚幻4游戏解包导出及Mod制作指南&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/huan-zai-yong-cloudflarechuan-tong-you-xuanlai-kan-kan-cloudflare-byoip/",
+    "id": 17,
+    "title": "还在用Cloudflare传统优选？来看看Cloudflare Byoip！",
+    "excerpt": "这是什么 Cloudflare&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shi-shi-cloudflare-ipyou-xuanrang-cloudflarezai-guo-nei-zai-ye-bu-shi-jian-su-qi/",
+    "id": 18,
+    "title": "试试Cloudflare IP优选！让Cloudflare在国内再也不是减速器！",
+    "excerpt": "未优选 已优选&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/cloudflare-r2workersma-shang-da-jian-zi-ji-de-yun-shang-tu-chuang/",
+    "id": 19,
+    "title": "Cloudflare R2+Workers！马上搭建自己的云上图床！",
+    "excerpt": "结果图 原理&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/li-yong-cloudflare-pageti-gong-de-chong-ding-xiang-gong-neng-shi-xian-wu-sun-haobu-xian-shu-liang-de-jing-tai-chong-ding-xiang-2/",
+    "id": 21,
+    "title": "利用Cloudflare Page提供的重定向功能实现无损耗、不限数量的静态重定向！",
+    "excerpt": "快速上手！ 直接&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/xian-zhi-ji-bi-ji-ben-dian-nao-yan-ji-jiao-cheng/",
+    "id": 22,
+    "title": "限制级笔记本电脑验机教程",
+    "excerpt": "说在前面 首先，购买任何&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/jiao-ni-da-jian-cheveretozhe-ge-chao-ji-qiang-da-de-tu-chuang/",
+    "id": 23,
+    "title": "教你搭建Chevereto这个超级强大的图床！",
+    "excerpt": "视频教程 https://b23.tv/E8Z34KM&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/guo-nei-dui-xiang-cun-chu-mian-liu-liang-feicloudflaredai-kuan-lian-meng-jiu-jing-shi-shi-me-2/",
+    "id": 25,
+    "title": "国内对象存储免流量费？Cloudflare带宽联盟究竟是什么？",
+    "excerpt": "这是什么 Cloudflare带宽联盟（Bandwidth&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/cloudflare-imgbedxiang-mu-shi-yong-actionzi-dong-bei-fen-yuan-shu-ju-dao-cang-ku/",
+    "id": 26,
+    "title": "cloudflare-imgbed项目使用Action自动备份元数据到仓库",
+    "excerpt": "本文由 https://github.com/afoim/fuwari/pull/40&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/cspbiao-tou-shi-shi-mewei-shi-me-you-ren-neng-shen-bu-zhi-gui-bu-jue-di-dao-zou-ni-de-xin-xi/",
+    "id": 27,
+    "title": "CSP标头是什么？为什么有人能神不知鬼不觉地盗走你的信息？",
+    "excerpt": "举个例子吧！ 这是一个无CSP标头的网站：&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/cyberduck-jian-ji-hao-yong-de-s3wen-jian-liu-lan-qi/",
+    "id": 28,
+    "title": "Cyberduck - 简洁好用的S3文件浏览器",
+    "excerpt": "前情提要 你可能知道&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/ben-zhan-zao-shou-liao-jian-zhan-yi-lai-gui-mo-zui-da-de-yi-ci-ddosgong-jizong-liu-liang-665tbfeng-zhi-shun-fa-195gbs/",
+    "id": 29,
+    "title": "本站遭受了建站以来规模最大的一次DDoS攻击，总流量6.65TB，峰值瞬发1.95GB/s",
+    "excerpt": "引言 本站建站初使用&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/jin-yong-astrogen-ruo-zhi-yi-ban-de-jing-tai-gou-jian-tu-xiang-you-hua/",
+    "id": 30,
+    "title": "禁用Astro跟弱智一般的静态构建图像优化",
+    "excerpt": "为什么要禁用图片优化？ 下图是一个默认的Astro静态构建，也就是&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shou-ba-shou-jiao-ni-bu-shu-discourse/",
+    "id": 31,
+    "title": "手把手教你部署Discourse",
+    "excerpt": "正式开始 确保你安装了&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/guan-yu-wo-zhe-teng-liao-yi-wan-shang-edgeone-2/",
+    "id": 33,
+    "title": "关于我折腾了一晚上 EdgeOne",
+    "excerpt": "这是个啥？ 在我的早期文章中提过EdgeOne，当时它还仅有Page业务，而且IP是很垃圾的新加坡，并且还会吞提交。故我当时给出了不如Cloudflare&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/edgeone-cloudflarewo-men-tian-xia-wu-di-2/",
+    "id": 35,
+    "title": "EdgeOne + Cloudflare，我们天下无敌！",
+    "excerpt": "引言 主播也是搞到了EdgeOne免费版激活码了，终于可以大展宏图了😋&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/dui-biao-cf-workerna-edgeonebian-yuan-han-shu-zuo-yi-ge-sui-ji-tu-api/",
+    "id": 36,
+    "title": "对标CF Worker？拿EdgeOne边缘函数做一个随机图API！",
+    "excerpt": "正式开始 前往&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/wtfzhi-jie-jiang-umamibu-shu-dao-edgeone-pagesreng-diao-vpszhi-jie-pao-zai-yun-han-shu/",
+    "id": 37,
+    "title": "WTF？！直接将Umami部署到EdgeOne Pages？扔掉VPS！直接跑在云函数！",
+    "excerpt": "原理探寻 由于&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/zai-edgeone-page-functionshang-da-jian-yi-ge-githubquan-zhan-fan-dai/",
+    "id": 38,
+    "title": "在EdgeOne Page Function上搭建一个Github全站反代！",
+    "excerpt": "开始实现 源码：&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shou-ba-shou-jiao-ni-jin-ru-ezhan-li-zhanexhentaiorg/",
+    "id": 39,
+    "title": "手把手教你进入e站里站（exhentai.org）",
+    "excerpt": "前期准备 欧美家宽IP。可以前往&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shou-ba-shou-jiao-ni-yong-shang-wei-xin-qi-yeyu-mingyou-xiangmian-fei/",
+    "id": 40,
+    "title": "手把手教你用上微信企业（域名）邮箱（免费！）",
+    "excerpt": "前情提要 之前我写过一篇网易企业邮的文章，但真的投入使用后发现各种毛病是层出不穷。比如SMTP/IMAP/POP3默认是关的，你想打开就弹出一个&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/ren-sheng-zhong-de-di-yi-tai-zi-ji-zu-zhuang-de-tai-shijian-pan-liang-xian-shi-qi-bi-liang/",
+    "id": 41,
+    "title": "人生中的第一台自己组装的台式！键盘亮显示器必亮！",
+    "excerpt": "前情提要 我知道大家来看都是想听听我分享第一次手动组装台式机的所想所感，但是，请容许我先讲述一下在这之前的事情，这将解释为什么我在该文简介介绍是&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/fei-niu-naswan-ji-ti-yan/",
+    "id": 42,
+    "title": "飞牛NAS玩机体验",
+    "excerpt": "吸引我的东西 影视刮削：飞快，薄纱Plex几条街。通过AutoBangumi可以完美自动追番+刮削一条龙服务。偶尔会有不准，但可以手动匹配，数据源来自TMDB和IMDB&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/ren-zheng-wei-folode-chuang-zuo-zhe/",
+    "id": 43,
+    "title": "认证为Folo的创作者",
+    "excerpt": "这是啥？ 这是一篇Folo认证文章，用于认证本RSS归属于我&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/bai-piao-mian-fei-de-3x-uimian-ban/",
+    "id": 44,
+    "title": "白嫖免费的3x-ui面板",
+    "excerpt": "正式开始 首先我们要先找到互联网上搭建了3x-ui的网站，可以使用&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/ji-lu-ren-sheng-zhong-di-yi-ci-po-jie-ruan-jianfkvocechat-2/",
+    "id": 46,
+    "title": "记录人生中第一次破解软件！FKvocechat！",
+    "excerpt": "前因 可以直接看&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/fuwarijing-tai-bo-ke-da-jian-jiao-cheng/",
+    "id": 47,
+    "title": "Fuwari静态博客搭建教程",
+    "excerpt": "你需要准备的东西 一个牛逼的脑子，支持并行运算至少两个单位以上的事件。遇到问题先思考，想不通就搜索，搜索不到就去和AI调情，不要上来就问问问&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/googlezui-xin-de-aisheng-tu-mo-xing-nano-bananali-hui-zhuan-zhen-renyi-jian-ptu/",
+    "id": 48,
+    "title": "Google最新的AI生图模型 Nano Banana！立绘转真人！一键P图！",
+    "excerpt": "哎我造了村里孩子吃上城里货了，这你扯不扯，这AI生图方便好，无需部署不费脑，大口大口使劲造，鼻歪眼斜使劲笑 进入&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/shi-yong-cloudflare-workerda-jian-githubquan-zhan-dai-lifang-diao-yu-2/",
+    "id": 50,
+    "title": "使用Cloudflare Worker搭建Github全站代理（防钓鱼）",
+    "excerpt": "项目原理 针对于Github这样的网站，我们无法仅使用一个透明的反向代理指向&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/li-yong-github-repo-webhooklai-wei-ni-de-ding-yue-zhe-tui-song-wen-zhang-geng-xin-xin-xi/",
+    "id": 51,
+    "title": "利用Github Repo WebHook来为你的订阅者推送文章更新信息",
+    "excerpt": "原理解析 我们都知道静态博客一般会托管在Github来方便其他静态网站构建服务提供商，如Cloudflare进行自动构建和发布站点。&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/zai-vpsshang-bu-shu-yi-ge-zi-ji-de-githubquan-zhan-fan-dai/",
+    "id": 52,
+    "title": "在VPS上部署一个自己的Github全站反代！",
+    "excerpt": "引言 至今我仍在维护一个Github全站反代的服务，就是&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/goedgezi-jian-cdnxi-tong-cai-keng-ji-lu/",
+    "id": 53,
+    "title": "GoEdge自建CDN系统踩坑记录",
+    "excerpt": "安装GoEdge 使用脚本快速安装GoEdge管理系统&hellip;",
+    "tags": [],
+    "author": "AcoFork"
+  },
+  {
+    "url": "https://beta.acofork.com/guan-yu-wo-dui-lu-you-qi-xia-gai-yi-tong-rang-wang-su-bian-kuai-liao-zhe-dang-shi/",
+    "id": 54,
+    "title": "关于我对路由器瞎改一通让网速变快了这档事",
+    "excerpt": "前情提要 起因是我经常使用的Cloudflare梯子访问速度变慢，而且经常被RST重置。买了个小鸡后自己搭了个Reality的梯子还是经常掉线，甚至HTTP协议的面板访问都超时。于是我便开始鼓捣起路由器&hellip;",
     "tags": [],
     "author": "AcoFork"
   }

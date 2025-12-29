@@ -1,0 +1,738 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>究极喂饭教程，手把手教你内网穿透 - AcoFork Blog (Beta)</title><meta name="description" content="经实测，Zerotier的打洞能力明显优于Tailscale，所以建议通过Zerotier来实现内网穿透 详细报表：&hellip;"><meta name="generator" content="Publii Open-Source CMS for Static Site"><script type="gdpr-blocker/analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-GCK58D6070"></script><script type="gdpr-blocker/analytics">window.dataLayer = window.dataLayer || [];
+				  function gtag(){dataLayer.push(arguments);}
+				  gtag('js', new Date());
+				  gtag('config', 'G-GCK58D6070' , { 'anonymize_ip': true });</script><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid-invert-filter.css"><meta name="theme-color" content="#17181E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#D73A42" media="(prefers-color-scheme: light)"><meta name="msapplication-navbutton-color" content="#D73A42"><meta name="apple-mobile-web-app-status-bar-style" content="#D73A42"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-black.css"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.css"><script async defer="defer" type="gdpr-blocker/analytics" src="https://umami.acofork.com/script.js" data-website-id="a3c761fb-d328-4521-9bcb-98c6e076b1bb" data-auto-track="true" data-do-not-track="true" data-cache="false"></script><link rel="canonical" href="https://beta.acofork.com/jiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou/"><link rel="alternate" type="application/atom+xml" href="https://beta.acofork.com/feed.xml" title="AcoFork Blog (Beta) - RSS"><link rel="alternate" type="application/json" href="https://beta.acofork.com/feed.json" title="AcoFork Blog (Beta) - JSON"><meta property="og:title" content="究极喂饭教程，手把手教你内网穿透"><meta property="og:image" content="https://beta.acofork.com/media/posts/5/2024-10-28-17-00-25-image.CSsoOyOp.webp"><meta property="og:image:width" content="2526"><meta property="og:image:height" content="1366"><meta property="og:site_name" content="AcoFork Blog (Beta)"><meta property="og:description" content="经实测，Zerotier的打洞能力明显优于Tailscale，所以建议通过Zerotier来实现内网穿透 详细报表：&hellip;"><meta property="og:url" content="https://beta.acofork.com/jiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou/"><meta property="og:type" content="article"><link rel="shortcut icon" href="https://beta.acofork.com/media/website/b_53bb4f7fa91d684e72b6604e3fcc189.jpg" type="image/x-icon"><link rel="stylesheet" href="https://beta.acofork.com/assets/css/style.css?v=bb5e85e6ce5f66a897d88a8939c26399"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://beta.acofork.com/jiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou/"},"headline":"究极喂饭教程，手把手教你内网穿透","datePublished":"2024-10-28T15:43+08:00","dateModified":"2025-12-29T15:44+08:00","image":{"@type":"ImageObject","url":"https://beta.acofork.com/media/posts/5/2024-10-28-17-00-25-image.CSsoOyOp.webp","height":1366,"width":2526},"description":"经实测，Zerotier的打洞能力明显优于Tailscale，所以建议通过Zerotier来实现内网穿透 详细报表：&hellip;","author":{"@type":"Person","name":"AcoFork","url":"https://beta.acofork.com/authors/acofork/"},"publisher":{"@type":"Organization","name":"AcoFork"}}</script><noscript><style>img[loading] {
+                    opacity: 1;
+                }</style></noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>(function () {
+  function enhancePostImages() {
+    const images = document.querySelectorAll(".post__image img");
+
+    images.forEach(img => {
+      // 已经被 <a> 包裹，跳过
+      if (img.parentElement && img.parentElement.tagName === "A") return;
+
+      const src = img.currentSrc || img.src;
+      if (!src) return;
+
+      // 排除极小图片（icon 等）
+      if (img.complete && img.naturalWidth && img.naturalWidth < 120) return;
+
+      const a = document.createElement("a");
+      a.href = src;
+      a.dataset.fancybox = "post-gallery";
+
+      if (img.alt) {
+        a.dataset.caption = img.alt;
+      }
+
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // 首次执行
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhancePostImages);
+  } else {
+    enhancePostImages();
+  }
+
+  // 监听 SPA / 动态渲染
+  const observer = new MutationObserver(enhancePostImages);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // FancyBox 初始化
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.Fancybox) return;
+
+    Fancybox.bind('[data-fancybox="post-gallery"]', {
+      animated: true,
+      dragToClose: true,
+      placeFocusBack: false,
+      Toolbar: {
+        display: ["zoom", "slideshow", "fullscreen", "close"]
+      },
+      Images: {
+        zoom: true
+      }
+    });
+
+    // ✅ 唯一保留的日志
+    console.log("%cFancyBox 已加载 √", "color:#16a34a;font-weight:bold");
+  });
+})();</script><style>.extlink::after {
+				background-color: currentColor;
+				content: "";
+				display: inline-block;
+				height: 16px;
+				margin-left: 5px;
+				position: relative;
+				top: 0px;
+				width: 16px;
+			}
+		
+					.extlink.extlink-icon-1::after {
+						mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>");
+						mask-repeat: no-repeat;
+						mask-size: contain;
+					}</style></head><body class="post-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="post"><article class="content"><div class="hero"><header class="hero__content"><div class="wrapper"><h1>究极喂饭教程，手把手教你内网穿透</h1><div class="feed__meta content__meta"><a href="https://beta.acofork.com/authors/acofork/" class="feed__author">AcoFork</a> <time datetime="2024-10-28T15:43" class="feed__date">24/10/28 15:43:00 </time><span class="reading-time" aria-label="2 min read">2 min read</span></div></div></header><figure class="hero__image"><div class="hero__image-wrapper"><img src="https://beta.acofork.com/media/posts/5/2024-10-28-17-00-25-image.CSsoOyOp.webp" srcset="https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-xs.webp 640w, https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-sm.webp 768w, https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-md.webp 1024w, https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-lg.webp 1366w, https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-xl.webp 1600w, https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-2xl.webp 1920w" sizes="88vw" loading="eager" height="1366" width="2526" alt=""></div></figure></div><div class="entry-wrapper content__entry"><h1 id="经实测，zerotier的打洞能力明显优于tailscale，所以建议通过zerotier来实现内网穿透">经实测，Zerotier的打洞能力明显优于Tailscale，所以建议通过Zerotier来实现内网穿透</h1><p>详细报表：</p><table><thead><tr><th></th><th>Zerotier</th><th>Tailscale</th></tr></thead><tbody><tr><td>单端DMZ（单端NAT1）</td><td>STUN</td><td>STUN</td></tr><tr><td>仅单端UPnP（单端NAT3）</td><td>UDP P2P</td><td>玄学穿透</td></tr><tr><td>双端UPnP（双端NAT3）</td><td>UDP P2P</td><td>玄学穿透</td></tr><tr><td>双端无UPnP/DMZ（双端NAT3/NAT4）</td><td>UDP P2P</td><td>无法穿透</td></tr><tr><td>自建中继/握手节点</td><td>√</td><td>√</td></tr></tbody></table><p>其实实际情况会更加复杂一点，但是你只要有 <strong>公网IPv6、UPnP、DMZ</strong> 中的其中一项，Zerotier就几乎是100%的打洞成功率</p><p>如何知道我是P2P还是中继？ ping你的对端设备，如果延迟大于200ms或者经常丢包大概率就是中继节点（也有小概率是你的设备负载过高导致无法及时接收和返回ping包）</p><h1 id="啥是内网穿透？">啥是内网穿透？</h1><p>当我们在家中有个NAS，想要在学校/公司的网络来访问，就需要用到内网穿透，实现外网访问内网服务。原理一般是P2P打洞和服务器中转流量</p><h1 id="前期准备">前期准备</h1><p>路由器开启UPnP</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-08-00-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>关闭路由器的IPv4，IPv6防火墙 <strong>（可选）</strong></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-09-19-image.webp" alt="" data-is-external-image="true"></figure><p></p><h1 id="使用zerotiertailscale进行内网穿透"><em>使用Zerotier/Tailscale进行内网穿透</em></h1><blockquote><p>他们俩的原理都是尝试对端建立P2P连接，需要对端安装一个软件并且长期运行</p></blockquote><h1 id="使用zerotier进行内网穿透的详细教程">使用Zerotier进行内网穿透的详细教程</h1><h2 id="创建zerotier账号">创建Zerotier账号</h2><p>前往：<a href="https://www.zerotier.com/" class="extlink extlink-icon-1">ZeroTier | Global Networking Solution for IoT, SD-WAN, and VPN</a>。如果你进不去，请尝试挂梯子。如果看不懂英文可以开启浏览器的翻译功能</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-12-51-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>选择 <code>Sign up</code></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-13-06-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>如果你到了这个界面，请仍然选择<code>Sign up</code></p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-15-08-image.webp" alt="" data-is-external-image="true"></figure><p></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-16-52-image.webp" alt="" data-is-external-image="true"></figure><p>账号创建完毕后，登录即可</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-17-47-image.webp" alt="" data-is-external-image="true"></figure><p></p><h2 id="创建一个新的zerotier网络组">创建一个新的Zerotier网络组</h2><p>当你账号登录成功后，会自动跳转到这个页面，点击<code>Create A Network</code>。如果没有，请访问<a href="https://my.zerotier.com/" class="extlink extlink-icon-1">ZeroTier Central</a></p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-20-24-image.webp" alt="" data-is-external-image="true"></figure><p>下面的列表会增加一个新的网络组，点击它</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-21-31-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>Zerotier默认的网络组模式为<code>Private</code>。即私密模式，哪怕别人知道了你的<code>Network ID</code>尝试加入你的网络组也需要你进行验证</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-22-38-image.webp" alt="" data-is-external-image="true"></figure><p>复制这个<code>Network ID</code></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-22-13-image.webp" alt="" data-is-external-image="true"></figure><p></p><hr><h1 id="在设备上安装zerotier应用">在设备上安装Zerotier应用</h1><h2 id="windows：">Windows：</h2><p>前往<a href="https://www.zerotier.com/download/" class="extlink extlink-icon-1">Download - ZeroTier</a>，下载exe安装文件</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-25-52-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>打开Zerotier</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-27-20-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>查看右下角托盘，按照图片操作加入网络组</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-28-20-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-29-12-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-30-26-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>这里可以查询到你的设备ID和你在这个网络组的IP</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-03-19-image.webp" alt="" data-is-external-image="true"></figure><p><strong>然后参考：<a href="#zerotier%E6%8E%88%E6%9D%83%E8%AE%BE%E5%A4%87">Zerotier授权设备</a></strong></p><h2 id="linux（飞牛os）：">Linux（飞牛OS）：</h2><p>通过SSH连接上你的Linux设备</p><p>查看安装命令：<a href="https://www.zerotier.com/download/" class="extlink extlink-icon-1">Download - ZeroTier</a></p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-38-19-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>终端执行： <code>curl -s https://install.zerotier.com | sudo bash</code></p><p>看到这一行即安装完毕，后面那一串即你的设备ID：</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-39-23-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>加入网络：<code>sudo zerotier-cli join 你的Network ID</code></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-42-01-image.webp" alt="" data-is-external-image="true"></figure><p></p><p><strong>然后参考：<a href="#zerotier%E6%8E%88%E6%9D%83%E8%AE%BE%E5%A4%87">Zerotier授权设备</a></strong></p><h2 id="android（安卓）">Android（安卓）</h2><p>下载客户端</p><ol><li><p>Zerotier One：<a href="https://apkpure.net/zerotier-one/com.zerotier.one" class="extlink extlink-icon-1">ZeroTier One APK Download for Android - Latest Version</a></p></li><li><p>ZerotierFix：<a href="https://github.com/kaaass/ZerotierFix/releases" class="extlink extlink-icon-1">Releases · kaaass/ZerotierFix</a></p></li></ol><p>如图操作</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-59-06-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-59-46-image.webp" alt="" data-is-external-image="true"></figure><p><strong>然后参考：<a href="#zerotier%E6%8E%88%E6%9D%83%E8%AE%BE%E5%A4%87">Zerotier授权设备</a></strong></p><hr><h1 id="zerotier授权设备">Zerotier授权设备</h1><p>前往Zerotier的网页控制台：<a href="%5Bhttps://my.zerotier.com/%5D(https://my.zerotier.com/)">ZeroTier Central</a></p><p>授权刚才加入的设备</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-17-31-51-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>勾选然后保存</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-17-33-10-image.webp" alt="" data-is-external-image="true"></figure><p></p><hr><h1 id="zerotier访问测试">Zerotier访问测试</h1><p>如果你同一个网络组里已经有两台以上的设备了，可以尝试ping一下测试连通性，请先确保两台设备不在同一个局域网（比如手机开流量，NAS用家里的无线网）</p><p>IP可以在这里查看</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-18-02-00-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>ping测试：</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-07-13-image.webp" alt="" data-is-external-image="true"></figure><p></p><hr><h1 id="使用tailscale进行内网穿透的详细教程">使用Tailscale进行内网穿透的详细教程</h1><h2 id="创建tailscale账号">创建Tailscale账号</h2><p>前往：<a href="https://login.tailscale.com/start" class="extlink extlink-icon-1">Tailscale</a>。如果你进不去，请尝试挂梯子。如果看不懂英文可以开启浏览器的翻译功能</p><p>选择任意一个登录方式</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-24-32-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>账号创建完毕后，登录即可</p><hr><h1 id="在设备上安装tailscale应用">在设备上安装Tailscale应用</h1><h2 id="windows：-1">Windows：</h2><p>前往<a href="https://tailscale.com/download" class="extlink extlink-icon-1">Download · Tailscale</a>，下载exe安装文件</p><p>官方教程：</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-31-48-image.webp" alt="" data-is-external-image="true"></figure><p></p><h2 id="linux（飞牛os）：-1">Linux（飞牛OS）：</h2><p>通过SSH连接上你的Linux设备</p><p>查看安装命令：<a href="https://tailscale.com/download/linux" class="extlink extlink-icon-1">Download · Tailscale</a></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-32-58-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>终端执行： <code>curl -fsSL https://tailscale.com/install.sh | sh</code></p><p>等待安装完毕后输入：<code>tailscale login</code></p><p>打开弹出的浏览器窗口，登录你的账号即可</p><h2 id="android（安卓）-1">Android（安卓）</h2><p>下载客户端（Google Play）：<a href="https://tailscale.com/download/android" class="extlink extlink-icon-1">Download · Tailscale</a></p><p>登录你的账号即可</p><hr><h2 id="tailscale访问测试">Tailscale访问测试</h2><p>前往Tailscale的网页控制台：<a href="https://login.tailscale.com/admin/machines" class="extlink extlink-icon-1">Machines - Tailscale</a>。可以查看到每个设备Tailscale分配的IP</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-18-26-58-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>ping测试</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-41-45-image.webp" alt="" data-is-external-image="true"></figure><p></p><hr><h1 id="使用cloudflare-tunnel进行内网穿透">使用Cloudflare Tunnel进行内网穿透</h1><blockquote><p>这种方法可以不进行任何配置直接在公网上被访问，但是仅限Web服务。如果你想穿透游戏服务器等则不可用。你需要先将域名托管到Cloudflare</p></blockquote><p>创建Cloudflare账号<a href="https://dash.cloudflare.com/" class="extlink extlink-icon-1">主页 | Cloudflare</a></p><p>进入<a href="https://one.dash.cloudflare.com/" class="extlink extlink-icon-1">Cloudflare One</a>（需要绑定PayPal）</p><p>如图操作，创建一个Tunnel</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-18-45-41-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-45-54-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-46-22-image.webp" alt="" data-is-external-image="true"></figure><p></p><h2 id="docker方式">Docker方式</h2><p><strong>使用1Panel</strong></p><p>复制如图的命令</p><figure class="post__image"><img decoding="async" src="../assets/images/48e9c43eb5c0fb49cc5517687698e3d9d1e60220.webp" alt="" data-is-external-image="true"></figure><p>将其粘贴，并且复制后面的令牌</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/a2e18519d3782d765d7293c7a3d21031c787d575.webp" alt="" data-is-external-image="true"></figure><p></p><p>1Panel应用商店搜索<code>cloudflared</code></p><figure class="post__image"><img decoding="async" src="../assets/images/cf2eba61f0aaa7605240187e1c46f80a3954edfa.webp" alt="" data-is-external-image="true"></figure><p></p><p>填入令牌</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/6f661ffa778b2be2e108912d3d44d8b3301df6d6.webp" alt="" data-is-external-image="true"></figure><p></p><p>然后前往<a href="#%E6%9F%A5%E7%9C%8Bcloudflared%E7%9A%84ip">查看IP</a></p><p><strong>使用命令运行</strong></p><p>复制底下的命令然后SSH连接到Linux（飞牛OS）在终端输入</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-46-49-image.webp" alt="" data-is-external-image="true"></figure><p>然后前往<a href="#%E6%9F%A5%E7%9C%8Bcloudflared%E7%9A%84ip">查看IP</a></p><h3 id="查看cloudflared的ip">查看cloudflared的IP</h3><p>因为我们是Docker模式，所以IP需要通过SSH终端输入<code>ip a</code>来查看。我这里是<code>192.168.124.34</code></p><pre><code>root@n100-debian:~# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens18: tiROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether bc:24:11:33:e1:7d brd ff:ff:ff:ff:ff:ff
+    altname enp0s18
+    inet 192.168.124.34/24 brd 192.168.124.255 scope global dynamic ens18
+       valid_lft 46579sec preferred_lft 46579sec
+    inet6 2409:8a30:320:a170:be24:11ff:fe33:e17d/64 scope global dynamic mngtmpaddr
+       valid_lft 1902sec preferred_lft 1898sec
+    inet6 fe80::be24:11ff:fe33:e17d/64 scope link
+       valid_lft forever preferred_lft foreverti
+</code></pre><p><strong>然后前往<a href="#%E9%85%8D%E7%BD%AE%E5%B9%B6%E8%AE%BF%E9%97%AEtunnel">配置并访问Tunnel</a></strong></p><h2 id="原生模式（以debian为例）">原生模式（以Debian为例）</h2><p>选择Debian，然后复制底下的命令，直接到终端执行</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-20-00-49-image.webp" alt="" data-is-external-image="true"></figure><p>如果你的环境无法连接上Github</p><p>尝试手动下载：<a href="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb" class="extlink extlink-icon-1">https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb</a></p><p>然后将其通过SSH等方式传到Linux上，如图终端为MobaXterm</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-29-10-18-29-image.webp" alt="" data-is-external-image="true"></figure><p></p><p>然后使用：<code>dpkg -i cloudflared-linux-amd64.deb</code>安装这个软件包</p><p>然后直接复制右边的命令到SSH终端执行</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-29-10-19-27-3dcfad6977bdecf80fc0366f257788e6.webp" alt="" data-is-external-image="true"></figure><p></p><p><strong>然后前往<a href="#%E9%85%8D%E7%BD%AE%E5%B9%B6%E8%AE%BF%E9%97%AEtunnel">配置并访问Tunnel</a></strong></p><h2 id="android（termux）">Android（Termux）</h2><p>在Android上安装<a href="https://termux.dev" class="extlink extlink-icon-1">Termux | The main termux site and help pages.</a></p><p>在终端执行：<code>pkg install cloudflared</code></p><p>选择<code>Debian</code>然后复制最右边的命令到终端执行</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-29-08-42-38-image.webp" alt="" data-is-external-image="true"></figure>如果你无法使用Termux自带的cloudflared，请尝试安装proot容器实现<p></p><p>依次输入命令：</p><pre><code class="language-shell">pkg update &amp;&amp; pkg upgrade
+pkg install proot
+pkg install proot-distro
+proot-distro list
+proot-distro install debian
+proot-distro login debian
+apt install wget
+wget https://github.com/cloudflare/cloudflared/releases/download/2024.10.1/cloudflared-linux-arm64.deb
+dpkg -i cloudflared-linux-amd64.deb
+</code></pre><p>然后直接复制右边的命令到SSH终端执行</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-29-08-42-38-image.webp" alt="" data-is-external-image="true"></figure><p>如果你无法通过令牌配置cloudflared，请参见<a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E5%BC%8F">本地方式配置cloudflared</a></p><p><strong>然后前往<a href="#%E9%85%8D%E7%BD%AE%E5%B9%B6%E8%AE%BF%E9%97%AEtunnel">配置并访问Tunnel</a></strong></p><hr><h1 id="配置并访问tunnel">配置并访问Tunnel</h1><h2 id="通过网页配置">通过网页配置</h2><blockquote><p>这种方法需要直接在安装了cloudflared的设备上通过令牌运行</p></blockquote><p>如图进入，创建一个HTTP隧道</p><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-28-18-49-21-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-49-44-image.webp" alt="" data-is-external-image="true"></figure><p>填写你的IP和端口，非Docker模式可以直接填写localhost</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-53-37-image.webp" alt="" data-is-external-image="true"></figure><p></p><h2 id="本地方式">本地方式</h2><blockquote><p>这种方法只需要在安装了cloudflared的设备上输入一些命令然后通过网页授权，后续更改配置也需要在本地操作</p></blockquote><p>登录并授权：<code>cloudflared tunnel login</code></p><p>创建隧道并设置隧道（HTTP模式穿透，目标地址<code>127.0.0.1</code>，端口：<code>8080</code>，外部域名：<code>test.onani.cn</code>）：<code>cloudflared tunnel --name test --url http://127.0.0.1:8080 --http2 --hostname test.onani.cn</code></p><h2 id="访问测试">访问测试</h2><p>成功访问</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-54-42-image.webp" alt="" data-is-external-image="true"></figure><p></p><h1 id="使用stun打洞">使用STUN打洞</h1><blockquote><p>这种方法可以不进行任何配置直接在公网上被访问，并且所有类型的服务都能正常使用。但是这种方式进行的内网穿透无法固定也无法指定IP和端口，在3~7天后会改变</p></blockquote><h2 id="安装lucky">安装Lucky</h2><p>执行：<code>curl -o /tmp/install.sh http://6.666666.host:6/files/golucky.sh &amp;&amp; sh /tmp/install.sh http://6.666666.host:6/files 2.13.4</code></p><p>通过<code>host:16601</code> 进入Lucky后台，设置STUN穿透。如果DMZ主机不设为Lucky主机可能会失败。打码的地方即公网访问的IP和端口</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-28-18-56-16-image.webp" alt="" data-is-external-image="true"></figure><p></p></div><footer class="content__footer"><div class="entry-wrapper"><p class="content__updated">This article was updated on 25/12/29 15:44:06</p><div class="content__actions"><div class="content__share"><button class="btn--icon content__share-button js-content__share-button"><svg width="20" height="20" aria-hidden="true"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#share"></use></svg> <span>Share It</span></button><div class="content__share-popup js-content__share-popup"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F" class="js-share facebook" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#facebook"/></svg> <span>Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F&amp;via=AcoFork%20Blog%20(Beta)&amp;text=%E7%A9%B6%E6%9E%81%E5%96%82%E9%A5%AD%E6%95%99%E7%A8%8B%EF%BC%8C%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F" class="js-share twitter" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#twitter"/></svg> <span>Twitter</span> </a><a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F&amp;media=https%3A%2F%2Fbeta.acofork.com%2Fmedia%2Fposts%2F5%2F2024-10-28-17-00-25-image.CSsoOyOp.webp&amp;description=%E7%A9%B6%E6%9E%81%E5%96%82%E9%A5%AD%E6%95%99%E7%A8%8B%EF%BC%8C%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F" class="js-share pinterest" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#pinterest"/></svg> <span>Pinterest</span> </a><a href="https://mix.com/add?url=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F" class="js-share mix" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#mix"/></svg> <span>Mix</span> </a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F" class="js-share linkedin" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#linkedin"/></svg> <span>LinkedIn</span> </a><a href="https://buffer.com/add?text=%E7%A9%B6%E6%9E%81%E5%96%82%E9%A5%AD%E6%95%99%E7%A8%8B%EF%BC%8C%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F&amp;url=https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F" class="js-share buffer" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#buffer"/></svg> <span>Buffer</span> </a><a href="https://api.whatsapp.com/send?text=%E7%A9%B6%E6%9E%81%E5%96%82%E9%A5%AD%E6%95%99%E7%A8%8B%EF%BC%8C%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F https%3A%2F%2Fbeta.acofork.com%2Fjiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou%2F" class="js-share whatsapp" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#whatsapp"/></svg> <span>WhatsApp</span></a></div></div></div><div class="content__bio bio"><div><h3 class="h4 bio__name"><a href="https://beta.acofork.com/authors/acofork/" rel="author">AcoFork</a></h3></div></div></div><nav class="content__nav"><div class="wrapper"><div class="content__nav-inner"><div class="content__nav-prev"><a href="https://beta.acofork.com/jiao-ni-ba-alistde-qian-duan-bu-shu-dao-cf-pagesrang-ni-de-alistmiao-jia-zai/" class="content__nav-link" rel="prev"><div><span>Previous</span> 教你把AList的前端部署到CF Pages！让你的AList秒加载！</div></a></div><div class="content__nav-next"><a href="https://beta.acofork.com/shi-yong-archisteamfarmjin-xing-steamzi-dong-gua-qia/" class="content__nav-link" rel="next"><div><span>Next</span> 使用ArchiSteamFarm进行Steam自动挂卡</div></a></div></div></div></nav></footer></article><div class="banner banner--after-content"><div class="wrapper"><script src="https://giscus.app/client.js" data-repo="afoim/giscus-fuwari" data-repo-id="R_kgDOOi8quw" data-category="Announcements" data-category-id="DIC_kwDOOi8qu84CprDV" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script></div></div></main><footer class="footer footer--glued"><div class="wrapper"><div class="footer__copyright"><p>Powered by <a href="https://getpublii.com">Publii</a> / <a href="https://beian.miit.gov.cn/#/Integrated/index">皖ICP备2025099787号-2</a></p></div><button id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg width="20" height="20"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#toparrow"/></svg></button></div></footer><script defer="defer" src="https://beta.acofork.com/assets/js/scripts.min.js?v=700105c316933a8202041b6415abb233"></script><script>window.publiiThemeMenuConfig={mobileMenuMode:'sidebar',animationSpeed:300,submenuWidth: 'auto',doubleClickTime:500,mobileMenuExpandableSubmenus:true,relatedContainerForOverlayMenuSelector:'.top'};</script><script>var images = document.querySelectorAll('img[loading]');
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].complete) {
+                images[i].classList.add('is-loaded');
+            } else {
+                images[i].addEventListener('load', function () {
+                    this.classList.add('is-loaded');
+                }, false);
+            }
+        }</script><script>(function() {
+			var originalTitle = document.title;
+			var timeout;
+			document.addEventListener("visibilitychange", function() {
+				if (document.hidden) {
+					document.title = "👀 我想你了！快回来吧！";
+				} else {
+					clearTimeout(timeout);
+					document.title = "🎉 欢迎回来！";
+							setTimeout(function() {
+								document.title = originalTitle;
+							}, 2000);
+				}
+			});
+		})();</script><script src="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid.min.js"></script><script>mermaid.initialize({ startOnLoad: true, theme: "default" });</script><script src="https://beta.acofork.com/media/plugins/pagePrefetching/quicklink.umd.js"></script><script>window.addEventListener('load', () => {
+					quicklink.listen({
+						prerender: false,
+						el: document.querySelector('body'),
+						delay: 0,
+						limit: Infinity,
+						throttle: Infinity,
+						timeout: 2000
+					});
+				});</script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-line-numbers.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-copy-to-clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-autolinker.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-show-invisibles.min.js"></script><div class="pcb" data-behaviour="badge" data-behaviour-link="#cookie-settings" data-revision="1" data-config-ttl="90" data-debug-mode="false"><div role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-title" aria-describedby="pcb-txt" class="pcb__banner"><div class="pcb__inner"><div id="pcb-title" role="heading" aria-level="2" class="pcb__title">本网站使用Cookie！</div><div id="pcb-txt" class="pcb__txt">通过下面的复选框选择您同意接收的 Cookie；我们的网站使用 Cookie 来分析网站流量和用户在本站的活动，用于营销以及提供社交媒体功能。</div><div class="pcb__buttons"><button type="button" class="pcb__btn pcb__btn--link pcb__btn--configure" aria-haspopup="dialog"></button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button></div></div></div><div class="pcb__popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-popup-title"><div class="pcb__popup__wrapper"><div class="pcb__inner pcb__popup__inner"><div class="pcb__popup__heading"><div id="pcb-popup-title" role="heading" aria-level="2" class="pcb__title">Cookie设置</div><button class="pcb__popup__close" aria-label="Close"></button></div><div class="pcb__popup__content"><div class="pcb__txt pcb__popup__txt">我们使用 cookies 来提升您的浏览体验，提供个性化广告或内容，并分析我们的流量。点击“全部接受”即表示您同意我们使用 cookies。</div><ul class="pcb__groups"><li class="pcb__group"><details><summary class="pcb__group__title">站点分析</summary><p class="pcb__group__txt">允许发送匿名访问数据至第三方统计服务，用于网站分析（不包含任何隐私信息）。</p></details><div class="pcb__popup__switch"><input type="checkbox" data-group-name="analytics" id="analytics-cookies"> <label for="analytics-cookies">站点分析</label></div></li></ul></div><div class="pcb__buttons pcb__popup__buttons"><button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--save">保存设置</button></div></div></div></div><div class="pcb__overlay" aria-hidden="true"></div><button class="pcb__badge" aria-label="Cookie 设置" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 23 23" fill="currentColor"><path d="M21.41 12.71c-.08-.01-.15 0-.22 0h-.03c-.03 0-.05 0-.08.01-.07 0-.13.01-.19.04-.52.21-1.44.19-2.02-.22-.44-.31-.65-.83-.62-1.53a.758.758 0 0 0-.27-.61.73.73 0 0 0-.65-.14c-1.98.51-3.49.23-4.26-.78-.82-1.08-.73-2.89.24-4.49.14-.23.14-.52 0-.75a.756.756 0 0 0-.67-.36c-.64.03-1.11-.1-1.31-.35-.19-.26-.13-.71-.01-1.29.04-.18.06-.38.03-.59-.05-.4-.4-.7-.81-.66C5.1 1.54 1 6.04 1 11.48 1 17.28 5.75 22 11.6 22c5.02 0 9.39-3.54 10.39-8.42.08-.4-.18-.78-.58-.87Zm-9.81 7.82c-5.03 0-9.12-4.06-9.12-9.06 0-4.34 3.05-8 7.25-8.86-.08.7.05 1.33.42 1.81.24.32.66.67 1.38.84-.76 1.86-.65 3.78.36 5.11.61.81 2.03 2 4.95 1.51.18.96.71 1.54 1.18 1.87.62.43 1.38.62 2.1.62.05 0 .09 0 .13-.01-1.23 3.64-4.7 6.18-8.64 6.18ZM13 17c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1Zm5.29-12.3a.99.99 0 0 1-.29-.71c0-.55.45-.99 1-.99a1 1 0 0 1 .71.3c.19.19.29.44.29.71 0 .55-.45.99-1 .99a1 1 0 0 1-.71-.3ZM9 13.5c0 .83-.67 1.5-1.5 1.5S6 14.33 6 13.5 6.67 12 7.5 12s1.5.67 1.5 1.5Zm3.25.81a.744.744 0 0 1-.06-1.05c.28-.32.75-.34 1.05-.06.31.28.33.75.05 1.06-.15.16-.35.25-.56.25-.18 0-.36-.06-.5-.19ZM8.68 7.26c.41.37.44 1 .07 1.41-.2.22-.47.33-.75.33a.96.96 0 0 1-.67-.26c-.41-.37-.44-1-.07-1.41.37-.42 1-.45 1.41-.08Zm11.48 1.88c.18-.19.52-.19.7 0 .05.04.09.1.11.16.03.06.04.12.04.19 0 .13-.05.26-.15.35-.09.1-.22.15-.35.15s-.26-.05-.35-.15a.355.355 0 0 1-.11-.16.433.433 0 0 1-.04-.19c0-.13.05-.26.15-.35Zm-4.93-1.86a.75.75 0 1 1 1.059-1.06.75.75 0 0 1-1.059 1.06Z"/></svg></button></div><script>(function(win) {
+    if (!document.querySelector('.pcb')) {
+        return;
+    }
+
+    var cbConfig = {
+        behaviour: document.querySelector('.pcb').getAttribute('data-behaviour'),
+        behaviourLink: document.querySelector('.pcb').getAttribute('data-behaviour-link'),
+        revision: document.querySelector('.pcb').getAttribute('data-revision'),
+        configTTL: parseInt(document.querySelector('.pcb').getAttribute('data-config-ttl'), 10),
+        debugMode: document.querySelector('.pcb').getAttribute('data-debug-mode') === 'true',
+        initialState: null,
+        initialLsState: null,
+        previouslyAccepted: []
+    };
+
+    var cbUI = {
+        wrapper: document.querySelector('.pcb'),
+        banner: {
+            element: null,
+            btnAccept: null,
+            btnReject: null,
+            btnConfigure: null
+        },
+        popup: {
+            element: null,
+            btnClose: null,
+            btnSave: null,
+            btnAccept: null,
+            btnReject: null,
+            checkboxes: null,
+        },
+        overlay: null,
+        badge: null,
+        blockedScripts: document.querySelectorAll('script[type^="gdpr-blocker/"]'),
+        triggerLinks: cbConfig.behaviourLink ? document.querySelectorAll('a[href*="' + cbConfig.behaviourLink + '"]') : null
+    };
+
+    function initUI () {
+        // setup banner elements
+        cbUI.banner.element = cbUI.wrapper.querySelector('.pcb__banner');
+        cbUI.banner.btnAccept = cbUI.banner.element.querySelector('.pcb__btn--accept');
+        cbUI.banner.btnReject = cbUI.banner.element.querySelector('.pcb__btn--reject');
+        cbUI.banner.btnConfigure = cbUI.banner.element.querySelector('.pcb__btn--configure');
+
+        // setup popup elements
+        if (cbUI.wrapper.querySelector('.pcb__popup')) {
+            cbUI.popup.element = cbUI.wrapper.querySelector('.pcb__popup');
+            cbUI.popup.btnClose = cbUI.wrapper.querySelector('.pcb__popup__close');
+            cbUI.popup.btnSave = cbUI.popup.element.querySelector('.pcb__btn--save');
+            cbUI.popup.btnAccept = cbUI.popup.element.querySelector('.pcb__btn--accept');
+            cbUI.popup.btnReject = cbUI.popup.element.querySelector('.pcb__btn--reject');
+            cbUI.popup.checkboxes = cbUI.popup.element.querySelector('input[type="checkbox"]');
+            // setup overlay
+            cbUI.overlay = cbUI.wrapper.querySelector('.pcb__overlay');
+        }
+
+        cbUI.badge = cbUI.wrapper.querySelector('.pcb__badge');
+
+        if (cbConfig.behaviour.indexOf('link') > -1) {
+            for (var i = 0; i < cbUI.triggerLinks.length; i++) {
+                cbUI.triggerLinks[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showBannerOrPopup();
+                });
+            }
+        }
+    }
+
+    function initState () {
+        var lsKeyName = getConfigName();
+        var currentConfig = localStorage.getItem(lsKeyName);
+        var configIsFresh = checkIfConfigIsFresh();
+
+        if (!configIsFresh || currentConfig === null) {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config not found, or configuration expired');
+            }
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                    'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                    'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                    'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                    'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                    'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                    'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                });  
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                        'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                        'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                        'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                        'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                        'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                        'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                    }));
+                }
+            }
+
+            showBanner();
+        } else if (typeof currentConfig === 'string') {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config founded');
+            }
+
+            cbConfig.initialLsState = currentConfig.split(',');
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                    'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                    'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                    'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                    'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                    'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                    'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                });
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                        'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                        'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                        'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                        'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                        'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                        'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                    }));
+                }
+            }
+
+            showBadge();
+
+            if (cbUI.popup.element) {
+                var allowedGroups = currentConfig.split(',');
+                var checkedCheckboxes = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+
+                for (var j = 0; j < checkedCheckboxes.length; j++) {
+                    var name = checkedCheckboxes[j].getAttribute('data-group-name');
+
+                    if (name && name !== '-' && allowedGroups.indexOf(name) === -1) {
+                        checkedCheckboxes[j].checked = false;
+                    }
+                }
+
+                for (var i = 0; i < allowedGroups.length; i++) {
+                    var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + allowedGroups[i] + '"]');
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+
+                    allowCookieGroup(allowedGroups[i]);
+                }
+            }
+        }
+
+        setTimeout(function () {
+            cbConfig.initialState = getInitialStateOfConsents();
+        }, 0);
+    }
+
+    function checkIfConfigIsFresh () {
+        var lastConfigSave = localStorage.getItem('publii-gdpr-cookies-config-save-date');
+
+        if (lastConfigSave === null) {
+            return false;
+        }
+
+        lastConfigSave = parseInt(lastConfigSave, 10);
+
+        if (lastConfigSave === 0) {
+            return true;
+        }
+
+        if (+new Date() - lastConfigSave < cbConfig.configTTL * 24 * 60 * 60 * 1000) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function getDefaultConsentState (currentConfig, consentGroup) {
+        let configGroups = currentConfig.split(',');
+
+        for (let i = 0; i < configGroups.length; i++) {
+            let groupName = configGroups[i];
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === groupName);
+
+            if (group && group[consentGroup]) {
+                return 'granted';
+            }
+        }  
+        
+        if (window.publiiCBGCM.defaultState[consentGroup]) {
+            return 'granted'; 
+        }
+        
+        return 'denied';
+    }
+
+    function initBannerEvents () {
+        cbUI.banner.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('banner');
+            showBadge();
+        }, false);
+
+        if (cbUI.banner.btnReject) {
+            cbUI.banner.btnReject.addEventListener('click', function (e) {
+                e.preventDefault();
+                rejectAllCookies();
+                showBadge();
+            }, false);
+        }
+
+        if (cbUI.banner.btnConfigure) {
+            cbUI.banner.btnConfigure.addEventListener('click', function (e) {
+                e.preventDefault();
+                hideBanner();
+                showAdvancedPopup();
+                showBadge();
+            }, false);
+        }
+    }
+
+    function initPopupEvents () {
+        if (!cbUI.popup.element) {
+            return;
+        }
+
+        cbUI.overlay.addEventListener('click', function (e) {
+            hideAdvancedPopup();
+        }, false);
+
+        cbUI.popup.element.addEventListener('click', function (e) {
+            e.stopPropagation();
+        }, false);
+
+        cbUI.popup.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('popup');
+        }, false);
+
+        cbUI.popup.btnReject.addEventListener('click', function (e) {
+            e.preventDefault();
+            rejectAllCookies();
+        }, false);
+
+        cbUI.popup.btnSave.addEventListener('click', function (e) {
+            e.preventDefault();
+            saveConfiguration();
+        }, false);
+
+        cbUI.popup.btnClose.addEventListener('click', function (e) {
+            e.preventDefault();
+            hideAdvancedPopup();
+        }, false);
+    }
+
+    function initBadgeEvents () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.addEventListener('click', function (e) {
+            showBannerOrPopup();
+        }, false);
+    }
+
+    initUI();
+    initState();
+    initBannerEvents();
+    initPopupEvents();
+    initBadgeEvents();
+
+    /**
+     * API
+     */
+    function addScript (src, inline) {
+        var newScript = document.createElement('script');
+
+        if (src) {
+            newScript.setAttribute('src', src);
+        }
+
+        if (inline) {
+            newScript.text = inline;
+        }
+
+        document.body.appendChild(newScript);
+    }
+
+    function allowCookieGroup (allowedGroup) {
+        var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + allowedGroup + '"]');
+        cbConfig.previouslyAccepted.push(allowedGroup);
+    
+        for (var j = 0; j < scripts.length; j++) {
+            addScript(scripts[j].src, scripts[j].text);
+        }
+
+        var groupEvent = new Event('publii-cookie-banner-unblock-' + allowedGroup);
+        document.body.dispatchEvent(groupEvent);
+        unlockEmbeds(allowedGroup);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Allowed group: ' + allowedGroup);
+        }
+
+        if (window.publiiCBGCM && (!cbConfig.initialLsState || cbConfig.initialLsState.indexOf(allowedGroup) === -1)) {
+            let consentResult = {};
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === allowedGroup);
+
+            if (group) {
+                let foundSomeConsents = false;
+
+                Object.keys(group).forEach(key => {
+                    if (key !== 'cookieGroup' && group[key] === true) {
+                        consentResult[key] = 'granted';
+                        foundSomeConsents = true;
+                    }
+                });
+
+                if (foundSomeConsents) {
+                    gtag('consent', 'update', consentResult);   
+
+                    if (cbConfig.debugMode) {
+                        console.log('🍪 GCMv2 UPDATE: ' + JSON.stringify(consentResult));
+                    }
+                }
+            }
+        }
+    }
+
+    function showBannerOrPopup () {
+        if (cbUI.popup.element) {
+            showAdvancedPopup();
+        } else {
+            showBanner();
+        }
+    }
+
+    function showAdvancedPopup () {
+        cbUI.popup.element.classList.add('is-visible');
+        cbUI.overlay.classList.add('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'false');
+        cbUI.overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideAdvancedPopup () {
+        cbUI.popup.element.classList.remove('is-visible');
+        cbUI.overlay.classList.remove('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'true');
+        cbUI.overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBanner () {
+        cbUI.banner.element.classList.add('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideBanner () {
+        cbUI.banner.element.classList.remove('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBadge () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.classList.add('is-visible');
+        cbUI.badge.setAttribute('aria-hidden', 'false');
+    }
+
+    function getConfigName () {
+        var lsKeyName = 'publii-gdpr-allowed-cookies';
+
+        if (cbConfig.revision) {
+            lsKeyName = lsKeyName + '-v' + parseInt(cbConfig.revision, 10);
+        }
+
+        return lsKeyName;
+    }
+
+    function storeConfiguration (allowedGroups) {
+        var lsKeyName = getConfigName();
+        var dataToStore = allowedGroups.join(',');
+        localStorage.setItem(lsKeyName, dataToStore);
+
+        if (cbConfig.configTTL === 0) {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', 0);
+
+            if (cbConfig.debugMode) {
+                console.log('🍪 Store never expiring configuration');
+            }
+        } else {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', +new Date());
+        }
+    }
+
+    function getInitialStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Initial state: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getCurrentStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 State to save: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getAllGroups () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        return groups;
+    }
+
+    function acceptAllCookies (source) {
+        var groupsToAccept = getAllGroups();
+        storeConfiguration(groupsToAccept);
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        if (cbUI.popup.element) {
+            var checkboxesToCheck = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+
+            for (var j = 0; j < checkboxesToCheck.length; j++) {
+                checkboxesToCheck[j].checked = true;
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Accept all cookies: ', groupsToAccept.join(', '));
+        }
+
+        if (source === 'popup') {
+            hideAdvancedPopup();
+        } else if (source === 'banner') {
+            hideBanner();
+        }
+    }
+
+    function rejectAllCookies () {
+        if (cbConfig.debugMode) {
+            console.log('🍪 Reject all cookies');
+        }
+
+        storeConfiguration([]);
+        setTimeout(function () {
+            window.location.reload();
+        }, 100);
+    }
+
+    function saveConfiguration () {
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+
+        if (reloadIsNeeded(groupsToAccept)) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 100);
+            return;
+        }
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        hideAdvancedPopup();
+    }
+
+    function reloadIsNeeded (groupsToAccept) {
+        // check if user rejected consent for initial groups
+        var initialGroups = cbConfig.initialState;
+        var previouslyAcceptedGroups = cbConfig.previouslyAccepted;
+        var groupsToCheck = initialGroups.concat(previouslyAcceptedGroups);
+
+        for (var i = 0; i < groupsToCheck.length; i++) {
+            var groupToCheck = groupsToCheck[i];
+
+            if (groupToCheck !== '' && groupsToAccept.indexOf(groupToCheck) === -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Reload is needed due lack of: ', groupToCheck);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function unlockEmbeds (cookieGroup) {
+        var iframesToUnlock = document.querySelectorAll('.pec-wrapper[data-consent-group-id="' + cookieGroup + '"]');
+
+        for (var i = 0; i < iframesToUnlock.length; i++) {
+            var iframeWrapper = iframesToUnlock[i];
+            iframeWrapper.querySelector('.pec-overlay').classList.remove('is-active');
+            iframeWrapper.querySelector('.pec-overlay').setAttribute('aria-hidden', 'true');
+            var iframe = iframeWrapper.querySelector('iframe');
+            iframe.setAttribute('src', iframe.getAttribute('data-consent-src'));
+        }
+    }
+
+    win.publiiEmbedConsentGiven = function (cookieGroup) {
+        // it will unlock embeds
+        allowCookieGroup(cookieGroup);
+
+        var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + cookieGroup + '"]');
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+    }
+})(window);</script></body></html>

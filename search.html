@@ -3,7 +3,67 @@
 				  gtag('js', new Date());
 				  gtag('config', 'G-GCK58D6070' , { 'anonymize_ip': true });</script><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid-invert-filter.css"><meta name="theme-color" content="#17181E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#D73A42" media="(prefers-color-scheme: light)"><meta name="msapplication-navbutton-color" content="#D73A42"><meta name="apple-mobile-web-app-status-bar-style" content="#D73A42"><script async defer="defer" type="gdpr-blocker/analytics" src="https://umami.acofork.com/script.js" data-website-id="a3c761fb-d328-4521-9bcb-98c6e076b1bb" data-auto-track="true" data-do-not-track="true" data-cache="false"></script><link rel="alternate" type="application/atom+xml" href="https://beta.acofork.com/feed.xml" title="AcoFork Blog (Beta) - RSS"><link rel="alternate" type="application/json" href="https://beta.acofork.com/feed.json" title="AcoFork Blog (Beta) - JSON"><meta property="og:title" content="AcoFork Blog (Beta)"><meta property="og:site_name" content="AcoFork Blog (Beta)"><meta property="og:description" content=""><meta property="og:url" content="https://beta.acofork.com/"><meta property="og:type" content="website"><link rel="shortcut icon" href="https://beta.acofork.com/media/website/b_53bb4f7fa91d684e72b6604e3fcc189.jpg" type="image/x-icon"><link rel="stylesheet" href="https://beta.acofork.com/assets/css/style.css?v=bb5e85e6ce5f66a897d88a8939c26399"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","name":"AcoFork Blog (Beta)","url":"https://beta.acofork.com/"}</script><noscript><style>img[loading] {
                     opacity: 1;
-                }</style></noscript></head><body class="search-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="page page--search"><div class="content search-page"><div class="hero hero--noimage"><header class="hero__content"><div class="wrapper"><h1>Search</h1></div></header></div><div class="entry-wrapper content__entry"><form action="javascript:void(0);" class="search-page-form" onsubmit="return false;"><input type="search" id="live-search-input" placeholder="search..." class="search-page-input" required></form><div id="search-results"></div><script src="https://beta.acofork.com/media/plugins/staticFuzzySearch/fuse.js"></script><script>(async function () {
+                }</style></noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>(function () {
+  function enhancePostImages() {
+    const images = document.querySelectorAll(".post__image img");
+
+    images.forEach(img => {
+      // 已经被 <a> 包裹，跳过
+      if (img.parentElement && img.parentElement.tagName === "A") return;
+
+      const src = img.currentSrc || img.src;
+      if (!src) return;
+
+      // 排除极小图片（icon 等）
+      if (img.complete && img.naturalWidth && img.naturalWidth < 120) return;
+
+      const a = document.createElement("a");
+      a.href = src;
+      a.dataset.fancybox = "post-gallery";
+
+      if (img.alt) {
+        a.dataset.caption = img.alt;
+      }
+
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // 首次执行
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhancePostImages);
+  } else {
+    enhancePostImages();
+  }
+
+  // 监听 SPA / 动态渲染
+  const observer = new MutationObserver(enhancePostImages);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // FancyBox 初始化
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.Fancybox) return;
+
+    Fancybox.bind('[data-fancybox="post-gallery"]', {
+      animated: true,
+      dragToClose: true,
+      placeFocusBack: false,
+      Toolbar: {
+        display: ["zoom", "slideshow", "fullscreen", "close"]
+      },
+      Images: {
+        zoom: true
+      }
+    });
+
+    // ✅ 唯一保留的日志
+    console.log("%cFancyBox 已加载 √", "color:#16a34a;font-weight:bold");
+  });
+})();</script></head><body class="search-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="page page--search"><div class="content search-page"><div class="hero hero--noimage"><header class="hero__content"><div class="wrapper"><h1>Search</h1></div></header></div><div class="entry-wrapper content__entry"><form action="javascript:void(0);" class="search-page-form" onsubmit="return false;"><input type="search" id="live-search-input" placeholder="search..." class="search-page-input" required></form><div id="search-results"></div><script src="https://beta.acofork.com/media/plugins/staticFuzzySearch/fuse.js"></script><script>(async function () {
           const searchInput = document.getElementById("live-search-input");
           const resultsContainer = document.getElementById("search-results");
           const paramName = "q";
