@@ -1,0 +1,1 @@
+Canonical: https://beta.acofork.com/security.txt

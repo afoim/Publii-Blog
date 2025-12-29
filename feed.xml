@@ -1,351 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
-    <title>AcoFork AI Blog ❤</title>
-    <link href="https://ai.onani.cn/feed.xml" rel="self" />
-    <link href="https://ai.onani.cn" />
-    <updated>2025-02-21T06:05:53+08:00</updated>
+    <title>AcoFork Blog (Beta)</title>
+    <link href="https://beta.acofork.com/feed.xml" rel="self" />
+    <link href="https://beta.acofork.com" />
+    <updated>2025-12-29T15:19:18+08:00</updated>
     <author>
         <name>AcoFork</name>
     </author>
-    <id>https://ai.onani.cn</id>
+    <id>https://beta.acofork.com</id>
 
     <entry>
-        <title>谷歌广告的坑点</title>
+        <title>加群向导</title>
         <author>
             <name>AcoFork</name>
         </author>
-        <link href="https://ai.onani.cn/fk-google-ads.html"/>
-        <id>https://ai.onani.cn/fk-google-ads.html</id>
-            <category term="开发"/>
+        <link href="https://beta.acofork.com/jia-qun-xiang-dao/"/>
+        <id>https://beta.acofork.com/jia-qun-xiang-dao/</id>
+        <media:content url="https://beta.acofork.com/media/posts/1/122782209_p0_master1200.jpg" medium="image" />
 
-        <updated>2025-02-21T06:04:33+08:00</updated>
-            <summary>
+        <updated>2025-12-29T13:46:25+08:00</updated>
+            <summary type="html">
                 <![CDATA[
-                    如何接入谷歌广告的博文已经有很多了，我也不想炒冷饭，这里就列出一些别人没有说的坑点 1. 验证网站所有权推荐不仅注入head头，而且部署ads.txt文件。这样你在谷歌广告管理页面就能看到ads.txt文件状态为已授权而不是未部署 2.
+                        <img src="https://beta.acofork.com/media/posts/1/122782209_p0_master1200.jpg" alt="" />
+                    官方 Telegram群组 Telegram: Join Group Chat [2x.nz] 为什么仅QQ群需要赞助？因为QQ作为国内平台，很容易被内鬼举报致使封群，但相对的，门槛更低，交流更方便。当然，如果您是高级用户，可以加入非QQ群。 请先 赞助 至少 10 CNY 后加群。赞助时建议留备注，加群问题填写你留的备注或者交易订单号 点击链接加入群聊【2x.nz】： QQ群 粉丝自建 Telegram: View @blog2x
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
-                <p>如何接入谷歌广告的博文已经有很多了，我也不想炒冷饭，这里就列出一些别人没有说的坑点</p>
-<p>1. 验证网站所有权推荐不仅注入head头，而且部署ads.txt文件。这样你在谷歌广告管理页面就能看到ads.txt文件状态为已授权而不是未部署</p>
-<p>2. 网站最好不要使用任何现代框架，特别是解决JavaScript水合类的Astro，谷歌广告爬虫根本无法爬取页面。具体的可以直接去广告预览处预览<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/20/Snipaste_2025-02-21_06-00-22.webp" alt="" width="1928" height="1036" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-xs.webp 640w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-sm.webp 768w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-md.webp 1024w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-lg.webp 1366w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-xl.webp 1600w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_06-00-22-2xl.webp 1920w"></figure>
-<p>3. 只有根域通过后才能添加子域名，建议将你的根域名直接指向最权威的网站</p>
-<p>4. 填写付款信息请填写真实地址，谷歌会邮寄验证码到你的地址，如果收不到验证码就不能提现</p>
-<p>最后祝大家都能通过审核<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/20/Snipaste_2025-02-21_05-59-45.webp" alt="" width="1237" height="951" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-xs.webp 640w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-sm.webp 768w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-md.webp 1024w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-lg.webp 1366w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-xl.webp 1600w ,https://ai.onani.cn/media/posts/20/responsive/Snipaste_2025-02-21_05-59-45-2xl.webp 1920w"></figure>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>GTA5佩里克岛从零开始最大化效率不被发现必完成精英挑战，一次1小时100w</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://ai.onani.cn/gta5-plkd.html"/>
-        <id>https://ai.onani.cn/gta5-plkd.html</id>
-            <category term="游戏"/>
-
-        <updated>2025-02-21T05:41:38+08:00</updated>
-            <summary>
-                <![CDATA[
-                    1. 首先去地图上的佩里克岛抢劫图标 2. 去音乐柜和指定的人见面&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                <p>1. 首先去地图上的<strong>佩里克岛抢劫</strong>图标</p>
-<p>2. 去<strong>音乐柜</strong>和指定的人见面</p>
-<p>3. 解锁虎鲸。<strong>购买虎鲸，</strong>不需要改装</p>
-<p>4. 跟着任务流程走，第一次上岛</p>
-<p>5. 主线侦察完毕后去金发老大豪宅背面，也就是背面海域，往下游，会有一个排水管道，<strong>只要看到了</strong>，你的左下角就会多一个：已侦察新入口：排水管道。之后我们从这里进去就不会被发现</p>
-<p>6. 其他没什么需要注意的，顺利把侦查任务做完就行了。骇入通信塔的解密是左边三个数通过右边的：不变，x2，x10后刚好等于下面给定的数，多试即可。骇入摄像头后第一次必是<strong>马德拉索文件</strong>，110w。之后不会再刷出，并且会在西西米托（63w），红宝石项链（70w），债券（77w），粉钻（130w）中随机刷一个。其实还有猎豹雕像（190w），但是只会在GTA官方公布的猎豹周刷新</p>
-<p>7. 侦查完毕后我们选择上岛方式为<strong>梅杜莎：飞机</strong>，工具<strong>除了爆破弹都拿（一定要拿割炬！）</strong>，然后武器装备选<strong>神枪手</strong>（大狙），并且购买<strong>消音器</strong>，增援选择<strong>武器藏匿品</strong></p>
-<p>8. 正式开始佩里克岛抢劫任务，一个人做最多，一次100w。首先从小机场下来，过场动画结束后进入小机场先拿武器，然后开左边的叉车将右边的木箱叉起来移到最高处并且抵住右边的铁门。拿<strong>割炬</strong>直接开锁进去拿次要目标（现金，绿砖和冰随机刷，也有可能桌子上空空啥也没有），然后爬上叉车和木箱翻入二楼，右手边也有个铁门，同样拿割炬开锁，拿次要目标，拿完后直接出机场跳海（别摔死了），拿大狙狙杀一个开船的幸运儿，然后开船到金发老大豪宅背后的海域，如果你足够靠近，地图上会有一个黄色的排水管道图标，下潜，进入，拿割炬直接割开排水管道（按<strong>G</strong>戴上呼吸机防止淹死）。OK，已经溜进豪宅了，接下来就是躲避视野不被发现潜入豪宅三楼，<strong>你只有站在保安正前方才会被发现</strong>，左右侧和后侧都不会，你可以拿消音器或者肘击将保安杀死，但是被监控或者别的保安发现尸体会直接触发警报。建议能不杀就不杀。然后在豪宅二楼会有个移动的保安，贴着墙，等他走到你面前然后从背后绕过去上三楼，进入三楼后，先看看有没有画可以割（一张15w左右，占半格背包，俗称大号厕纸），然后到电梯对面的左边墙上开保险柜（5w，不占背包）。到电梯左手，破解指纹，这个解密的指纹顺序是按顺序的，你可以将所有格子都改为第一个指纹，然后对第n个格子按n-1下。进入地下室后直接向前，有个铁门，拿割炬开锁，然后保险箱密码会在左下角发给你没看到就打开手机查看信息，然后开保险箱（如果你不是第一次上岛了，就需要割玻璃，会叫你按<strong>Page UP</strong>，如果按了没反应就先按<strong>Alt+Enter</strong>将GTA改为窗口化，然后按<strong>Ctrl+Alt+Delete</strong>点击打开任务管理器，然后按<strong>Ctrl+Win+O</strong>打开屏幕键盘，这个时候按Page UP就有效果了）拿完主要目标后直接返回，跑出豪宅，然后跳海往外游就出去了（不要往豪宅背面游！你可以在地图上看到浅浅的城区，那就是圣安地列斯，往那边游！）</p>
-<p>9. 精英挑战完成+7w，条件分别为：15分钟内完成，满载而归（包装满），不被发现（不触发警报）</p>
-<p>10. 每次单人上岛结束后大概有1个小时冷却，多人冷却会少一点，大概44分钟</p>
-<p>11. 在冷却结束后一个小时内再次上岛则会触发困难模式，钱更多，部分解密难度增加，比如豪宅内去地下室的电梯要破译的指纹从3个变成4个</p>
-<figure class="post__image">下图取自：<a href="https://www.bilibili.com/video/BV1m1421k722" target="_blank" rel="noopener noreferrer">一个视频让你明白佩里科岛所有目标价值</a><img loading="lazy"  src="https://ai.onani.cn/media/posts/19/Snipaste_2025-02-21_05-26-41.webp" alt="" width="2560" height="1299" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-xs.webp 640w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-sm.webp 768w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-md.webp 1024w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-lg.webp 1366w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-xl.webp 1600w ,https://ai.onani.cn/media/posts/19/responsive/Snipaste_2025-02-21_05-26-41-2xl.webp 1920w"></figure>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>静态博客存图的多种方式以及利弊</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://ai.onani.cn/blog-saveimg.html"/>
-        <id>https://ai.onani.cn/blog-saveimg.html</id>
-            <category term="开发"/>
-
-        <updated>2025-02-21T04:36:36+08:00</updated>
-            <summary>
-                <![CDATA[
-                    1. 不做管理，直接将图片存入Git仓库 如果你是使用GIthub进行版本管理，然后使用静态构建服务提供商（如Cloudflare Page、Vercel）来构建你的博客，则这种方法是0配置的，开箱即用的。&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                <h3>1. 不做管理，直接将图片存入Git仓库</h3>
-<p>如果你是使用GIthub进行版本管理，然后使用静态构建服务提供商（如Cloudflare Page、Vercel）来构建你的博客，则这种方法是0配置的，开箱即用的。</p>
-<p>直接使用MarkDown语法链接图片的相对路径，然后在推送更改时将图片一并推送到Github，当你使用静态构建服务提供商进行构建时，图片就会被缓存到你的静态构建服务提供商的CDN。推荐Vercel，因为相较于Cloudflare Page快了不少</p>
-<p>例子1：本博客：<a href="https://ai.onani.cn" target="_blank" rel="noopener noreferrer">https://ai.onani.cn</a></p>
-<p>例子2：通过Vercel存储的图片：<a href="https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-2xl.webp" target="_blank" rel="noopener noreferrer">https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-2xl.webp</a></p>
-<h3>2. Cloudflare R2</h3>
-<p>Cloudflare R2是一个对象存储服务，零下行费用，免费存储10G，对于博客存图来说肯定是够够的了</p>
-<p>使用这种方法需要有一定的技术，你首先需要寻找你的博客框架是否有插件帮你接入对象存储，如果有，你需要学习如何使用它，又或者你认为插件支持不好，就需要手动去制作一个帮你上传到对象存储的中间件，我这里放出我自用的自动生成MarkDown图片链接的插件（默认支持Cloudflare R2），Python脚本，适用于Windows：</p>
-<pre class="language-python line-numbers"><code>import keyboard
-import pyperclip
-from PIL import ImageGrab, Image
-import io
-import boto3
-from botocore.config import Config
-import time
-import uuid
-import pyautogui
-import os
-from io import BytesIO
-# 示例配置
-# # R2 配置
-# R2_CONFIG = {
-#     'account_id': '11111111111111111',
-#     'access_key_id': '11111111111111111',
-#     'secret_access_key': '11111111111111111',
-#     'bucket_name': '11111111111111111'
-# }
-
-# # OSS 配置
-# OSS_CONFIG = {
-#     'url': 'oss.onani.cn',
-#     'prefix': '/fuwari-blog/img'
-# }
-#########################################################
-# R2 配置
-R2_CONFIG = {
-    'account_id': '',
-    'access_key_id': '',
-    'secret_access_key': '',
-    'bucket_name': ''
-}
-
-# OSS 配置
-OSS_CONFIG = {
-    'url': '',
-    'prefix': ''
-}
-#########################################################
-def init_r2_client():
-    """初始化 R2 客户端"""
-    return boto3.client(
-        's3',
-        endpoint_url=f'https://{R2_CONFIG["account_id"]}.r2.cloudflarestorage.com',
-        aws_access_key_id=R2_CONFIG['access_key_id'],
-        aws_secret_access_key=R2_CONFIG['secret_access_key'],
-        config=Config(signature_version='s3v4'),
-        region_name='auto'
-    )
-
-def get_image_from_clipboard():
-    """从剪贴板获取图片"""
-    try:
-        image = ImageGrab.grabclipboard()
-        if image is None:
-            return None
-            
-        # 如果是列表（多个文件），取第一个
-        if isinstance(image, list):
-            if len(image) &gt; 0:
-                # 如果是图片文件路径，打开它
-                try:
-                    return Image.open(image[0])
-                except Exception as e:
-                    print(f"打开图片文件失败: {e}")
-                    return None
-            return None
-            
-        # 如果直接是 Image 对象
-        if isinstance(image, Image.Image):
-            return image
-            
-        return None
-    except Exception as e:
-        print(f"获取剪贴板图片失败: {e}")
-        return None
-
-def convert_to_webp(image):
-    """将图片转换为 webp 格式"""
-    if not image:
-        return None
-    
-    try:
-        buffer = BytesIO()
-        # 确保图片是 RGB 模式
-        if image.mode in ('RGBA', 'LA'):
-            background = Image.new('RGB', image.size, (255, 255, 255))
-            background.paste(image, mask=image.split()[-1])
-            image = background
-        elif image.mode != 'RGB':
-            image = image.convert('RGB')
-            
-        image.save(buffer, format="WEBP", quality=80)
-        return buffer.getvalue()
-    except Exception as e:
-        print(f"转换图片失败: {e}")
-        return None
-
-def upload_to_r2(image_data):
-    """上传图片到 R2"""
-    if not image_data:
-        return None
-
-    client = init_r2_client()
-    
-    # 生成基础文件名
-    base_filename = f"{uuid.uuid4()}.webp"
-    filename = base_filename
-    
-    try:
-        # 检查文件是否已存在
-        attempt = 1
-        while True:
-            try:
-                # 尝试获取文件信息，如果文件存在会返回数据，不存在会抛出异常
-                client.head_object(
-                    Bucket=R2_CONFIG['bucket_name'],
-                    Key=f"{OSS_CONFIG['prefix'].strip('/')}/{filename}"
-                )
-                # 如果文件存在，修改文件名
-                name_without_ext = base_filename.rsplit('.', 1)[0]
-                filename = f"{name_without_ext}_{attempt}.webp"
-                attempt += 1
-                print(f"文件名已存在，尝试重命名为: {filename}")
-            except client.exceptions.ClientError as e:
-                # 如果是 404 错误，说明文件不存在，可以使用这个文件名
-                if e.response['Error']['Code'] == '404':
-                    break
-                raise e  # 其他错误则抛出
-                
-        # 上传文件
-        client.put_object(
-            Bucket=R2_CONFIG['bucket_name'],
-            Key=f"{OSS_CONFIG['prefix'].strip('/')}/{filename}",
-            Body=image_data,
-            ContentType='image/webp'
-        )
-        return filename
-    except Exception as e:
-        print(f"上传失败: {e}")
-        return None
-
-def generate_markdown_link(filename):
-    """生成 Markdown 图片链接"""
-    if not filename:
-        return None
-    
-    url = f"https://{OSS_CONFIG['url']}{OSS_CONFIG['prefix']}/{filename}"
-    return f"![]({url})"
-
-def type_markdown_link(markdown_link):
-    """模拟键盘输入 Markdown 链接"""
-    if not markdown_link:
-        return
-    
-    pyperclip.copy(markdown_link)
-    pyautogui.hotkey('ctrl', 'v')
-
-def handle_upload():
-    """处理图片上传的主函数"""
-    print(f"\n[{time.strftime('%Y-%m-%d %H:%M:%S')}] 收到粘贴请求")
-    
-    print("正在检查剪贴板...")
-    # 获取剪贴板图片
-    image = get_image_from_clipboard()
-    if not image:
-        print("❌ 剪贴板中没有图片")
-        return
-    print("✅ 获取到剪贴板图片")
-
-    # 转换为 webp
-    print("正在转换为 WebP 格式...")
-    image_data = convert_to_webp(image)
-    if not image_data:
-        print("❌ 图片转换失败")
-        return
-    print(f"✅ 转换完成，大小: {len(image_data)/1024:.2f}KB")
-
-    # 上传到 R2
-    print("正在上传到 R2...")
-    filename = upload_to_r2(image_data)
-    if not filename:
-        print("❌ 上传失败")
-        return
-    print(f"✅ 上传成功，文件名: {filename}")
-
-    # 生成并输入 Markdown 链接
-    markdown_link = generate_markdown_link(filename)
-    if markdown_link:
-        print(f"生成的 URL: https://{OSS_CONFIG['url']}{OSS_CONFIG['prefix']}/{filename}")
-        print(f"模拟键入: {markdown_link}")
-        type_markdown_link(markdown_link)
-        print("✅ 操作完成")
-
-def main():
-    """主函数"""
-    print("=" * 50)
-    print("R2 图片上传插件已启动")
-    print(f"当前配置:")
-    print(f"- OSS 域名: {OSS_CONFIG['url']}")
-    print(f"- 存储路径: {OSS_CONFIG['prefix']}")
-    print(f"- R2 存储桶: {R2_CONFIG['bucket_name']}")
-    print("使用 Ctrl+Alt+V 上传剪贴板中的图片")
-    print("=" * 50)
-    
-    # 注册快捷键
-    keyboard.add_hotkey('ctrl+alt+v', handle_upload)
-    
-    # 保持程序运行
-    keyboard.wait()
-
-if __name__ == "__main__":
-    main() </code></pre>
-<p>例子1：另一个我的博客：<a href="https://www.onani.cn" target="_blank" rel="noopener noreferrer">https://www.onani.cn</a></p>
-<p>例子2：通过Cloudflare R2存储的图片：<a href="https://oss.onani.cn/fuwari-blog/img/47518d4403328a0fcb716f0e06fc7f608e6c65b7.webp" target="_blank" rel="noopener noreferrer">https://oss.onani.cn/fuwari-blog/img/47518d4403328a0fcb716f0e06fc7f608e6c65b7.webp</a></p>
-<h3>3. IPFS</h3>
-<p>这种方式优点和缺点都及其明显。优点是完全无门槛，只需要找一个端点然后把你的图片上传到IPFS就行了，每次上传完后会返回给你一个URL，访问就能直接访问到你的图片。缺点是完全无法管理，由于IPFS的特殊性，无人PIN的文件会在之后慢慢消失，并且你也要考虑你现在正在使用的IPFS网关是否被GFW所阻拦。这里推荐一个 ipfs.crossbell.io 这个网关，上传端点是 /upload，带key file, value 源图片即可</p>
-<p>例子：<a href="https://ipfs.crossbell.io/ipfs/QmYdMcGvpfTvrab4cF1bctpNgPXzPv84FrN7tyxNfarwj6" target="_blank" rel="noopener noreferrer">https://ipfs.crossbell.io/ipfs/QmYdMcGvpfTvrab4cF1bctpNgPXzPv84FrN7tyxNfarwj6</a></p>
-<p>注意，图中的 <a href="https://ipfs-relay.crossbell.io" target="_blank" rel="noopener noreferrer">https://ipfs-relay.crossbell.io</a> 仅能用于上传（谷歌云CDN），而展示图片只能使用 <a href="https://ipfs.crossbell.io" target="_blank" rel="noopener noreferrer">https://ipfs.crossbell.io</a> （ovh CDN）</p>
-<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/18/Snipaste_2025-02-21_04-52-07.webp" alt="" width="1945" height="1212" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-xs.webp 640w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-sm.webp 768w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-md.webp 1024w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-lg.webp 1366w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-xl.webp 1600w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_04-52-07-2xl.webp 1920w"></figure>
-<h3>最后，图片大小也要进行优化</h3>
-<p>无论你选择哪一个存图方式，都需要对图片大小进行额外的优化。考虑到大部分图片都是来自于屏幕截图，我强烈推荐使用 <a href="https://zh.snipaste.com/">Snipaste - 截图 + 贴图</a> 。并且在设置中将保存的图片格式改为<strong>webp</strong>，每张图片仅200KB，相较于png的2MB小了不少</p>
-<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/18/Snipaste_2025-02-21_05-03-24.webp" alt="" width="616" height="815" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-xs.webp 640w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-sm.webp 768w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-md.webp 1024w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-lg.webp 1366w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-xl.webp 1600w ,https://ai.onani.cn/media/posts/18/responsive/Snipaste_2025-02-21_05-03-24-2xl.webp 1920w"></figure>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>使用IPFS搭建Pixiv镜像站</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://ai.onani.cn/ipfs-pixiv.html"/>
-        <id>https://ai.onani.cn/ipfs-pixiv.html</id>
-        <media:content url="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" medium="image" />
-            <category term="开发"/>
-
-        <updated>2025-02-18T06:17:08+08:00</updated>
-            <summary>
-                <![CDATA[
-                        <img src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" alt="" />
-                    基本思路&amp;原理 IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了 ipfs.io 这个主网关，我们可以使用其他网关，如：ipfs.crossbell.io&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46-2.webp" class="type:primaryImage" alt="" /></p>
-                <h1>基本思路&amp;原理</h1>
-<p>IPFS是一个去中心化的存储托管平台，并且支持匿名上传，上传后的文件可以直接通过HTTP网关直接读取，我们可以将它作为Pixiv镜像站的图床。由于中国大陆墙了 ipfs.io 这个主网关，我们可以使用其他网关，如：ipfs.crossbell.io 。本次介绍的项目也会使用这个网关来进行上传/读取Pixiv的图片</p>
-<p>既然图床已经就绪，接下来就是制作一个美观的展示界面，这里我使用 <a href="https://www.mdui.org/zh-cn/">MDUI</a> 。这是一个简洁优雅的UI组件库，我们不需要自己重新编写CSS样式，就可以直接制作出风格统一的网页。无需担心上手难度，你可以直接使用 <a href="https://github.com/features/copilot">GitHub Copilot</a> ，让AI帮你完成一切工作</p>
-<p>那么最后，我们需要编写一个自动脚本定时抓取Pixiv源站的排行榜图片并将其上传到IPFS，为了完全云托管，我们将会使用Github Action，项目已经写好，就在 <a href="https://github.com/afoim/IPFS-PixivImg">afoim/IPFS-PixivImg: 一个基于ipfs的Pixiv图床项目</a> </p>
-<h1>效果展示&amp;成品网站链接</h1>
-<p><a href="https://ipfs-px.onani.cn/">Pixiv 排行榜</a></p>
-<figure class="post__image"><img loading="lazy"  src="https://ai.onani.cn/media/posts/16/Snipaste_2025-02-18_06-32-46.webp" alt="" width="2549" height="1373" sizes="(max-width: 1920px) 100vw, 1920px" srcset="https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xs.webp 640w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-sm.webp 768w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-md.webp 1024w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-lg.webp 1366w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-xl.webp 1600w ,https://ai.onani.cn/media/posts/16/responsive/Snipaste_2025-02-18_06-32-46-2xl.webp 1920w"></figure>
+                    <p><img src="https://beta.acofork.com/media/posts/1/122782209_p0_master1200.jpg" class="type:primaryImage" alt="" /></p>
+                <h1 id="官方">官方</h1>
+<h2 id="telegram群组">Telegram群组</h2>
+<p><a href="https://t.me/+_07DERp7k1ljYTc1"  class="extlink extlink-icon-1"  >Telegram: Join Group Chat [2x.nz]</a></p><h2 id="qq群">QQ群</h2>
+<blockquote>
+<p>为什么仅QQ群需要赞助？因为QQ作为国内平台，很容易被内鬼举报致使封群，但相对的，门槛更低，交流更方便。当然，如果您是高级用户，可以加入非QQ群。</p></blockquote>
+<p>请先 <a href="/sponsors/">赞助</a> 至少 <strong>10 CNY</strong> 后加群。赞助时建议留备注，加群问题填写你留的备注或者交易订单号
+点击链接加入群聊【2x.nz】： <a href="https://qm.qq.com/q/I2Quch1uy6"  class="extlink extlink-icon-1"  >QQ群</a></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2025-08-15-03-24-11-image.png" alt="" data-is-external-image="true"></figure><h1 id="非官方">非官方</h1>
+<blockquote>
+<p>粉丝自建</p></blockquote>
+<p><a href="https://t.me/blog2x"  class="extlink extlink-icon-1"  >Telegram: View @blog2x</a></p>
             ]]>
         </content>
     </entry>
