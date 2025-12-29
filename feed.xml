@@ -42,6 +42,144 @@
         </content>
     </entry>
     <entry>
+        <title>Umami Cloud迁移到本地踩坑记录</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://beta.acofork.com/umami-cloudqian-yi-dao-ben-di-cai-keng-ji-lu/"/>
+        <id>https://beta.acofork.com/umami-cloudqian-yi-dao-ben-di-cai-keng-ji-lu/</id>
+        <media:content url="https://beta.acofork.com/media/posts/113/umami-migration.BQWzMw30.png" medium="image" />
+
+        <updated>2025-12-29T17:37:54+08:00</updated>
+            <summary type="html">
+                <![CDATA[
+                        <img src="https://beta.acofork.com/media/posts/113/umami-migration.BQWzMw30.png" alt="" />
+                    正式开始 首先，我们想要迁移，首先肯定是要拿到原来的Umami&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://beta.acofork.com/media/posts/113/umami-migration.BQWzMw30.png" class="type:primaryImage" alt="" /></p>
+                <h1 id="正式开始">正式开始</h1>
+<p>首先，我们想要迁移，首先肯定是要拿到原来的Umami Cloud存放的数据</p><p>在 <a href="https://cloud.umami.is/settings/data"  class="extlink extlink-icon-1"  >Umami Cloud Data | Settings</a> 中，我们可以选择，导出数据（Export）
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-1.png" alt="" data-is-external-image="true"></figure></p><p>当数据准备好后（几分钟左右），你的邮箱会收到一封Umami Cloud发来的邮件
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-2.png" alt="" data-is-external-image="true"></figure></p><p>下载下来的文件是一个以UUID命名的ZIP压缩包，将其解压可以得到3个CSV文件
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-3.png" alt="" data-is-external-image="true"></figure></p><p>其中，只有 <code>website_event.csv</code> 有用，其他两个文件仅有表头，无数据</p><p>这样，我们就成功拿到了旧Umami数据</p><p>接下来，我们需要在本地部署Umami PostgreSQL版本的 <strong>最新版</strong> （目前版本为 3.x）（部署教程略）</p><p>然后我们还需要安装一个CSV编辑软件： <a href="https://smoothcsv.com/"  class="extlink extlink-icon-1"  >SmoothCSV - The ultimate CSV editor for macOS &amp; Windows</a></p><p>在本地Umami中新建一个网站，Umami会随机为你生成一个UUID</p><p>接下来我们需要在你的终端安装一个图形化管理PostgreSQL的软件： <a href="https://www.pgadmin.org/"  class="extlink extlink-icon-1"  >pgAdmin - PostgreSQL Tools</a></p><p>然后连上数据库，你将可以看到这些表
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-4.png" alt="" data-is-external-image="true"></figure></p><p>接下来我们查看 <code>website</code> 这张表，将 <code>website_event.csv</code> 打开，查看旧的 <code>website_id</code> 将新的ID改为旧的，这样才能数据匹配
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-5.png" alt="" data-is-external-image="true"></figure>
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-6.png" alt="" data-is-external-image="true"></figure></p><p>接下来，我们正式开始数据导入，由于导入后的数据有两个 <code>session_id</code> 字段，而在Umami自我管理的过程中这个 <code>session_id</code> 字段是 <strong>唯一约束的</strong> ，我们需要先解除这个限制，在正式上线前还要再加回这个限制（后面会说）</p><p>让我们删除主键约束和索引</p><pre><code class="language-sql">ALTER TABLE session DROP CONSTRAINT session_pkey;
+DROP INDEX session_session_id_key;
+</code></pre>
+<p>接下来，我们需要将数据配对，我们先查看 <code>website_event.csv</code> 这张表。这里应该只有表头，没有数据（我有是因为我已经导入完成了，教程是后写的）</p><p><strong>注意顺序</strong> 如： <code>event_id</code> <code>website_id</code> <code>session_id</code> …</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-7.png" alt="" data-is-external-image="true"></figure><p>编辑CSV文件，你需要将顺序配对，并且删除表中没有的列，如： <code>browser</code> <code>os</code> …
+<figure class="post__image"><img decoding="async" src="../assets/images/umami-migration-8.png" alt="" data-is-external-image="true"></figure></p><p>确保数据库中的表头顺序和CSV文件中的表头顺序一一对应，顺序一致，不多不少后，<strong>Ctrl + S 保存</strong> CSV文件，我们开始导入并在选项中勾选 <strong>标题</strong></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-9.png" alt="" data-is-external-image="true"></figure>
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-10.png" alt="" data-is-external-image="true"></figure>
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-11.png" alt="" data-is-external-image="true"></figure>
+导入成功后如图
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-12.png" alt="" data-is-external-image="true"></figure>
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-13.png" alt="" data-is-external-image="true"></figure><p>再编辑 <code>session</code> 这张表，手法同上，导入成功后如图
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-14.png" alt="" data-is-external-image="true"></figure></p><p>接下来打开本地Umami的WebUI，查看数据是否有异常
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/umami-migration-15.png" alt="" data-is-external-image="true"></figure></p><p>确保导入后数据无异常后，我们开始删除另一条 <code>session_id</code> 记录并回锁主键。否则上线后Umami将无法再向表中插入数据</p><pre><code class="language-sql">SELECT session_id, COUNT(*) 
+FROM public.session
+GROUP BY session_id
+HAVING COUNT(*) &gt; 1;
+
+-- 保留最早的 created_at
+DELETE FROM public.session
+WHERE ctid NOT IN (
+    SELECT MIN(ctid)
+    FROM public.session
+    GROUP BY session_id
+);
+
+ALTER TABLE public.session
+ADD CONSTRAINT session_id_unique UNIQUE (session_id);
+</code></pre>
+<p>至此，迁移工作结束</p>
+            ]]>
+        </content>
+    </entry>
+    <entry>
+        <title>都5202年了，还有人不会自建自己的Cloudflare/EdgeOne等各种CDN的优选？</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://beta.acofork.com/du-5202nian-liaohuan-you-ren-bu-hui-zi-jian-zi-ji-de-cloudflareedgeonedeng-ge-zhong-cdnde-you-xuan/"/>
+        <id>https://beta.acofork.com/du-5202nian-liaohuan-you-ren-bu-hui-zi-jian-zi-ji-de-cloudflareedgeonedeng-ge-zhong-cdnde-you-xuan/</id>
+        <media:content url="https://beta.acofork.com/media/posts/101/5df07ad0-01cd-4541-9321-b0ded148a90f.C_a60OcQ.webp" medium="image" />
+
+        <updated>2025-12-29T17:30:00+08:00</updated>
+            <summary type="html">
+                <![CDATA[
+                        <img src="https://beta.acofork.com/media/posts/101/5df07ad0-01cd-4541-9321-b0ded148a90f.C_a60OcQ.webp" alt="" />
+                    基本思路 想要做一个优选域名，我们首先需要筛选那些质量好的IP&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://beta.acofork.com/media/posts/101/5df07ad0-01cd-4541-9321-b0ded148a90f.C_a60OcQ.webp" class="type:primaryImage" alt="" /></p>
+                <h1 id="基本思路">基本思路</h1>
+<p>想要做一个优选域名，我们首先需要筛选那些质量好的IP</p><p>筛选到质量好的IP后，通过各大云解析DNS厂商更新指定优选域名的DNS解析</p><p>最后，将你的域名投入使用，测试优选后效果</p><h1 id="如何筛选到质量好的ip？">如何筛选到质量好的IP？</h1>
+<p>假设你要提高国内的访问质量，我们肯定需要国内的机子，如果自家有NAS就再好不过了</p><p>如果你想要三网都优选，那么只有你一台机子是不够的，需要同时拥有电信，移动，联通三网的机子去做IP筛选。如果你要做更高级的地域优选，那就…把每个省的三网机子都拿到手？</p><p>有了测试机，接下来我们就需要编写测试脚本</p><p>首先我们要知道一个CDN厂商的IP段是什么，这里以Cloudflare为例</p><p>我们搜索 <code>Cloudflare IP段</code> 即可找到</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/9e79e4ab-ce0c-434a-84f7-3b8a9f3a0886.webp" alt="" data-is-external-image="true"></figure><p>对于其他CDN，他们可能并没有直接在网页上公开IP，你需要自行寻找客服咨询</p><p>我们得到IP段后，接下来就是编写实际的测试逻辑</p><p>我这边仅推荐通过Curl+Resolve实现强制绑定IP访问业务域名然后看返回的状态码正不正常。</p><p><strong>注意，这种方案及其考验您的测试机、路由器、ISP、对端服务器的性能！</strong></p><p>但这也是最稳妥的测试方法，主播已经见过了太多TCPing 443通，https访问418或者ping得通，TCPing不通的稀奇古怪CDNIP。请保证您的测试方法筛选到的IP能正常访问到您的访问，避免您的服务宕机</p><p>线程不必拉太高，针对于Cloudflare这样有 150w IP的CDN，我们可以仅测试C段，也就是测试完 <code>104.18.91.0</code> 直接测试 <code>104.18.92.0</code> 这样可以节省时间，只需要测5000多个IP</p><p>最终，我们得到了一组优选IP</p><h1 id="对接华为云云解析dns">对接华为云云解析DNS</h1>
+<p>为什么推荐华为云？</p><p>无他，因为仅华为云一家支持<strong>单解析单次记录值支持50个IP</strong>、<strong>可以创建多个同名解析</strong>以及<strong>支持仅缓存DNS解析1s（TTL=1）</strong></p><p>受益于华为云的这些功能，我们个人用户也可以做到一个域名下面绑定几万个IP（虽然IP不是越多越好）</p><p>推荐使用海外版，<strong>不需要实名认证</strong></p><p>之后通过API文档自行折腾一下API添加DNS解析即可</p><h1 id="后期维护">后期维护</h1>
+<ol>
+<li><p>如果你要做三网优选请添加一个默认解析线路，保证您在个别线路宕机时对应线路的用户不会遇到服务宕机</p></li>
+<li><p>每个CDN厂商的IP段可能会不定时变更，请勤查多看，及时更换失效IP</p></li>
+<li><p>如果遇到服务异常无法得到优选IP，请不要在脚本中编写危险逻辑，如删除所有解析。这会导致大批量服务宕机</p></li>
+<li><p>优选并不是主流做法，如果您的站点被攻击，使用自定义CNAME或者IP会导致您的CDN服务商无法为您进行IP调度，高质量IP将被持续攻击，您的CDN服务商可能会采取强制措施如：<strong>关停您的业务，封禁您的账号</strong>等操作来隔断对方的攻击。当您认为您的站点被攻击时请及时切换到官方为您分配的CNAME或IP</p></li>
+</ol>
+
+            ]]>
+        </content>
+    </entry>
+    <entry>
+        <title>完全免费！从架构，开发到部署，一条龙实打实的教你做一言/随机图等随机URL的最佳实践</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://beta.acofork.com/wan-quan-mian-feicong-jia-goukai-fa-dao-bu-shuyi-tiao-long-shi-da-shi-de-jiao-ni-zuo-yi-yansui-ji-tu-deng-sui-ji-urlde-zui-jia-shi-jian/"/>
+        <id>https://beta.acofork.com/wan-quan-mian-feicong-jia-goukai-fa-dao-bu-shuyi-tiao-long-shi-da-shi-de-jiao-ni-zuo-yi-yansui-ji-tu-deng-sui-ji-urlde-zui-jia-shi-jian/</id>
+        <media:content url="https://beta.acofork.com/media/posts/91/random-url-gen.DjmmacBb.png" medium="image" />
+
+        <updated>2025-12-29T10:40:00+08:00</updated>
+            <summary type="html">
+                <![CDATA[
+                        <img src="https://beta.acofork.com/media/posts/91/random-url-gen.DjmmacBb.png" alt="" />
+                    探索架构 我们先不讲一个抽象的概念，我们首先来做一个小项目&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://beta.acofork.com/media/posts/91/random-url-gen.DjmmacBb.png" class="type:primaryImage" alt="" /></p>
+                <h1 id="探索架构">探索架构</h1>
+<p>我们先不讲一个抽象的概念，我们首先来做一个小项目</p><p><strong>一个随机图API，每次请求都返回不同的图片</strong></p><p>你会怎么做？</p><p>有非常多的解决方案，就拿最简单的一说，我们可以先搞来一个服务器，然后往里面塞图片，最后写一个脚本创建一个Web服务器，接收客户端请求，每一个请求都从图片库里抽一张图返回</p><p>能实现吗？</p><p>当然可以！这是你的流程图！
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-5.png" alt="" data-is-external-image="true"></figure>
+但也会带来一些问题，比如，图片存在本地，给客户端响应图片的时候走的是你机子的流量，那么你就需要一个 <strong>高带宽</strong> 的服务器，这无疑是一个 <strong>高昂</strong> 的成本</p><p>那可能你会有新的方案： <strong>前后端分离</strong> （逻辑与资产分离），只将返回这个图片的逻辑存放在服务器上，而图片存到其他地方，如对象存储（Cloudflare R2）、IPFS等等
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-6.png" alt="" data-is-external-image="true"></figure>
+那么问题又来了，假如说你的项目太多人用了，那你的服务器性能可能不够，在后期，你仍然需要一个 <strong>高昂</strong> 的 <strong>维护成本</strong> </p><p>那么那么那么，现在是 <strong>2025</strong> 年，传统的架构已经无法满足我们了，我们不妨可以试试 <strong>云函数</strong> 
+仍然是前后端分离，我们现在将逻辑放到一个函数上面，如Cloudflare Worker、EdgeOne Function、Vercel Function等等
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-8.png" alt="" data-is-external-image="true"></figure>
+那么现在是不是无敌了？</p><p>并非，虽然前端因为使用了 <strong>云函数</strong> 也就是直接接入了CDN，高并发已经不是问题了，但是由于资产并不直接托管在 <strong>云函数</strong> 中，<strong>云函数</strong> 仍然需要创建一个长连接从你的后端，如对象存储获取图片，这样一折腾，你的服务可能并不算快</p><p>有人就会说了，那既然现在我都把我服务器丢了，前端在云，后端也在云，为什么不直接让前端的云直接存储后端的资产呢？</p><p>当然可以！你已经非常接近最佳实践了！</p><p>绝大部分 <strong>云函数</strong> 都支持动静结合，也就是支持你在他们的云存放一些动态脚本，再顺便 <strong>存放静态资产</strong> </p><p>那么接下来，你就得到了一个完全不需要你买服务器托管，也不需要你担心存储爆仓导致天价账单的随机图…了吗？</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-4.png" alt="" data-is-external-image="true"></figure><h1 id="探索随机图（随机url）的本质">探索随机图（随机URL）的本质</h1>
+<p>我们刚刚只是在抽象的说明某种架构 <strong>好像</strong> 可行，<strong>好像</strong> 又有什么问题，然后又有一种什么新思路 <strong>好像</strong> 可以解决这个问题</p><p>但我们要走的路才刚刚开始，我们不妨思考一下，随机图，又或者说随机URL这类项目，服务器（如果有）究竟发送了什么给客户端，客户端又对服务器发回的报文执行了什么动作</p><p>你肯定知道，如果想要客户端每次请求同一个URL，都返回不同的东西，那肯定是服务器针对每一个请求都返回了不同的响应，它可以是内部的，比如直接在响应体塞图片，又或者也可以是 <strong>重定向</strong></p><p>直接在响应体塞图片很简单，在客户端是不可见的，当客户端请求API时，服务器直接将选中的图片作为响应体发出，在客户端看来，就好像是请求了一张图片，只不过每次刷新都不一样</p><p>而响应 <strong>重定向</strong> 就更简单了，只需要让服务器发送一个 <strong>临时重定向</strong> 的状态码，比如 <strong>302</strong> </p><p>有人就会说了，为什么必须要 <strong>临时重定向</strong> ？</p><p>因为你肯定是想要客户端每次刷新都返回不同的图，一旦你使用了 <strong>永久重定向</strong> 如 <strong>301</strong> ，客户端在收到 <strong>301</strong> 的那一刻就会在浏览器里写一个记录：<strong>下次访问这个URL直接重定向，不再请求服务器</strong> ，这就会导致你的随机图API真的就变成一张图片了</p><p>那么，这两种方法哪种更好呢？</p><p>各有利弊，一句话说明：<strong>直接返回MIME类型是连请求复用，仅需一次请求即可得到图片。而返回302重定向至少需要客户端请求两次</strong> </p><p>这得看你的实际架构，如果说你是前后端分离，即逻辑和资产不在一个地方，肯定是 302 好，因为如果你直接在响应体塞图片，就相当于你的服务器作为 <strong>代理</strong> 让客户端访问你的资产，流量全部走你服务器</p><p>而如果说你前后端都在一起，正常情况下来说，一次请求复用肯定是比两次连接更快的，不过为了方便管理和统计，我的大部分API仍然使用 <strong>302 重定向</strong> </p><p>::github{repo=”afoim/EdgeOne_Function_PicAPI”}</p><p>上线的API： <a href="https://eopfapi.acofork.com/pic?img=ua"  class="extlink extlink-icon-1"  >https://eopfapi.acofork.com/pic?img=ua</a></p><h1 id="奇技淫巧1：利用cloudflare-origin-rules实现无计费的随机url">奇技淫巧1：利用Cloudflare Origin Rules实现无计费的随机URL</h1>
+<blockquote>
+<p>Video: <a href="https://www.bilibili.com/video/BV19ZBzB8EDQ/"  class="extlink extlink-icon-1"  >https://www.bilibili.com/video/BV19ZBzB8EDQ/</a>
+起因于有一天一位粉丝在我视频下留言
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-9.png" alt="" data-is-external-image="true"></figure></p></blockquote>
+<p>他提到的仓库为</p><p>::github{repo=”Mabbs/cf-hitokoto”}</p><p>大致为，Cloudflare在规则提供一个方法，该方法可以在规则层生成一个UUID，而UUID每次都是随机的，我们可以依据此来在规则层做随机URL</p><p>理论可行，实践开始</p><p>首先，我们要知道UUID是一串带有连字符的随机数，而每一位有16种可能，我们可以仅截取前4位，也就是 16^4 ，共能存储65536张图，每一张图可以分配到一个唯一的UUID，接下来让CF边缘在收到请求的时候，生成UUID，然后直接拼接URL请求静态资产，如 <code>/img/0000.jpg</code> ，再返回给客户端即可</p><p>那如果说我图比这多呢？加一位，16^5 = 1048576，够用了吧
+那如果说我图比这少呢？那我们可以让图片填充，说个极端的例子，假如你只有2张图，每张图创建32768个副本即可，依此类推</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-10.png" alt="" data-is-external-image="true"></figure><p>::github{repo=”afoim/cf-rule-random-url”}</p><p>上线的API： <a href="https://img.072103.xyz/h"  class="extlink extlink-icon-1"  >https://img.072103.xyz/h</a> | <a href="https://img.072103.xyz/v"  class="extlink extlink-icon-1"  >https://img.072103.xyz/v</a></p><h1 id="奇技淫巧2：丢掉后端，让前端js自己拼url">奇技淫巧2：丢掉后端，让前端JS自己拼URL</h1>
+<blockquote>
+<p>Video: <a href="https://www.bilibili.com/video/BV1tNB4BEEaE/"  class="extlink extlink-icon-1"  >https://www.bilibili.com/video/BV1tNB4BEEaE/</a> 
+Video2: <a href="https://www.bilibili.com/video/BV1mMBKBREkB/"  class="extlink extlink-icon-1"  >https://www.bilibili.com/video/BV1mMBKBREkB/</a></p></blockquote>
+<p>把思路打开，我们真的需要一个 <strong>请求一个端点，返回一个随机内容</strong> 的东西吗</p><p>如果只是想在我们的网站上用上随机图，那是不是可以让客户端JavaScript代劳呢</p><p>大致原理为编写一个客户端JS，生成一个随机数，然后拼接URL得到最终的随机图，然后寻找需要替换为随机图的img容器或者背景图容器，替换其中内容</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/random-url-gen-11.png" alt="" data-is-external-image="true"></figure><p>::github{repo=”afoim/Static_RandomPicAPI”}</p><p>上线的 API： <a href="https://pic.acofork.com"  class="extlink extlink-icon-1"  >https://pic.acofork.com</a></p><h1 id="总结">总结</h1>
+<p>我们共探索了三种流派</p><ul>
+<li>传统派：中规中矩，在边缘函数找图，取图</li>
+<li>极客派：通过CF的规则实现在边缘找图，取图，但是不计费</li>
+<li>环保派：通过客户端JS直接在浏览器上实现找图，取图，改图</li>
+</ul>
+
+            ]]>
+        </content>
+    </entry>
+    <entry>
         <title>WTF？！直接将Umami部署到EdgeOne Pages？扔掉VPS！直接跑在云函数！</title>
         <author>
             <name>AcoFork</name>
@@ -125,6 +263,45 @@
         </content>
     </entry>
     <entry>
+        <title>想要一个匿名文件上载器？一行命令装好！</title>
+        <author>
+            <name>AcoFork</name>
+        </author>
+        <link href="https://beta.acofork.com/xiang-yao-yi-ge-ni-ming-wen-jian-shang-zai-qiyi-xing-ming-ling-zhuang-hao/"/>
+        <id>https://beta.acofork.com/xiang-yao-yi-ge-ni-ming-wen-jian-shang-zai-qiyi-xing-ming-ling-zhuang-hao/</id>
+        <media:content url="https://beta.acofork.com/media/posts/88/83e64b93c9f130785f89ccbcd60a7844.Dp66EG2k.png" medium="image" />
+
+        <updated>2025-12-11T17:21:00+08:00</updated>
+            <summary type="html">
+                <![CDATA[
+                        <img src="https://beta.acofork.com/media/posts/88/83e64b93c9f130785f89ccbcd60a7844.Dp66EG2k.png" alt="" />
+                    安装 确保你安装了&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://beta.acofork.com/media/posts/88/83e64b93c9f130785f89ccbcd60a7844.Dp66EG2k.png" class="type:primaryImage" alt="" /></p>
+                <h1 id="安装">安装</h1>
+<p>确保你安装了 <strong>Python</strong></p><p>安装 <strong>uploadserver</strong></p><pre><code class="language-bash">pip install --user uploadserver
+</code></pre>
+<p>接下来，创建并进入一个新文件夹，作为 <strong>上传目录</strong></p><pre><code class="language-bash">mkdir upload
+cd upload
+</code></pre>
+<p>运行，并监听 <strong>IPv4</strong> 的 <strong>8000端口</strong></p><pre><code class="language-bash">python -m uploadserver 8000
+</code></pre>
+<p>又或者，监听 <strong>IPv6</strong> 的 <strong>8000端口</strong> </p><pre><code class="language-bash">python -m uploadserver --bind :: 8000
+</code></pre>
+<p>接下来，你就可以在内网环境使用这个 <strong>文件上载器</strong> 了
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/py-uploadserver.png" alt="" data-is-external-image="true"></figure></p><p>再然后，我们就可以将其打到公网了</p><h1 id="打到公网">打到公网</h1>
+<h3 id="方案一：使用edgeone进行ipv6回源">方案一：使用EdgeOne进行IPv6回源</h3>
+<p>将你的IPv6做 <strong>DDNS</strong> ，然后使用EdgeOne回源
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/py-uploadserver-1.png" alt="" data-is-external-image="true"></figure></p><h3 id="方案二：stun（仅nat1可用）">方案二：STUN（仅NAT1可用）</h3>
+<p>当你的家庭网络为 <strong>NAT1</strong> ，则可以使用类似这样的软件将你的 <strong>内网端口</strong> 直接打到 <strong>公网端口</strong> （貌似该程序对TCP分片敏感，会导致RST） <a href="https://github.com/MikeWang000000/Natter"  class="extlink extlink-icon-1"  >MikeWang000000/Natter: Expose your TCP/UDP port behind full-cone NAT to the Internet.</a> 
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/py-uploadserver-2.png" alt="" data-is-external-image="true"></figure></p>
+            ]]>
+        </content>
+    </entry>
+    <entry>
         <title>上手米哈游AI，然后把它逆了！</title>
         <author>
             <name>AcoFork</name>
@@ -172,618 +349,76 @@
         </content>
     </entry>
     <entry>
-        <title>限制级笔记本电脑验机教程</title>
+        <title>盘点那些好用的Serverless（云函数）！</title>
         <author>
             <name>AcoFork</name>
         </author>
-        <link href="https://beta.acofork.com/xian-zhi-ji-bi-ji-ben-dian-nao-yan-ji-jiao-cheng/"/>
-        <id>https://beta.acofork.com/xian-zhi-ji-bi-ji-ben-dian-nao-yan-ji-jiao-cheng/</id>
-        <media:content url="https://beta.acofork.com/media/posts/22/Screenshot_2025-11-11-08-12-40-74_4fbb30eb7b71661.DI7bbcij.jpg" medium="image" />
+        <link href="https://beta.acofork.com/pan-dian-na-xie-hao-yong-de-serverlessyun-han-shu/"/>
+        <id>https://beta.acofork.com/pan-dian-na-xie-hao-yong-de-serverlessyun-han-shu/</id>
+        <media:content url="https://beta.acofork.com/media/posts/103/serverless-function.CFyrMOuy.png" medium="image" />
 
-        <updated>2025-11-10T16:01:00+08:00</updated>
+        <updated>2025-11-25T17:30:00+08:00</updated>
             <summary type="html">
                 <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/22/Screenshot_2025-11-11-08-12-40-74_4fbb30eb7b71661.DI7bbcij.jpg" alt="" />
-                    说在前面 首先，购买任何&hellip;
+                        <img src="https://beta.acofork.com/media/posts/103/serverless-function.CFyrMOuy.png" alt="" />
+                    何为Serverless 就像简介所说，传统来说我们搭建Web服务一般会选择买一个VPS，然后在其上安装管理面板，再安装所需软件，如Nginx，AList，最后运行，开放端口，再设置DNS解析，这样，一个网站就成功上线了&hellip;
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/22/Screenshot_2025-11-11-08-12-40-74_4fbb30eb7b71661.DI7bbcij.jpg" class="type:primaryImage" alt="" /></p>
-                <h1 id="说在前面">说在前面</h1>
-<p>首先，购买任何 <strong>较贵重的</strong> 电子产品，都应该录制 <strong>开箱视频</strong> </p><p>一个 <strong>专业的</strong> 开箱视频应当：</p><ul>
-<li>展示 <strong>完整的，无破损</strong> 的快递外包装</li>
-<li>完整录制下拆箱过程。<strong>切勿遮挡，漏拍，剪辑过程</strong></li>
-<li>依次展示包装盒内的内容：包括 <strong>电子产品本体，说明书，保修卡等</strong></li>
-<li>检查产品是否 <strong>缺发，错发</strong></li>
-<li>检查产品外观是否有 <strong>破损，污损</strong></li>
-<li>完整录制下产品开机和测试过程</li>
-<li>若 <strong>确定不想要了</strong> ，请完整拍摄重新封包并退货的视频</li>
-</ul>
-<p>开箱视频并不会每一次都用到，但在真正用到的时候一定可以减少纠纷</p><h1 id="激活原理以及绕过原理">激活原理以及绕过原理</h1>
-<p>现代的预装了Windows10/11的笔记本电脑，在出厂后第一次联网后会自动激活且无法撤销</p><p>一旦联网，你的笔电将会</p><ul>
-<li>和微软服务器通信并自动激活，上报主板id和激活码，自动激活，无需人工干预</li>
-<li>将许可证写入系统，哪怕在断网并人为反激活后，依然可以在断网状态下再次激活</li>
-</ul>
-<p>这道题看似无解，实则有解，归功于Windows按版本许可的激活和x86架构主板的开放性，我们可以采取以下措施做到：
-<strong>既不激活系统，又能联网进行测试，且不破坏出厂预装系统</strong></p><p>首先，我们要知道，Windows的激活并不是一个许可证通杀所有版本。目前99%的笔记本电脑出厂预装 <strong>Windows 10/11 家庭中文版</strong> 联网后自动激活的也是这个版本</p><p>那么，我们可以安装一个 <strong>非Windows 10/11家庭中文版</strong> 的系统（如：专业版，专业工作站版）</p><p>接着，在这个 <strong>我们自己安装的</strong> 系统里面，大大方方的进行联网测试</p><p>最终，测试完毕，若不满意想要退货，删除 <strong>我们自己安装的</strong> 系统，然后大大方方走 <strong>7天无理由退货</strong> ，之后，只要你包装完整，不漏件丢件， <strong>100%退款成功！</strong></p><h1 id="实操">实操</h1>
-<blockquote>
-<p>准备U盘，便于进PE装系统</p></blockquote>
-<p>首先，买一台笔记本电脑，到货后通电自动开机</p><p>关机，然后开机，进入bios，选择U盘作为启动项，进入U盘的PE系统</p><p>打开分区工具，如diskgenius，分一个新区装新系统</p><p>前往微软官方的Windows 10/11下载站下载 <strong>多版本的ISO（有些又叫multi-editon ISO）</strong></p><p>将ISO安装导新分的区，注意不要安装 <strong>Windows 家庭中文版</strong>，除此以外哪个都行</p><p>开机，测试</p><p>如果决定退货，请重新进入pe，还原分区，然后装箱封包退货退款</p><h1 id="邪道：已经激活了还想退">邪道：已经激活了还想退</h1>
-<blockquote>
-<p>实验性方法，在你确认自己绝对不退之前请不要激活系统！！！这种方法会影响商家的二次销售，请体谅商家！！！</p></blockquote>
-<p>如题，假如你已经手贱联网并自动激活了 <strong>Windows 家庭中文版</strong></p><p>那么很抱歉，激活了就是激活了，只要商家想查，会查，那么这台机子就是 <strong>已激活</strong> 你无法改微软的数据库，但是，如果你赌商家只看 <strong>系统层</strong> 是否激活，那这招可以一试</p><p>首先，用heu kms卸载当前系统密钥，此时打开设置，Windows会被反激活</p><p>这时，再找一个 <strong>专业版</strong> 的通用密钥，选择 <strong>升级Windows</strong> 输入密钥，等待系统自动升级为 <strong>专业版</strong></p><p>然后退货</p><p><em>这种方法是在赌商家不会联网查询激活情况，当机子到商家那后，商家无法通过点击疑难解答来激活Windows。但是如果商家会刷机，一旦你的机子的Windows版本被刷回了Windows家庭中文版，就会自动激活，就露馅了</em></p>
+                    <p><img src="https://beta.acofork.com/media/posts/103/serverless-function.CFyrMOuy.png" class="type:primaryImage" alt="" /></p>
+                <h1 id="何为serverless">何为Serverless</h1>
+<p>就像简介所说，传统来说我们搭建Web服务一般会选择买一个VPS，然后在其上安装管理面板，再安装所需软件，如Nginx，AList，最后运行，开放端口，再设置DNS解析，这样，一个网站就成功上线了</p><p>而Serverless就简单多了，毕竟 <strong>Server</strong> 被 <strong>Less</strong> 掉了</p><p>这又是什么意思呢？在Serverless服务里，你不再需要管理传统的VPS，而是直接将业务代码上传到目标平台，再由平台的CI/CD自动部署你的服务</p><p>举个不恰当的例子就比如你正在观看的这个 <a href="https://2x.nz"  class="extlink extlink-icon-1"  >博客</a> ，首先我将源码上传到 <a href="https://cloud.tencent.com/document/product/1552/118260"  class="extlink extlink-icon-1"  >边缘安全加速平台 EO Pages_腾讯云</a> ，再经由平台构建出最终的HTML页面，然后再在平台上绑定域名，直接访问就可以了</p><p>不难看出，在上一个例子中，我并没有去从零开始搭建这个服务，而是仅做了两件事：1. 源码上传 2. 绑定域名，而其他事情全部交给平台的自动化，这不仅极大减少了运维成本，并且在做版本控制的时候也更加容易</p><h1 id="serverless的利与弊">Serverless的利与弊</h1>
+<p>在Serverless中，你不再需要管理基础设施，只需要确保你的代码能跑，然后直接上传到平台，平台会帮你做好后续工作</p><p>并且，这往往是 <strong>免费</strong> 的，或者说，大部分Serverless平台都有 <strong>免费层</strong> 。因为在平台看来，你只是租用了你所需要的东西，相比于哪些大客户，你的开销可以说是忽略不计</p><p>并且在Serverless中，你永远只是用户，但是如果你买的是VPS，一般来说你是可以完全控制这台VPS的，如设置防火墙，或是重装系统，而这种代价是高昂的，这也是为什么你能看到许许多多免费的Serverless服务，但是几乎看不到免费的VPS提供商</p><p>但这也有一些弊端，Serverless往往有严格的用量限制，在传统的VPS中，往往IDC会限制你的 <strong>最大带宽</strong>、<strong>公网IP</strong>  和 <strong>总流量</strong> ，但是在Serverless中，往往只会限制你的 <strong>总流量</strong> ，但可能还会有一些限制，如：<strong>CPU最长执行时间</strong> 、<strong>总请求数</strong> 、<strong>函数总请求数</strong> 、<strong>函数最长执行时间</strong> 等等等等</p><p>因为当你在用Serverless的时候，你的服务直接跑在其平台的CDN上的，你将直接享有所属平台的CDN IP段以及带宽，这也让平台的管理更加方便，不需要大量购入物理机开虚拟机做VPS，只需要做一个小集群并做好用户分配即可</p><p>Serverless也比Server更容易做版本控制和Debug，由于Serverless和Git是天生一体的。在用户看来，只需要先将代码托管到Github，再将代码库连接到Serverless平台，此后，你的服务每一次更新就只需要更新源码了，平台会自动帮你构建。当你想要回滚版本的时候，直接将部署回退为之前的提交即可，而Debug无需再连到服务器上做，只需要有一台电脑，将代码拉下来，本地Dev Debug后，再将修复后的代码提交，平台就能自动部署了</p><h1 id="好用的serverless平台">好用的Serverless平台</h1>
+<h3 id="边缘全栈开发平台---edgeone-pages"><a href="https://pages.edgeone.ai/zh"  class="extlink extlink-icon-1"  >边缘全栈开发平台 - EdgeOne Pages</a></h3>
+<p>:::caution
+请不要在其上部署日流量超 <strong>10M</strong> 的服务，很有可能会被停用账号
+:::</p><p>支持原生JS和Node Function，如果你的项目是基于Node打造的，仅需修改一下函数出入口即可无缝迁移。并且目前的 <strong>Pages Function</strong> 是 <strong>不计请求也不计费</strong> 的，非常适合部署一些仅自己用的服务</p><p>不过其自带的构建服务性能较低，上线速度可能稍慢</p><p>示例服务：  <a href="/posts/unknown-upload/">自建一个匿名文件上传终结点 - AcoFork Blog</a></p><h3 id="vercel-functions"><a href="https://vercel.com/docs/functions"  class="extlink extlink-icon-1"  >Vercel Functions</a></h3>
+<p>支持非常多的语言，如 Node.js、Python、Go、Wasm 等等。构建服务非常强劲！<strong>默认分配 4C8G</strong> 帮你构建！</p><p>用量限制非常宽松，并且可以超过限制的 <strong>2倍</strong> 以上仍保持正常访问
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/serverless-function-1.png" alt="" data-is-external-image="true"></figure>
+示例服务： <a href="/posts/onedrive-index/">来！让我们用Vercel来分享你的OneDrive！ - AcoFork Blog</a></p><h3 id="netlify-functions"><a href="https://www.netlify.com/platform/core/functions/"  class="extlink extlink-icon-1"  >Netlify Functions</a></h3>
+<p>支持 JS/TS 和 Go。用量限制更宽松！仅限制每个月100G传输流量，但是一旦超限，即刻宕机</p><p>示例服务： <a href="https://nf-gh.072103.xyz/afoim"  class="extlink extlink-icon-1"  >https://nf-gh.072103.xyz/afoim</a></p><h3 id="cloudflare-workers--利用易于使用的开发工具构建和部署代码--cloudflare"><a href="https://www.cloudflare-cn.com/developer-platform/products/workers/"  class="extlink extlink-icon-1"  >Cloudflare Workers | 利用易于使用的开发工具构建和部署代码 | Cloudflare</a></h3>
+<p>支持众多语言，但是对JS/TS的支持最好，特别注意不支持完整的 <strong>Node.js</strong> 环境。Python目前无法通过pip安装包。优点在于可以和更多Cloudflare产品做协同，如Cloudflare R2 对象存储、Cloudflare KV 键值对存储、Cloudflare D1 SQL数据库</p><p>每天限制 <strong>10W</strong> 请求，但是超了并不会 <strong>始终返回</strong> 不可用，而是 <strong>可能会请求错误</strong> </p><p>示例服务： <a href="/posts/warden-worker/">你可曾想过，直接将BitWarden部署到Cloudflare Worker？ - AcoFork Blog</a></p><h3 id="hugging-face--the-ai-community-building-the-future"><a href="https://huggingface.co/"  class="extlink extlink-icon-1"  >Hugging Face – The AI community building the future.</a></h3>
+<p>:::caution
+请不要在其上部署 <strong>AList</strong> ！秒封！
+:::</p><p>严格意义上来说，这是个帮你跑AI大模型服务的平台，但是由于它支持跑 <strong>Docker</strong> ，可玩性还是很高的</p><p>不过访问链接需要你拼一下： https://用户名-Space名.hf.space/</p><p>示例服务： <a href="https://acofork1-netease.hf.space/"  class="extlink extlink-icon-1"  >网易云音乐工具箱</a></p><h3 id="clawcloud-run--build-deploy-manage--run-in-cloud-native-platform"><a href="https://run.claw.cloud/"  class="extlink extlink-icon-1"  >ClawCloud Run | Build, Deploy, Manage &amp; Run in Cloud-Native Platform</a></h3>
+<p>之前被干爆过，目前亚太爆炸，每个月有 <strong>5 美元</strong> 余额，直接跑Docker，按你分配的CPU核心数和内存来计费。不过 Hobby 计划还蛮便宜的，常用的话可以买
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/serverless-function-2.png" alt="" data-is-external-image="true"></figure></p><h3 id="render"><a href="https://render.com/"  class="extlink extlink-icon-1"  >Render</a></h3>
+<p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/serverless-function-3.png" alt="" data-is-external-image="true"></figure>
+<strong>每月免费100G流量</strong>，支持非常多的服务，如：静态网站、Web服务（Docker）、定时服务、PostgreSQL数据库、Key Vaule存储</p><p>唯一的缺点，性能不高</p><h3 id="zeabur"><a href="https://zeabur.com/zh-CN/"  class="extlink extlink-icon-1"  >Zeabur</a></h3>
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/serverless-function-4.png" alt="" data-is-external-image="true"></figure>
+<strong>每月免费5刀额度</strong> ，免费计划有两个地域可选
+<figure class="post__image"><img decoding="async" src="../assets/images/serverless-function-5.png" alt="" data-is-external-image="true"></figure><p>最重磅的在于你可以将自己的VPS托管给Zeabur，它会在你的服务器上安装k3s等服务，之后你就可以直接在Zeabur的仪表盘上进行运维了</p><p><strong>最小服务器要求：2GB 内存，1 核 CPU。</strong></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/serverless-function-6.png" alt="" data-is-external-image="true"></figure><h1 id="结语">结语</h1>
+<p>Serverless不像传统的VPS，你并不完全拥有它，所以有些服务是不能跑的， <strong>特别是在免费层</strong> ，如特别吃IO和网络的 <strong>AList</strong> ，或是并发请求特别高以及商用服务。如果你用的舒心，请考虑购买各大平台的付费版套餐</p>
             ]]>
         </content>
     </entry>
     <entry>
-        <title>飞牛NAS玩机体验</title>
+        <title>出门在外，如何优雅、高效、流畅地远程自家电脑？</title>
         <author>
             <name>AcoFork</name>
         </author>
-        <link href="https://beta.acofork.com/fei-niu-naswan-ji-ti-yan/"/>
-        <id>https://beta.acofork.com/fei-niu-naswan-ji-ti-yan/</id>
-        <media:content url="https://beta.acofork.com/media/posts/42/QmUBuX9qmsNP1NHeEeUmuPNdS5ctvk4LchcSsFARDC4vZJ.DzPhbTlO.webp" medium="image" />
+        <link href="https://beta.acofork.com/chu-men-zai-wairu-he-you-yagao-xiaoliu-chang-di-yuan-cheng-zi-jia-dian-nao/"/>
+        <id>https://beta.acofork.com/chu-men-zai-wairu-he-you-yagao-xiaoliu-chang-di-yuan-cheng-zi-jia-dian-nao/</id>
+        <media:content url="https://beta.acofork.com/media/posts/94/9207_112_29_106_130_rx7fsq.CvKU81NV.png" medium="image" />
 
-        <updated>2025-10-14T16:35:00+08:00</updated>
+        <updated>2025-11-24T17:25:00+08:00</updated>
             <summary type="html">
                 <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/42/QmUBuX9qmsNP1NHeEeUmuPNdS5ctvk4LchcSsFARDC4vZJ.DzPhbTlO.webp" alt="" />
-                    吸引我的东西 影视刮削：飞快，薄纱Plex几条街。通过AutoBangumi可以完美自动追番+刮削一条龙服务。偶尔会有不准，但可以手动匹配，数据源来自TMDB和IMDB&hellip;
+                        <img src="https://beta.acofork.com/media/posts/94/9207_112_29_106_130_rx7fsq.CvKU81NV.png" alt="" />
+                    前言 你可能觉得，这人不是XX吗，远控当然下载个类似UU远程、向日葵这种软件不就行了，这还要出一篇文章？&hellip;
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/42/QmUBuX9qmsNP1NHeEeUmuPNdS5ctvk4LchcSsFARDC4vZJ.DzPhbTlO.webp" class="type:primaryImage" alt="" /></p>
-                <h3 id="吸引我的东西">吸引我的东西</h3>
-<ol>
-<li><p>影视刮削：飞快，薄纱Plex几条街。通过<a href="/autobangumi">AutoBangumi</a>可以完美自动追番+刮削一条龙服务。偶尔会有不准，但可以手动匹配，数据源来自<a href="https://www.themoviedb.org/"  class="extlink extlink-icon-1"  >TMDB</a>和<a href="https://www.imdb.com/"  class="extlink extlink-icon-1"  >IMDB</a>
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/f1bd7089efdf00097d5474ef967a62dcfca42e98.webp" alt="QmbNXd4FJ8FM8mwkKxJNdBoNbvhawJ2HdSvW5tFUt3o4ub.webp" data-is-external-image="true"></figure></p></li>
-<li><p>相册：可以通过手机APP自动备份，支持仅备份图片，可以多用户使用，存储互不干扰，也可以设置要共享的图片
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2f9981f8397cc1278807ed28f8a2e15954868fec.webp" alt="QmeLJ7in4xcokPWUgkkSobDLUTrFrXep2o38qUXQ1njQR9.webp" data-is-external-image="true"></figure></p></li>
-</ol>
-<h3 id="注意事项">注意事项</h3>
-<ol>
-<li><p>飞牛NAS在安装的时候会叫你选择安装盘，然后会将安装盘的一部分空间（默认为64GB）作为系统分区，其余空间可用于创建存储空间（但是系统盘不能和别的盘组存储池，只能单独建存储池） 
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/6403ef19d941abdc93d8c7da01364a8983c98109.webp" alt="QmNfRbvHu1fuYoincACcP2MG4yV4pgRni3rb4Y9J7uw4FW.webp" data-is-external-image="true"></figure></p></li>
-<li><p>应用商店安装的软件需要先授予目录访问权限应用才能读取目录（无论是原生还是Docker应用）
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/79af3b25d8b677b2718c953c0d431ead2f137e1d.webp" alt="QmP4unAVra1zy7gkjEzSCYEDAJMMe1BVWPKoVyjYv8b9Ho.webp" data-is-external-image="true"></figure></p></li>
-<li><p>发行版为Debian 12。根目录为系统分区的空间，/vol1 为存储空间1的空间 /vol2 为存储空间2的空间。推荐使用<a href="https://onani.cn/RaiDrive"  class="extlink extlink-icon-1"  >RaiDrive</a>或<a href="/SSHFS">SSHFS</a>挂载Linux目录到Windows
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/d4ec6f87893f4af5d7eedb2e2a19a784fd6c6f92.webp" alt="QmWMQHNpJUUPg9B1Hdw2zmwLx9q6bcS52nUFiB3P9iYvU9.webp" data-is-external-image="true"></figure></p></li>
-<li><p>SSH需要自己开，账密为NAS管理员账密，建议登上之后改为仅密钥登录，参见：<a href="https://www.runoob.com/w3cnote/set-ssh-login-key.html"  class="extlink extlink-icon-1"  >设置 SSH 通过密钥登录</a>
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/9f92130465ab62e912b7404266febc7212e2125b.webp" alt="QmTk3va2NCbYTcVewVjuqjGx6MwMwiUnManrNwxvEq4SBR.webp" data-is-external-image="true"></figure></p></li>
-<li><p>各网卡测试</p><table>
-<thead>
-<tr>
-<th align="center">名称</th>
-<th align="center">类型</th>
-<th align="center">品牌</th>
-<th align="center">是否免驱</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Realtek GBE Family （r8168）</td>
-<td align="center">有线</td>
-<td align="center">Realtek（瑞昱）</td>
-<td align="center">否，需要自行安装驱动</td>
-</tr>
-<tr>
-<td align="center">Realtek 8852BE</td>
-<td align="center">无线</td>
-<td align="center">Realtek（瑞昱）</td>
-<td align="center">否，需要自行安装驱动</td>
-</tr>
-<tr>
-<td align="center">Intel AC3160</td>
-<td align="center">无线</td>
-<td align="center">Intel（英特尔）</td>
-<td align="center">是</td>
-</tr>
-<tr>
-<td align="center">USB有线网卡</td>
-<td align="center">有线</td>
-<td align="center">Realtek（瑞昱）</td>
-<td align="center">是</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>各存储模式区别</p><table>
-<thead>
-<tr>
-<th align="center">模式</th>
-<th align="center">作用</th>
-<th align="center">是否能扩容</th>
-<th align="center">是否能换盘</th>
-<th align="center">容灾</th>
-<th align="center">是否能热备</th>
-<th align="center">是否能修改存储模式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Basic</td>
-<td align="center">将物理硬盘的一部分或者全部作为一个存储池，不可扩容，仅能单盘创建这个模式</td>
-<td align="center">否</td>
-<td align="center">否</td>
-<td align="center">无</td>
-<td align="center">否</td>
-<td align="center">是，可转为RAID</td>
-</tr>
-<tr>
-<td align="center">Linear</td>
-<td align="center">将一个或多个物理硬盘的一部分或者全部作为一个存储池，可扩容</td>
-<td align="center">是</td>
-<td align="center">否</td>
-<td align="center">无</td>
-<td align="center">否</td>
-<td align="center">否</td>
-</tr>
-<tr>
-<td align="center">RAID类</td>
-<td align="center">自行使用搜索引擎搜索，更详细</td>
-<td align="center">未测试</td>
-<td align="center">未测试</td>
-<td align="center">未测试</td>
-<td align="center">未测试</td>
-<td align="center">未测试</td>
-</tr>
-</tbody></table>
-<ol start="7">
-<li>NAS迅雷内测码：迅雷牛通</li>
-</ol>
-</li>
-</ol>
-
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>人生中的第一台自己组装的台式！键盘亮显示器必亮！</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://beta.acofork.com/ren-sheng-zhong-de-di-yi-tai-zi-ji-zu-zhuang-de-tai-shijian-pan-liang-xian-shi-qi-bi-liang/"/>
-        <id>https://beta.acofork.com/ren-sheng-zhong-de-di-yi-tai-zi-ji-zu-zhuang-de-tai-shijian-pan-liang-xian-shi-qi-bi-liang/</id>
-        <media:content url="https://beta.acofork.com/media/posts/41/IMG20251010160613.DHwETIn1.jpg" medium="image" />
-
-        <updated>2025-10-11T16:35:00+08:00</updated>
-            <summary type="html">
-                <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/41/IMG20251010160613.DHwETIn1.jpg" alt="" />
-                    前情提要 我知道大家来看都是想听听我分享第一次手动组装台式机的所想所感，但是，请容许我先讲述一下在这之前的事情，这将解释为什么我在该文简介介绍是&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/41/IMG20251010160613.DHwETIn1.jpg" class="type:primaryImage" alt="" /></p>
-                <h1 id="前情提要">前情提要</h1>
-<p>我知道大家来看都是想听听我分享第一次手动组装台式机的所想所感，但是，请容许我先讲述一下在这之前的事情，这将解释为什么我在该文简介介绍是 <strong>阴差阳错的获得了一个机会</strong> 同时，这也是 <strong>不得不品的一环</strong></p><p>让我们将时间轴拨动到我还持有着 <strong>极光X笔记本</strong> 的时候，虽然前几期文章大致讲过了，我把极光X卖了换了Mac，但是就仅止于此了，实际上这仅仅只是一个平庸的开始</p><p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/Screenshot_2025-10-11-05-45-03-97_e41039de8eaacf2.jpg" alt="" data-is-external-image="true"></figure>
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/Screenshot_2025-10-11-05-47-07-88_c03b3f779c2dfd4.jpg" alt="" data-is-external-image="true"></figure>
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/IMG20250929204541.jpg" alt="" data-is-external-image="true"></figure>
-那么首先，因为我和朋友打 <strong>卡拉彼丘</strong> 红温了，那天就觉得 <strong>我从来没有觉得打游戏开心过</strong> ，于是便决定将手上的Windows笔记本，也就是极光X卖掉，然后买一个MacBook专注生产力（难绷）</p><p>我这个人执行力很高，第一天就上 <strong>转转</strong> 把极光X卖了，然后立马下单了一个25年的MacBook Air，也就是前几期文章说的 <strong>我为什么买了个Mac</strong> </p><p>接下来，用了几天，Mac不愧是Mac，只要你是拿他干活，那M4+macOS将是神魔同体，超强的处理器性能+高度统一的工作流。不管你是拿他剪视频，修图，做海报，写网页，改代码等等，只要是生产力，那Mac就是信手拈来</p><p>但是，俗话说的好， <strong>保暖思淫欲</strong> 。人不可能一天24小时除去睡觉的8小时16小时都在工作，这不现实，也太压抑。所以，在Mac到手的第二天我就开始研究这玩意怎么玩 <strong>GalGame</strong> 至于为什么不研究怎么玩 <strong>卡拉彼丘</strong> ，一是当时红温状态仍在持续，二是我早就知道在macOS上运行Windows程序用的还是Wine那一套。而Wine虽然发展了这么多年，还是过不去竞技游戏的 <strong>反作弊</strong> 这一关。所以就没想着在Mac上玩了，况且层层转译不仅消耗性能，也徒增功耗，我要是真想玩游戏，我为什么不用Windows？</p><p>怀疑的种子已在心中生根发芽，那么，只需要一把火即可彻底焚尽我的 <strong>苹果梦</strong> 。那么这把火就是： <strong>关于我买了个Mac但是没有买DP转C的线导致我没法在显示器上用macOS同时因为没有C口拓展坞我的鼠标键盘也用不上那我是不是这辈子就只能用触控板和蝶式键盘了亚达亚达怎带亚达这件事</strong> 。如果你看懂上面的加粗文字了的话，你可能会好奇，欸，为什么不尝试买个DP转C口的线呢？（实际上后面真买了）为什么不尝试买个拓展坞呢？那是因为</p><p>我这个人考虑事情都是顾全大局，当我认为Mac不可能陪伴我较长时间这个结论得出时，抛弃Mac只是时间问题</p><p>而后，顺理成章的在 <strong>爱回收</strong> （因为报价多300）把Mac卖了，质检小哥问我用了几天的时候，我说5天，他愣住了，我说： <strong>哎，还是Windows好用，macOS真用不明白</strong> ，随后他也附和道： <strong>是的是的</strong> 
-<figure class="post__image"><img decoding="async" src="../assets/images/Screenshot_2025-10-11-05-48-04-91_4fbb30eb7b71661.jpg" alt="" data-is-external-image="true"></figure></p><p>总之，无论过程如何，我现在已经没有电脑可以用了，那么下一步肯定是抓紧再整个电脑过来</p><p>可能是一时心急，一不小心发现了京东有一个闪购功能，又一不小心溢价了一千买了个 <strong>暗影精灵11锐龙版</strong> ，闪购确实很闪啊，半小时不到就送到了</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/Screenshot_2025-10-11-05-48-41-11_4fbb30eb7b71661.jpg" alt="" data-is-external-image="true"></figure><p>当即就开机，嗯！还是Windows味正！</p><p>但好景不长，可能是因为我之前对AMD机子有点阴影，又加上这破机子到手当天蓝屏3次，花屏2次，游戏帧率也不是很稳定（虽然后面手动调稳了）。导致又萌发了一个新想法： <strong>笔记本就是智商税，同价位性能释放还得看台式机！</strong> </p><p>不用我说，你们应该也猜到了，没错！又是5天之后，我把 <strong>暗影精灵11锐龙版</strong> 在 <strong>转转</strong> 上出掉了。当质检小哥再次问我的你机子买了几天的时候，我说5天，他愣住了，随后说道：<strong>这我还测集贸了</strong> 随后不到十分钟我就收到打款了</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/Screenshot_2025-10-11-05-49-05-90_c03b3f779c2dfd4.jpg" alt="" data-is-external-image="true"></figure><p>好的，那么第二次轮回又结束了，此时我仍然处于一个没电脑用的情况（虽然也不是刚需）。不过这次，我下定决心了： <strong>一定要整个台式机玩玩！</strong> </p><p>恰巧，朋友准备换CPU了，又恰巧，要从Intel换成AMD，也就是说，他的主板和U都闲置了，就问我要不要。那我肯定是求之不得，然后便顺理成章的拿到了板U，接下来只需要自己买显卡内存硬盘电源散热机箱即可，因为板U暂时不需要我掏钱了，所以预算非常充足，又因为我这个人心急吧，于是便找了 <strong>京东当日达</strong> 也就是本地仓发货的，可能要加个几百块，但是刚好可以治我的“心急病”，但是吧，朋友的板U本来是走飞机的，但是安检没过，所以转陆运了，那么陆运就不能当日达了，也就是说就算我的其他配件当日达，板U不能当日达那我这加的钱就是白加，不过算了，既来之则安之，那么以下是我的配置单
-<figure class="post__image"><img decoding="async" src="../assets/images/Screenshot_2025-10-09-20-06-36-95_ae1f93045b87aac.jpg" alt="" data-is-external-image="true"></figure></p><p>那么装机后效果如图</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/IMG202510101606131.jpg" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/IMG20251011055119.jpg" alt="" data-is-external-image="true"></figure><h1 id="装机教程">装机教程</h1>
-<p>因为我本人活这么大从来没自己装过机，但是我觉得既然我是搞技术的，这东西应该也不难，再加上当今有很多装机教程视频可以看，比如 <a href="https://www.bilibili.com/video/BV1BG4y137mG"  class="extlink extlink-icon-1"  >https://www.bilibili.com/video/BV1BG4y137mG</a> ，我就是看它一步步去弄的，因为配件都是自己DIY的，有些步骤可能对不上，而且某些东西说明书虽然说不行但是实际上可以，行不行还得自己动手试试</p><h1 id="装机坑点">装机坑点</h1>
-<p>内存条。视频内演示的主板内存卡扣是双端的，但是我这个主板仅单端有卡扣，所以我在另一边扳了半天没反应才发现那边没卡扣（我是笨蛋</p><p>水冷。现在装机不仅仅是让他能 <strong>跑起来</strong> 更是美观和 <strong>R！G！B！</strong> ，但是，这个水冷一共有三个RGB线，但是主板上只有一个RGB接口，听说是要做 <strong>神光同步</strong> 的，但是你既然包装内没带集线器那我就不接了，反正对我来说 <strong>R！G！B！</strong> 是徒增功耗（不过这小灯确实挺好看的</p><p>硅脂。一般散热器会送你点硅脂，不用单独买</p><p>机箱。因为主板背部也有很多触点，如果直接和机箱接触可能会造成短路，所以一般机箱内部都有螺丝孔可以上螺丝柱，然后将主板夹在螺丝柱上固定。问题就在这个螺丝柱了，它虽然是一个六角螺丝柱，但是 <strong>没有送螺丝柱套筒</strong> ，也就是说，如果你家中没有老虎钳，这螺丝柱你是别想安上了，除非你是绿巨人</p><p>机箱说明书。说明书上写着支持前置240冷排，确实支持，但是显卡挡住了，因为我太信说明书了，我就又去 <strong>京东闪购</strong> 下单了个风冷，<strong>250</strong> 块钱，商家还跟我打电话确认我的主板型号，可能曾经发生过什么不可告人的事件* 总之，风冷刚到我就被群友提醒可以上置冷排，试了一下确实可以，系内说明书！</p><h1 id="性能测试">性能测试</h1>
-<p>首先这是最终上机配置</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/first-pc.png" alt="" data-is-external-image="true"></figure>
-CPU-Z跑分
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/first-pc-1.png" alt="" data-is-external-image="true"></figure>
-甜甜圈一键烤鸡（1280x720）帧数
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/d1122f2dcca5ea532c7aa45483120e3d.png" alt="" data-is-external-image="true"></figure>
-AIDA64内存和三缓测试
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/first-pc-2.png" alt="" data-is-external-image="true"></figure>
-单烤FPU最高功耗及温度
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/first-pc-3.png" alt="" data-is-external-image="true"></figure>
-AS SSD Benchmark（硬盘测速）
-<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/first-pc-4.png" alt="" data-is-external-image="true"></figure>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>Fuwari静态博客搭建教程</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://beta.acofork.com/fuwarijing-tai-bo-ke-da-jian-jiao-cheng/"/>
-        <id>https://beta.acofork.com/fuwarijing-tai-bo-ke-da-jian-jiao-cheng/</id>
-        <media:content url="https://beta.acofork.com/media/posts/47/f286ef4d-326c-4c7c-8a1e-ed150937a12b.CUcmtX75.webp" medium="image" />
-
-        <updated>2025-09-17T16:38:00+08:00</updated>
-            <summary type="html">
-                <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/47/f286ef4d-326c-4c7c-8a1e-ed150937a12b.CUcmtX75.webp" alt="" />
-                    你需要准备的东西 一个牛逼的脑子，支持并行运算至少两个单位以上的事件。遇到问题先思考，想不通就搜索，搜索不到就去和AI调情，不要上来就问问问&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/47/f286ef4d-326c-4c7c-8a1e-ed150937a12b.CUcmtX75.webp" class="type:primaryImage" alt="" /></p>
-                <h3 id="你需要准备的东西">你需要准备的东西</h3>
-<ol>
-<li><p>一个牛逼的脑子，支持并行运算至少两个单位以上的事件。遇到问题先思考，想不通就搜索，搜索不到就去和AI调情，不要上来就问问问</p></li>
-<li><p><a href="https://git-scm.com/downloads"  class="extlink extlink-icon-1"  >Git - Downloads (git-scm.com)</a>：最牛逼的版本控制器，这里用于对Github进行操作，当然，你也可以尝试使用<a href="https://github.com/apps/desktop"  class="extlink extlink-icon-1"  >GitHub Desktop | Simple collaboration from your desktop</a> <del>但就我而言，这玩意更难用</del> 在现在SSH克隆默认被阻断的情况下，它变得好用起来了</p></li>
-<li><p><a href="https://nodejs.org/en"  class="extlink extlink-icon-1"  >Node.js — Run JavaScript Everywhere (nodejs.org)</a>：Fuwari基于Node.js，你需要安装这个来搭建博客</p></li>
-<li><p>一个<a href="https://github.com"  class="extlink extlink-icon-1"  >Github</a>账号：用于创建一个代码仓库存放Fuwari文件</p></li>
-<li><p>一个<a href="https://cloudflare.com"  class="extlink extlink-icon-1"  >Cloudflare</a>账号：用于创建一个Pages并且绑定域名支持访问</p></li>
-<li><p><a href="/posts/obsidian/">黑曜石（Obsidian）</a>：这是一个可视化MarkDown编辑器，因为Fuwari的每一篇文章/页面都是MarkDown，所以需要一个好用的编辑器</p></li>
-<li><p>你得会用MarkDown语法来编写文章，如果你不会可以参见：<a href="https://markdown.com.cn/basic-syntax/"  class="extlink extlink-icon-1"  >Markdown 基本语法 | Markdown 官方教程</a></p></li>
-</ol>
-<h3 id="流程图">流程图</h3>
-<p>本地部署Fuwari，编写文章 -&gt; 推送更改到远程Github仓库 -&gt; Cloudflare Pages检测到仓库更新自动构建新的网站静态文件 -&gt; 网站成功更改</p><h3 id="让我们开搞吧！">让我们开搞吧！</h3>
-<h4 id="首先，我们来本地部署fuwari">首先，我们来本地部署Fuwari</h4>
-<ol>
-<li><p>Fork仓库：</p><p><a href="https://github.com/saicaca/fuwari"  class="extlink extlink-icon-1"  >https://github.com/saicaca/fuwari</a></p></li>
-<li><p>避免有小废物不会Fork仓库，这里附上图片教程</p></li>
-<li><figure class="post__image"><img decoding="async" src="../assets/images/2024-10-14-12-15-44-image.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-12-17-03-image.webp" alt="" data-is-external-image="true"></figure></li>
-<li><p>然后将仓库克隆到本地：<code>git clone &lt;你的仓库URL&gt;</code>（推荐使用SSH，可以不用魔法来推送更改）</p></li>
-<li><p>首先，全局安装pnpm：<code>npm install -g pnpm</code>（如果npm国内拉取过慢，请尝试cnpm：<a href="https://npmmirror.com/"  class="extlink extlink-icon-1"  >npmmirror 镜像站</a>）</p></li>
-<li><p>然后在项目根目录安装依赖：<code>pnpm install</code>  和 <code>pnpm add sharp</code></p></li>
-<li><p>至此，你成功在本地部署了Fuwari</p></li>
-</ol>
-<blockquote>
-<p>[!TIP]</p><p>你也可以使用创建一个新的空仓库然后手动上传文件，并且可以将仓库可见性设为：Private</p></blockquote>
-<h4 id="改写fuwari的基本信息并且清理多余文件">改写Fuwari的基本信息并且清理多余文件</h4>
-<blockquote>
-<p>刚创建的Fuwari可能带有一些示例的博主名，ICON，URL，介绍和示例文章，为了让用户知道这是你的博客，我们需要一一改写</p></blockquote>
-<ol>
-<li><p>在根目录下的 <code>src</code> 文件夹中，你可以找到 <code>config.ts</code> 我们来开始改写</p><ul>
-<li><p>title：你的博客主标题</p></li>
-<li><p>subtitle：你的博客副标题。可选，在首页会显示为“主标题 - 副标题”</p></li>
-<li><p>lang：博客显示语言。注释已经列出了一些常用的值，如：en, zh_CN, zh_TW, ja, ko</p></li>
-<li><p>themeColor：hue值则是你的博客主题色，可以在你的博客右上角的画板图标确定喜欢的颜色再填写<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-15-09-16-30-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>banner：src：即banner图片，支持http/https URL</p></li>
-<li><p>favicon：src：即网站图标，支持http/https URL</p></li>
-<li><p>links：即友情链接，这些链接在导航栏上</p></li>
-<li><p>avatar：即你的头像</p></li>
-<li><p>name：即你的名字</p></li>
-<li><p>bio：即个性签名，会显示在头像和名字下面</p></li>
-<li><p><code>NavBarConfig</code> 为导航栏设置的超链接。<code>ProfileConfig</code> 为你的用户的超链接，分别如图<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-15-17-49-30-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>icon：你需要前往<a href="https://icones.js.org/"  class="extlink extlink-icon-1"  >icones.js</a>去搜索你想要的图标，比如QQ，则填写 <code>fa6-brands:qq</code> ，如图。Fuwari默认支持这几种类型：<code>fa6-brands</code>, <code>fa6-regular</code>, <code>fa6-solid</code>, <code>material-symbols</code>。可以在 <code>astro.config.mjs</code> 中搜索关键字进行配置</p></li>
-<li><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/1ef05530-10fd-4301-af4e-21ddadf18605.webp" alt="" data-is-external-image="true"></figure></li>
-<li><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/da94494b-cc4b-4f07-ae95-8bf3b2f95d3c.webp" alt="" data-is-external-image="true"></figure></li>
-<li><p>这里我附上我的 <code>config.ts</code> </p></li>
-<li><pre><code class="language-ts">import type {
-  LicenseConfig,
-  NavBarConfig,
-  ProfileConfig,
-  SiteConfig,
-} from &#39;./types/config&#39;
-import { LinkPreset } from &#39;./types/config&#39;
-
-export const siteConfig: SiteConfig = {
-  title: &#39;AcoFork Blog&#39;,
-  subtitle: &#39;爱你所爱！&#39;,
-  lang: &#39;zh_CN&#39;,         // &#39;en&#39;, &#39;zh_CN&#39;, &#39;zh_TW&#39;, &#39;ja&#39;, &#39;ko&#39;
-  themeColor: {
-    hue: 355,         // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
-    fixed: false,     // Hide the theme color picker for visitors
-  },
-  banner: {
-    enable: true,
-    src: &#39;https://eo-r2.2x.nz/myblog/img/222.webp&#39;,   // Relative to the /src directory. Relative to the /public directory if it starts with &#39;/&#39;
-    position: &#39;center&#39;,      // Equivalent to object-position, only supports &#39;top&#39;, &#39;center&#39;, &#39;bottom&#39;. &#39;center&#39; by default
-    credit: {
-      enable: false,         // Display the credit text of the banner image
-      text: &#39;&#39;,              // Credit text to be displayed
-      url: &#39;&#39;                // (Optional) URL link to the original artwork or artist&#39;s page
-    }
-  },
-  favicon: [    // Leave this array empty to use the default favicon
-     {
-       src: &#39;https://q2.qlogo.cn/headimg_dl?dst_uin=2973517380&amp;spec=5&#39;,    // Path of the favicon, relative to the /public directory
-       //theme: &#39;light&#39;,              // (Optional) Either &#39;light&#39; or &#39;dark&#39;, set only if you have different favicons for light and dark mode
-       sizes: &#39;128x128&#39;,              // (Optional) Size of the favicon, set only if you have favicons of different sizes
-     }
-  ]
-}
-
-export const navBarConfig: NavBarConfig = {
-  links: [
-    LinkPreset.Home,
-    LinkPreset.Archive,
-    LinkPreset.About,
-    {
-      name: &#39;随机图&#39;,
-      url: &#39;https://pic.onani.cn&#39;,     // Internal links should not include the base path, as it is automatically added
-      external: true,                               // Show an external link icon and will open in a new tab
-    },
-    {
-      name: &#39;GitHub&#39;,
-      url: &#39;https://github.com/saicaca/fuwari&#39;,     // Internal links should not include the base path, as it is automatically added
-      external: true,                               // Show an external link icon and will open in a new tab
-    },
-  ],
-}
-
-export const profileConfig: ProfileConfig = {
-  avatar: &#39;https://eo-r2.2x.nz/myblog/img/111.webp&#39;,  // Relative to the /src directory. Relative to the /public directory if it starts with &#39;/&#39;
-  name: &#39;二叉树树&#39;,
-  bio: &#39;Protect What You Love./爱你所爱！&#39;,
-  links: [
-    // {
-      // name: &#39;Twitter&#39;,
-      // icon: &#39;fa6-brands:twitter&#39;,       // Visit https://icones.js.org/ for icon codes
-                                        // You will need to install the corresponding icon set if it&#39;s not already included
-                                        // `pnpm add @iconify-json/&lt;icon-set-name&gt;`
-      // url: &#39;https://twitter.com&#39;,
-    // },
-    // {
-      // name: &#39;Steam&#39;,
-      // icon: &#39;fa6-brands:steam&#39;,
-      // url: &#39;https://store.steampowered.com&#39;,
-    // },
-    {
-      name: &#39;GitHub&#39;,
-      icon: &#39;fa6-brands:github&#39;,
-      url: &#39;https://github.com/afoim&#39;,
-    },
-    {
-      name: &#39;QQ&#39;,
-      icon: &#39;fa6-brands:qq&#39;,
-      url: &#39;https://qm.qq.com/q/Uy9kmDXHYO&#39;,
-    },
-    {
-      name: &#39;Email&#39;,
-      icon: &#39;fa6-solid:envelope&#39;,
-      url: &#39;mailto:email@example.com&#39;,
-    },
-  ],
-}
-
-export const licenseConfig: LicenseConfig = {
-  enable: true,
-  name: &#39;CC BY-NC-SA 4.0&#39;,
-  url: &#39;https://creativecommons.org/licenses/by-nc-sa/4.0/&#39;,
-}
-</code></pre>
-</li>
-</ul>
-</li>
-<li><p>清理多余文件。在根目录下的 <code>src/content/posts</code> 文件夹中会有一些示例文章，这些文章介绍了一些MarkDown语法和技巧，可以让你更快上手Fuwari和fuwari，我们可以将其保存到别处</p></li>
-<li><p>至此，你已经可以开始撰写文章了</p></li>
-</ol>
-<h4 id="让我们开始写作！">让我们开始写作！</h4>
-<blockquote>
-<p>推荐使用 <a href="/posts/obsidian/">黑曜石（Obsidian）</a></p></blockquote>
-<ol>
-<li><p>首先，在项目根目录执行：<code>pnpm new-post &lt;这里填写你的文章标题&gt;</code></p></li>
-<li><p>然后，在根目录下的 <code>src/content/posts</code> 文件夹中会多出一个 <code>xxx.md</code>文件</p></li>
-<li><p>我们使用MarkText打开这个文件，你可以看到一些基本信息，我们只需要关注几个重要的信息</p></li>
-<li><pre><code class="language-markdown">title: xxx
-published: 2024-10-14
-description: &#39;&#39;
-image: &#39;&#39;
-tags: []
-categories: &#39;&#39;
-draft: false 
-lang: &#39;&#39;
-</code></pre>
-<ul>
-<li><p>title：文章标题</p></li>
-<li><p>published：文章创建时间</p></li>
-<li><p>description：文章描述，正常会显示在文章标题下面</p></li>
-<li><p>image：文章封面图（同目录需要写 <code>./</code> 如：<code>./https://eo-r2.2x.nz/myblog/img/2024-10-14-11-33-28-image.webp</code>）</p></li>
-<li><p>tag：文章标签</p></li>
-<li><p>categories：文章分类</p></li>
-</ul>
-</li>
-<li><p>我们还需要更改根目录下的 <code>astro.config.mjs</code> 。在第34行更改 <code>stie:</code> 为你的站点URL，如： <code>site: &quot;https://onani.cn&quot;,</code></p></li>
-<li><p>欸？有的人就会问了，MarkDown固然好，但是我要如何处理图片的置入呢</p></li>
-<li><p>这也很简单，多亏了MarkText这款软件，我们也可以像编辑Typecho一样直接使用Ctrl+CV来在MarkDown语法中置入图片，但是我们需要一些小设置：</p><ul>
-<li><p>依次点击：MarkText软件的左上角的三条杠 -&gt; File -&gt; Perferences -&gt; 左侧的Image分类 -&gt; 如图设置 -&gt; 注意更改第一个选项为Copy开头的选项，将Perfer开关打开，然后上下两个文本框一个填写绝对路径一个填写相对路径</p></li>
-<li><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-12-54-21-image.webp" alt="" data-is-external-image="true"></figure></li>
-<li><p>这样，当置入图片时，会往 <code>https://eo-r2.2x.nz/myblog/img</code> 文件夹复制一份，然后通过<code>![1](https://eo-r2.2x.nz/myblog/img/1.webp)</code>写入MarkDown文件。这样网站就能成功读取到图片啦。而你只需要Ctrl+CV，其他操作MarkText都会自动处理</p></li>
-</ul>
-</li>
-<li><p>至此，你已经会用MarkText编写MarkDown语法的博文了</p></li>
-</ol>
-<h4 id="本地预览，然后发布到github">本地预览，然后发布到Github</h4>
-<ol>
-<li><p>当你认为你的文章已经写得差不多时，想要看看效果？请到项目根目录执行：<code>pnpm dev</code>，稍等片刻，你就可以本地预览你的博客啦<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-13-03-44-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>好！接下来我们需要使用Git将我们所做的更改发布到Github</p><ul>
-<li><p>首先，你需要让Git知道你是谁：<code>git config --global user.name &quot;你的Github用户名&quot;</code>和<code>git config --global user.email &quot;你的Github邮箱@example.com&quot;</code></p></li>
-<li><p>然后，更改远程仓库为ssh*（如果是通过ssh克隆的不用改）：<code>git remote set-url origin git@github.com:xxx/xxx</code></p></li>
-<li><p>随后，让我们提交所有文件：<code>git add .</code></p></li>
-<li><p>之后，让我们发布一个本地提交：<code>git commit -m &quot;项目初始化&quot;</code></p></li>
-<li><p>最后，让我们将本地更改提交到远程仓库：<code>git push</code></p></li>
-</ul>
-</li>
-<li><p>此时，你的Github仓库应该已经有了新的提交<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-13-10-12-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-</ol>
-<h4 id="让cloudflare连接上github，使用pages服务展示你的博客（free！）">让Cloudflare连接上Github，使用Pages服务展示你的博客（FREE！）</h4>
-<ol>
-<li><p>前往Cloudflare的 Workers 和 Pages 页面，创建一个新Pages<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-13-14-28-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>然后选择连接Git存储库，连接你的Github，随后设置构建命令：<code>pnpm build</code>  ，然后设置构建输出目录：<code>dist</code> ，如图<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-13-16-15-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>绑定自定义域，访问自定义域即可访问你的博客！<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2024-10-14-13-17-00-image.webp" alt="" data-is-external-image="true"></figure></p></li>
-<li><p>随后，你只需要在本地编写文章，然后<a href="#%E6%9C%AC%E5%9C%B0%E9%A2%84%E8%A7%88%E7%84%B6%E5%90%8E%E5%8F%91%E5%B8%83%E5%88%B0github">使用Git将更改推送到远程仓库</a>，Cloudflare就会自动部署，更新你的博客！</p></li>
-</ol>
-
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>全自动ICP查询API</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://beta.acofork.com/quan-zi-dong-icpcha-xun-api/"/>
-        <id>https://beta.acofork.com/quan-zi-dong-icpcha-xun-api/</id>
-        <media:content url="https://beta.acofork.com/media/posts/13/2025-09-12-04-52-16-image.Bsl_S20u.png" medium="image" />
-
-        <updated>2025-09-12T15:51:00+08:00</updated>
-            <summary type="html">
-                <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/13/2025-09-12-04-52-16-image.Bsl_S20u.png" alt="" />
-                    原理 由&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/13/2025-09-12-04-52-16-image.Bsl_S20u.png" class="type:primaryImage" alt="" /></p>
-                <h1 id="原理">原理</h1>
-<p>由 <a href="https://github.com/ravizhan/ICP-spider"  class="extlink extlink-icon-1"  >ravizhan/ICP-spider: 基于yolov8+孪生网络识别验证码的ICP备案查询程序。从工业和信息化部政务服务平台查询实时数据，高精度过验证码</a> 提供图形验证码支持</p><p>因为验证码识别成功后得到的Token有效时间大概为30s，此期间无需再次重新识别，故开发一个Token生命周期管理器，后台始终维护有效的Token，用户查询时直接使用有效的Token查询，方便快速</p><h1 id="使用">使用</h1>
-<p>查询 qq.com 的ICP备案信息：</p><p><a href="http://icp.2x.nz/?domain=qq.com"  class="extlink extlink-icon-1"  >http://icp.2x.nz/?domain=qq.com</a></p><p>理应返回如下信息，若未返回结果，则刚好Token失效且生命周期管理器正在获取新的Token，等待几秒后再次查询即可</p><pre><code class="language-json">{
-  &quot;code&quot;: 200,
-  &quot;msg&quot;: &quot;操作成功&quot;,
-  &quot;params&quot;: {
-    &quot;endRow&quot;: 0,
-    &quot;hasNextPage&quot;: false,
-    &quot;hasPreviousPage&quot;: false,
-    &quot;isFirstPage&quot;: true,
-    &quot;isLastPage&quot;: true,
-    &quot;list&quot;: [
-      {
-        &quot;contentTypeName&quot;: &quot;文化、文化、宗教、出版、文化、新闻、文化、宗教、宗教、出版&quot;,
-        &quot;domain&quot;: &quot;qq.com&quot;,
-        &quot;domainId&quot;: 190000203203,
-        &quot;leaderName&quot;: &quot;&quot;,
-        &quot;limitAccess&quot;: &quot;否&quot;,
-        &quot;mainId&quot;: 547280,
-        &quot;mainLicence&quot;: &quot;粤B2-20090059&quot;,
-        &quot;natureName&quot;: &quot;企业&quot;,
-        &quot;serviceId&quot;: 4134047,
-        &quot;serviceLicence&quot;: &quot;粤B2-20090059-5&quot;,
-        &quot;unitName&quot;: &quot;深圳市腾讯计算机系统有限公司&quot;,
-        &quot;updateRecordTime&quot;: &quot;2022-09-06 15:51:52&quot;
-      }
-    ],
-    &quot;navigateFirstPage&quot;: 1,
-    &quot;navigateLastPage&quot;: 1,
-    &quot;navigatePages&quot;: 8,
-    &quot;navigatepageNums&quot;: [
-      1
-    ],
-    &quot;nextPage&quot;: 0,
-    &quot;pageNum&quot;: 1,
-    &quot;pageSize&quot;: 10,
-    &quot;pages&quot;: 1,
-    &quot;prePage&quot;: 0,
-    &quot;size&quot;: 1,
-    &quot;startRow&quot;: 0,
-    &quot;total&quot;: 1
-  },
-  &quot;success&quot;: true
-}
-</code></pre>
-
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>禁用Astro跟弱智一般的静态构建图像优化</title>
-        <author>
-            <name>AcoFork</name>
-        </author>
-        <link href="https://beta.acofork.com/jin-yong-astrogen-ruo-zhi-yi-ban-de-jing-tai-gou-jian-tu-xiang-you-hua/"/>
-        <id>https://beta.acofork.com/jin-yong-astrogen-ruo-zhi-yi-ban-de-jing-tai-gou-jian-tu-xiang-you-hua/</id>
-        <media:content url="https://beta.acofork.com/media/posts/30/2025-09-10-06-19-15-image.D0ykKJR7.png" medium="image" />
-
-        <updated>2025-09-10T16:08:00+08:00</updated>
-            <summary type="html">
-                <![CDATA[
-                        <img src="https://beta.acofork.com/media/posts/30/2025-09-10-06-19-15-image.D0ykKJR7.png" alt="" />
-                    为什么要禁用图片优化？ 下图是一个默认的Astro静态构建，也就是&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://beta.acofork.com/media/posts/30/2025-09-10-06-19-15-image.D0ykKJR7.png" class="type:primaryImage" alt="" /></p>
-                <h1 id="为什么要禁用图片优化？">为什么要禁用图片优化？</h1>
-<p>下图是一个默认的Astro静态构建，也就是 <code>astro build</code> 的输出，输出中记录了每张图片是如何被Astro “优化” 的。我们不难发现问题所在：</p><p>压缩效果微乎其微，甚至有反向压缩。大部分图片仅压缩了几kb，但是为此需要花费 <strong>100-1000ms</strong> 不等，甚至第12行出现了 <code>before: 26kb, after: 28kb</code> 这样的反向压缩</p><p><em>为什么要浪费这么多的时间来进行±10kb左右的图片压缩呢？</em></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2025-09-10-06-21-20-26ca667ff5c7024c12d7a8254f483b27.png" alt="" data-is-external-image="true"></figure><h1 id="如何让astro不优化图片？">如何让Astro不”优化“图片？</h1>
-<blockquote>
-<p><a href="https://docs.astro.build/zh-cn/guides/images/"  class="extlink extlink-icon-1"  >图像 | Docs</a></p></blockquote>
-<p>查阅 Astro 文档可知</p><p>会被优化的情况：</p><ul>
-<li><p>非 <code>/public</code> 目录下的图片</p></li>
-<li><p>使用 <code>&lt;Image /&gt;</code> 等Astro图片组件</p></li>
-<li><p>任何MarkDown内的图片，除非你不走Astro内部的 MarkDown -&gt; HTML 转换</p></li>
-</ul>
-<p>不难发现，我们似乎已经找到了一个折中的解决方案： <strong>将图片放置到 /public 目录</strong></p><h1 id="尝试将图片放置到-public-目录（不完美）">尝试将图片放置到 /public 目录（不完美）</h1>
-<p>这会遇到一个经典问题，这是我询问 OpenAI ChatGPT 的原话</p><p><em>我遇到了一个两难的问题 我使用Astro 我的文章在./src/content/posts/xxx.md 我的图片之前在./src/content/assets/images/xxx.png 由于我不想要Astro默认的图片优化，因为构建太慢了，于是我将图片放到了./public/assets/images/xxx.png 然后我将MarkDown引用的图片从 ../assets/images/xxx.png 改为了 ./public/assets/images/xxx.png 但是现在新的问题出现了，我的MarkText（一个MarkDown编辑器）去寻找了 ./src/content/posts/public/assets/images/xxx.png 导致我在编辑器中看不到任何图片 有没有什么好的解决方案？</em></p><p>如果反其道而行之，使用类似 <code>../../../assets/images/xxx.png</code> 会导致部分组件无法获得真实图片，导致 <code>astro build</code> 直接报错退出，比如每篇文章开头的 YAML 元数据中的 <code>image</code> 字段</p><p><strong>结论：</strong> 该方案并不完美。要不无法即写即看，要不构建失败</p><h1 id="尝试使用astro官方提供的配置禁用图片优化（失败）">尝试使用Astro官方提供的配置禁用图片优化（失败）</h1>
-<p>遇到Astro上的问题，首先就应该查询官方文档了解是否已有解决方案。通过文档查询，我找到了 <a href="https://docs.astro.build/zh-cn/guides/images/#%E9%85%8D%E7%BD%AE-no-op-%E9%80%8F%E4%BC%A0%E6%9C%8D%E5%8A%A1"  class="extlink extlink-icon-1"  >图像 | Docs</a> 中的 <strong>配置 no-op 透传服务</strong> ，尝试配置，但是无用，不管是本地运行构建或Cloudflare Worker云端构建，仍然会触发 <strong>generating optimized images</strong> 步骤</p><p><em>如果您了解如何在Astro的配置层面直接禁用图片优化，请联系我！我很乐意与您交流！</em></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2025-09-10-06-27-46-image.png" alt="" data-is-external-image="true"></figure><h1 id="尝试直接更改astro源码来禁用图片优化（成功）">尝试直接更改Astro源码来禁用图片优化（成功）</h1>
-<p>研究到这，大半天已经过去了，我已经没有精力去研究怎么 <strong>合法</strong> 禁用Astro的图片优化了，不如单刀直入，直接改源码，使用 <strong>非法操作</strong> 吧</p><p>大致步骤，直接改Astro包的源码，然后用 <code>pnpm patch</code> 为它打个补丁，下面是完整、可用的 <code>astro.patch</code> 。全局禁用图片优化</p><pre><code class="language-diff">diff --git a/dist/assets/utils/transformToPath.js b/dist/assets/utils/transformToPath.js
-index cca8548dec42090b0621d1f21c86f503d5bba1be..8b0a3cfcea73abc4d63592709bb9ba2b2f83989a 100644
---- a/dist/assets/utils/transformToPath.js
-+++ b/dist/assets/utils/transformToPath.js
-@@ -13,7 +13,9 @@ function propsToFilename(filePath, transform, hash) {
-   }
-   const prefixDirname = isESMImportedImage(transform.src) ? dirname(filePath) : &quot;&quot;;
-   let outputExt = transform.format ? `.${transform.format}` : ext;
--  return decodeURIComponent(`${prefixDirname}/${filename}_${hash}${outputExt}`);
-+  
-+  // Force disable image optimization - return original path without hash and format conversion
-+  return decodeURIComponent(`${prefixDirname}/${filename}${ext}`);
- }
- function hashTransform(transform, imageService, propertiesToHash) {
-   const hashFields = propertiesToHash.reduce(
-diff --git a/dist/core/build/generate.js b/dist/core/build/generate.js
-index 3144f4c058b161b9e6eb3c8d891b743b34783653..0ba275b320204e154307c6aff75452e9dcb2300d 100644
---- a/dist/core/build/generate.js
-+++ b/dist/core/build/generate.js
-@@ -91,7 +91,8 @@ ${bgGreen(black(` ${verb} static routes `))}`);
- `)
-   );
-   const staticImageList = getStaticImageList();
--  if (staticImageList.size) {
-+  // Force disable image optimization - hardcoded
-+  if (false) {
-     logger.info(&quot;SKIP_FORMAT&quot;, `${bgGreen(black(` generating optimized images `))}`);
-     const totalCount = Array.from(staticImageList.values()).map((x) =&gt; x.transforms.size).reduce((a, b) =&gt; a + b, 0);
-     const cpuCount = os.cpus().length;
-</code></pre>
-<p>下文为我让OpenAI ChatGPT 5解释的已经禁用图片优化的补丁（<code>astro.patch</code>）具体做了什么</p><h3 id="修改点-1：distassetsutilstransformtopathjs">修改点 1：<code>dist/assets/utils/transformToPath.js</code></h3>
-<pre><code class="language-diff">-  return decodeURIComponent(`${prefixDirname}/${filename}_${hash}${outputExt}`);
-+  
-+  // Force disable image optimization - return original path without hash and format conversion
-+  return decodeURIComponent(`${prefixDirname}/${filename}${ext}`);
-</code></pre>
-<h4 id="原逻辑">原逻辑</h4>
-<ul>
-<li><p>原本的返回路径是：</p><pre><code class="language-bash">{prefixDirname}/{filename}_{hash}.{format or ext}
-</code></pre>
-<ul>
-<li><p><code>prefixDirname</code>：如果图片是通过 ESM import 进来的，会带上所在目录，否则为空。</p></li>
-<li><p><code>filename</code>：文件名。</p></li>
-<li><p><code>hash</code>：基于图片参数生成的 hash，用于区分不同尺寸/格式。</p></li>
-<li><p><code>outputExt</code>：可能是 <code>webp</code>、<code>avif</code> 等格式。</p></li>
-</ul>
-</li>
-</ul>
-<p>👉 这样 Astro 会给图片文件生成带 hash 的路径，并且可能修改格式。</p><h4 id="修改后逻辑">修改后逻辑</h4>
-<ul>
-<li>返回路径改成了：</li>
-</ul>
-<pre><code class="language-bash">{prefixDirname}/{filename}{ext}
-</code></pre>
-<ul>
-<li>直接使用原始扩展名，不带 hash，也不做格式转换。</li>
-</ul>
-<p>✅ 作用：完全禁用图片优化的文件名规则，保留原始文件路径。</p><hr>
-<h3 id="修改点-2：distcorebuildgeneratejs">修改点 2：<code>dist/core/build/generate.js</code></h3>
-<pre><code class="language-diff">-  if (staticImageList.size) {
-+  // Force disable image optimization - hardcoded
-+  if (false) {
-</code></pre>
-<h4 id="原逻辑-1">原逻辑</h4>
-<ul>
-<li><p><code>staticImageList</code> 存放了 Astro build 时需要优化的所有静态图片。</p></li>
-<li><p>如果有图片，Astro 会启动优化逻辑：</p><ul>
-<li><p>打印日志 <code>&quot;generating optimized images&quot;</code></p></li>
-<li><p>遍历 <code>staticImageList</code>，并调用 image service 去生成不同尺寸和格式。</p></li>
-</ul>
-</li>
-</ul>
-<h4 id="修改后逻辑-1">修改后逻辑</h4>
-<ul>
-<li><p>把 <code>if (staticImageList.size)</code> 改成了 <code>if (false)</code>。</p></li>
-<li><p>这意味着 <strong>Astro 永远不会进入优化图片的流程</strong>。</p></li>
-</ul>
-<p>✅ 作用：强制跳过所有图片优化步骤。</p><hr>
-<h3 id="总结">总结</h3>
-<p>你的这个 patch 做了两件事：</p><ol>
-<li><p><strong>绕过文件名 hash 和格式转换</strong> → 保证生成的图片路径就是原始路径。</p></li>
-<li><p><strong>完全禁用构建时图片优化</strong> → Astro build 时不再生成任何衍生格式或多尺寸图片。</p></li>
-</ol>
-<p>等价于 <strong>彻底关闭 Astro 的图片优化功能</strong>，构建出来的就是你原始的图片。</p><h1 id="最终效果">最终效果</h1>
-<p>任何情况下使用 <code>astro build</code> 都会跳过图片优化，Cloudflare Worker的构建时间从 3分钟下降到2分钟</p><figure class="post__image"><img decoding="async" src="../assets/images/2025-09-10-06-46-49-image.png" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2025-09-10-06-47-01-image.png" alt="" data-is-external-image="true"></figure><p>构建后的页面不再为全局webp，透传原始文件名、扩展名。但仍然保留了 <code>/_astro</code> 路径，依旧支持相对路径粘贴图片</p><figure class="post__image"><img decoding="async" src="../assets/images/d836b41fd85611972c2086a7064705bdb1b4ff7c.png" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/ff1314b1ab7d60bd9a49d6499db22cde23fb9f60.png" alt="" data-is-external-image="true"></figure>
+                    <p><img src="https://beta.acofork.com/media/posts/94/9207_112_29_106_130_rx7fsq.CvKU81NV.png" class="type:primaryImage" alt="" /></p>
+                <h1 id="前言">前言</h1>
+<p>你可能觉得，这人不是XX吗，远控当然下载个类似UU远程、向日葵这种软件不就行了，这还要出一篇文章？</p><p>那我问你，如果你用的电脑是32位而不是64位，当你用的公司网络NAT类型并不开放又或者没有IPv6？我们要如何优雅、高效、流畅的使用远程呢？</p><h1 id="正式开始">正式开始</h1>
+<p>我们分两步走，一个是针对于64位的电脑，较简单，而另一个是针对于32位的电脑，稍微复杂</p><h3 id="64位">64位</h3>
+<p>首先，将家里的路由器的 <strong>UPnP</strong> 功能打开，然后直接下载 <a href="https://uuyc.163.com/"  class="extlink extlink-icon-1"  >网易UU远程官网_真4K、真免费、真好用</a> ，登录账号直接连接，绝大部分情况都是P2P（点对点连接，即控制和被控端直接连接）</p><h3 id="32位">32位</h3>
+<p>由于UU远程仅支持64位的电脑，我们就要想点花招了</p><p>我用的办法比较极客，就是将家里设备的 <strong>RDP</strong> 端口打到公网上来，也就是利用 <strong>STUN</strong> ，但是这种方法要求家庭网络的NAT类型为1（Full Cone）</p><p>那么首先，我将家中的路由器的 <strong>DMZ</strong> 主机设置为家里电脑的IP
+<figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/remote.png" alt="" data-is-external-image="true"></figure></p><p>DMZ启用后，所有打到路由器上所有端口（除路由器自身占用端口）的流量全部转发给DMZ主机</p><p>用人话来说，你访问路由器的3389端口就能直接访问到电脑的3389端口</p><p>这样设置之后，你就可以使用 <strong>STUN</strong> 协议，将路由器的3389端口转发到ISP给你分配的公网上</p><p>用人话来说，STUN后，访问你正在用的 <code>公网IP:随机端口</code> ，就能访问到路由器的3389端口，又因为配置了DMZ，就又能访问到电脑的3389端口</p><p>那么如何简单的开一个 <strong>STUN隧道</strong> 呢？</p><p>我这里使用的是 <a href="https://github.com/MikeWang000000/Natter"  class="extlink extlink-icon-1"  >MikeWang000000/Natter: Expose your TCP/UDP port behind full-cone NAT to the Internet.</a> ，它是一个Python编写的程序，确保你的网络为NAT1后，你可以使用一个简单的命令，如： <code>python natter.py -p 3389</code> 来创建STUN隧道
+<figure class="post__image"><img decoding="async" src="../assets/images/remote-1.png" alt="" data-is-external-image="true"></figure></p><p>观察 <code>WAN &gt; 112.32.39.77:55265    [ OPEN ]</code> 证明你已经可以通过该 <code>公网IP:端口</code> 来在世界各地，只要连上了 <strong>互联网</strong> ，就能连上家里的电脑</p><p>最后，<code>Win+R</code> 调出运行，输入 <code>mstsc</code> 打开远程控制的窗口，开始你的远程之旅吧</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/9207_1_112_29_106_130_gdqwd8.png" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/9207_112_29_106_130_rx7fsq.png" alt="" data-is-external-image="true"></figure>
             ]]>
         </content>
     </entry>

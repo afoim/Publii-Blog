@@ -1,0 +1,870 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>N100 - PVE（fnOS+Debian）基建记录 - AcoFork Blog (Beta)</title><meta name="description" content="配置&amp;需求 N100&hellip;"><meta name="generator" content="Publii Open-Source CMS for Static Site"><script type="gdpr-blocker/analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-GCK58D6070"></script><script type="gdpr-blocker/analytics">window.dataLayer = window.dataLayer || [];
+				  function gtag(){dataLayer.push(arguments);}
+				  gtag('js', new Date());
+				  gtag('config', 'G-GCK58D6070' , { 'anonymize_ip': true });</script><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid-invert-filter.css"><meta name="theme-color" content="#17181E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#D73A42" media="(prefers-color-scheme: light)"><meta name="msapplication-navbutton-color" content="#D73A42"><meta name="apple-mobile-web-app-status-bar-style" content="#D73A42"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-black.css"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.css"><script async defer="defer" type="gdpr-blocker/analytics" src="https://umami.acofork.com/script.js" data-website-id="a3c761fb-d328-4521-9bcb-98c6e076b1bb" data-auto-track="true" data-do-not-track="true" data-cache="false"></script><link rel="canonical" href="https://beta.acofork.com/n100-pvefnosdebianji-jian-ji-lu/"><link rel="alternate" type="application/atom+xml" href="https://beta.acofork.com/feed.xml" title="AcoFork Blog (Beta) - RSS"><link rel="alternate" type="application/json" href="https://beta.acofork.com/feed.json" title="AcoFork Blog (Beta) - JSON"><meta property="og:title" content="N100 - PVE（fnOS+Debian）基建记录"><meta property="og:image" content="https://beta.acofork.com/media/posts/75/N100-PVE_cover.DSrIFFcr.webp"><meta property="og:image:width" content="429"><meta property="og:image:height" content="300"><meta property="og:site_name" content="AcoFork Blog (Beta)"><meta property="og:description" content="配置&amp;需求 N100&hellip;"><meta property="og:url" content="https://beta.acofork.com/n100-pvefnosdebianji-jian-ji-lu/"><meta property="og:type" content="article"><link rel="shortcut icon" href="https://beta.acofork.com/media/website/b_53bb4f7fa91d684e72b6604e3fcc189.jpg" type="image/x-icon"><link rel="stylesheet" href="https://beta.acofork.com/assets/css/style.css?v=bb5e85e6ce5f66a897d88a8939c26399"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://beta.acofork.com/n100-pvefnosdebianji-jian-ji-lu/"},"headline":"N100 - PVE（fnOS+Debian）基建记录","datePublished":"2024-10-28T17:11+08:00","dateModified":"2025-12-29T17:12+08:00","image":{"@type":"ImageObject","url":"https://beta.acofork.com/media/posts/75/N100-PVE_cover.DSrIFFcr.webp","height":300,"width":429},"description":"配置&amp;需求 N100&hellip;","author":{"@type":"Person","name":"AcoFork","url":"https://beta.acofork.com/authors/acofork/"},"publisher":{"@type":"Organization","name":"AcoFork"}}</script><noscript><style>img[loading] {
+                    opacity: 1;
+                }</style></noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>(function () {
+  function enhancePostImages() {
+    const images = document.querySelectorAll(".post__image img");
+
+    images.forEach(img => {
+      // 已经被 <a> 包裹，跳过
+      if (img.parentElement && img.parentElement.tagName === "A") return;
+
+      const src = img.currentSrc || img.src;
+      if (!src) return;
+
+      // 排除极小图片（icon 等）
+      if (img.complete && img.naturalWidth && img.naturalWidth < 120) return;
+
+      const a = document.createElement("a");
+      a.href = src;
+      a.dataset.fancybox = "post-gallery";
+
+      if (img.alt) {
+        a.dataset.caption = img.alt;
+      }
+
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // 首次执行
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhancePostImages);
+  } else {
+    enhancePostImages();
+  }
+
+  // 监听 SPA / 动态渲染
+  const observer = new MutationObserver(enhancePostImages);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // FancyBox 初始化
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.Fancybox) return;
+
+    Fancybox.bind('[data-fancybox="post-gallery"]', {
+      animated: true,
+      dragToClose: true,
+      placeFocusBack: false,
+      Toolbar: {
+        display: ["zoom", "slideshow", "fullscreen", "close"]
+      },
+      Images: {
+        zoom: true
+      }
+    });
+
+    // ✅ 唯一保留的日志
+    console.log("%cFancyBox 已加载 √", "color:#16a34a;font-weight:bold");
+  });
+})();</script><style>.extlink::after {
+				background-color: currentColor;
+				content: "";
+				display: inline-block;
+				height: 16px;
+				margin-left: 5px;
+				position: relative;
+				top: 0px;
+				width: 16px;
+			}
+		
+					.extlink.extlink-icon-1::after {
+						mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>");
+						mask-repeat: no-repeat;
+						mask-size: contain;
+					}</style></head><body class="post-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="post"><article class="content"><div class="hero"><header class="hero__content"><div class="wrapper"><h1>N100 - PVE（fnOS+Debian）基建记录</h1><div class="feed__meta content__meta"><a href="https://beta.acofork.com/authors/acofork/" class="feed__author">AcoFork</a> <time datetime="2024-10-28T17:11" class="feed__date">24/10/28 17:11:00 </time><span class="reading-time" aria-label="5 min read">5 min read</span></div></div></header><figure class="hero__image"><div class="hero__image-wrapper"><img src="https://beta.acofork.com/media/posts/75/N100-PVE_cover.DSrIFFcr.webp" srcset="https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-xs.webp 640w, https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-sm.webp 768w, https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-md.webp 1024w, https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-lg.webp 1366w, https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-xl.webp 1600w, https://beta.acofork.com/media/posts/75/responsive/N100-PVE_cover.DSrIFFcr-2xl.webp 1920w" sizes="88vw" loading="eager" height="300" width="429" alt=""></div></figure></div><div class="entry-wrapper content__entry"><h1 id="配置需求">配置&amp;需求</h1><ul><li><p>N100 CPU 频率：最小 700 Mhz, 最大 3400 Mhz | TDP：6 W</p></li><li><p>8G RAM</p></li><li><p>128G M.2 NVme SSD</p></li><li><p>512G SATA HDD</p></li><li><p>Realtek R8168 有线网卡</p></li><li><p>USB有线网卡</p></li><li><p>U盘（作PVE引导盘）</p></li></ul><h1 id="目标">目标</h1><ol><li><p>所有系统通过PVE管理</p></li><li><p>PVE下安装fnOS，作NAS并配置自动追番（直通：<code>N100核显</code> <code>512G SATA HDD</code> ）</p></li><li><p>PVE下安装Debian，搭建QQBot、博客、AList</p></li></ol><hr><h1 id="1-pve">1. PVE</h1><h2 id="安装">安装</h2><ul><li><p>下载Ventoy最新版可执行文件：</p><p><a href="https://www.ventoy.net/cn/download.html" class="extlink extlink-icon-1">https://www.ventoy.net/cn/download.html</a></p><ul><li>使用GPT分区表，NTFS格式将Ventoy写入U盘</li></ul></li><li><p>下载PVE最新版ISO（使用USTC镜像源）：</p><p><a href="https://mirrors.ustc.edu.cn/help/proxmox.html" class="extlink extlink-icon-1">https://mirrors.ustc.edu.cn/help/proxmox.html</a></p><ul><li>将PVE的ISO文件放入U盘根目录</li></ul></li><li><p>插入USB网卡，U盘连接到到N100，开机从U盘启动，进入PVE安装界面，安装PVE。网络配置选择USB网卡</p></li><li><p>重启，进入PVE，通过IP+8006端口进入WebUI，登录进去</p></li></ul><h2 id="配置">配置</h2><h3 id="安装pve快捷管理脚本">安装PVE快捷管理脚本</h3><ul><li><p>安装PVE快捷管理脚本：<a href="https://alist.onani.cn/pve_source.tar.gz" class="extlink extlink-icon-1">pve_source.tar.gz | AcoFork-AList</a> 或 <a href="https://wwp.lanzoul.com/ivHta1ngmo6d" class="extlink extlink-icon-1"><strong>https://wwp.lanzoul.com/ivHta1ngmo6d</strong></a> （密码:i1ws）（来自：在下莫老师）</p><ul><li><p>解压：<code>tar zxvf pve_source.tar.gz</code></p></li><li><p>运行：<code>./pve_source</code></p></li><li><p>同意许可协议</p></li><li><p>依次执行白框操作</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/ea205e1a00e7029dfa4bd7850c5a6a68d6d4c0d9.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>扩容local：<code>lvextend -rl +100%FREE /dev/pve/root</code></p></li></ul></li></ul><h3 id="配置realtek-r8168网卡">配置Realtek R8168网卡</h3><blockquote><p>由于Debian系默认安装R8169驱动，我们需要手动安装R8168驱动，否则无法使用N100小主机自带的有线网口上网</p></blockquote><ul><li><p>下载驱动：</p><p><a href="https://www.realtek.com/Download/List?cate_id=584" class="extlink extlink-icon-1">https://www.realtek.com/Download/List?cate_id=584</a></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/0d8457c7fb0d497e12e2c8b544f07c3c37cf96cd.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>解压，安装：<code>sh autorun.sh</code></p></li><li><p>查看是否有新的网络接口：<code>ip a</code></p></li><li><pre><code class="language-shell">root@n100-pve:~# ip a
+...
+2: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq master vmbr1 state UP group default qlen 1000
+    link/ether 00:e0:4c:08:91:a6 brd ff:ff:ff:ff:ff:ff
+...
+</code></pre></li><li><p>配置网络配置文件：<code>nano /etc/network/interfaces</code></p><pre><code># network interface settings; autogenerated
+# Please do NOT modify this file directly, unless you know what
+# you&#39;re doing.
+#
+# If you want to manage parts of the network configuration manually,
+# please utilize the &#39;source&#39; or &#39;source-directory&#39; directives to do
+# so.
+# PVE will preserve these directives, but will NOT read its network
+# configuration from sourced files, so do not attempt to move any of
+# the PVE managed interfaces into external files!
+
+auto lo
+iface lo inet loopback
+
+iface wlp1s0 inet manual
+
+iface enp3s0 inet manual
+
+auto vmbr1
+iface vmbr1 inet static
+        address 192.168.124.25/24
+        gateway 192.168.124.1
+        bridge-ports enp3s0
+        bridge-stp off
+        bridge-fd 0
+
+iface vmbr1 inet6 auto
+        dhcp 1
+        accept_ra 2
+        request_prefix 1
+
+source /etc/network/interfaces.d/*
+</code></pre></li><li><p>重启网络服务：<code>systemctl restart networking</code></p></li><li><p>查看ip：<code>ip a</code></p><pre><code class="language-shell">root@n100-pve:~# ip a
+...
+2: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq master vmbr1 state UP group default qlen 1000
+    link/ether 00:e0:4c:08:91:a6 brd ff:ff:ff:ff:ff:ff
+...
+4: vmbr1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:e0:4c:08:91:a6 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.124.25/24 scope global vmbr1
+       valid_lft forever preferred_lft forever
+    inet6 2409:8a30:320:7fc0:2e0:4cff:fe08:91a6/64 scope global dynamic mngtmpaddr
+       valid_lft 2763sec preferred_lft 2762sec
+    inet6 fe80::2e0:4cff:fe08:91a6/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre></li><li><p>卸除USB网卡</p></li></ul><h3 id="配置stun穿透">配置STUN穿透</h3><h4 id="路由器设置dmz主机为pveip">路由器设置DMZ主机为PVEIP</h4><ul><li><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/dbeb7980e5fc699c696ffa6f2fda4a17c05ee821.webp" alt="" data-is-external-image="true"></figure></li></ul><h4 id="安装lucky">安装Lucky</h4><ul><li><p>执行：<code>curl -o /tmp/install.sh http://6.666666.host:6/files/golucky.sh &amp;&amp; sh /tmp/install.sh http://6.666666.host:6/files 2.13.4</code></p></li><li><p>通过<code>host:16601</code> 进入Lucky后台，设置STUN穿透</p></li><li><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/2175839424184aee880b91382bd1fbf3c578d258.webp" alt="" data-is-external-image="true"></figure></li></ul><h1 id="2-fnos">2. fnOS</h1><h2 id="安装-1">安装</h2><ul><li><p>前往官网下载最新版ISO：</p><p><a href="https://www.fnnas.com/" class="extlink extlink-icon-1">https://www.fnnas.com/</a></p></li><li><p>上传至PVE：</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/073808516d357e099a866c30b4a77954c5b9b458.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>创建fnOS虚拟机，CPU类型选择host，步骤略</p></li><li><p>直通核显和硬盘：</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/08e4f7a3b87ae86334011e1d4c3a384a36ad9866.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>如果你不知道你的核显和SATA控制器的PCI ID：<code>lspci</code></p><ul><li><p>可见核显为<code>00:02.0</code>，SATA控制器为<code>00:17.0</code></p><pre><code class="language-shell">root@n100-pve:~# lspci
+00:00.0 Host bridge: Intel Corporation Device 461c
+00:02.0 VGA compatible controller: Intel Corporation Alder Lake-N [UHD Graphics]
+00:0a.0 Signal processing controller: Intel Corporation Platform Monitoring Technology (rev 01)
+00:14.0 USB controller: Intel Corporation Alder Lake-N PCH USB 3.2 xHCI Host Controller
+00:14.2 RAM memory: Intel Corporation Alder Lake-N PCH Shared SRAM
+00:16.0 Communication controller: Intel Corporation Alder Lake-N PCH HECI Controller
+00:17.0 SATA controller: Intel Corporation Alder Lake-N SATA AHCI Controller
+00:1a.0 SD Host controller: Intel Corporation Device 54c4
+00:1c.0 PCI bridge: Intel Corporation Device 54be
+00:1d.0 PCI bridge: Intel Corporation Alder Lake-N PCI Express Root Port
+00:1d.1 PCI bridge: Intel Corporation Alder Lake-N PCI Express Root Port
+00:1e.0 Communication controller: Intel Corporation Alder Lake-N Serial IO UART Host Controller
+00:1e.3 Serial bus controller: Intel Corporation Device 54ab
+00:1f.0 ISA bridge: Intel Corporation Alder Lake-N PCH eSPI Controller
+00:1f.3 Audio device: Intel Corporation Alder Lake-N PCH High Definition Audio Controller
+00:1f.4 SMBus: Intel Corporation Alder Lake-N SMBus
+00:1f.5 Serial bus controller: Intel Corporation Alder Lake-N SPI (flash) Controller
+01:00.0 Network controller: Intel Corporation Wireless 3160 (rev 83)
+02:00.0 Non-Volatile memory controller: Realtek Semiconductor Co., Ltd. RTS5765DL NVMe SSD Controller (DRAM-less) (rev 01)
+03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 2b)
+</code></pre></li></ul></li><li><p>启动虚拟机，安装fnOS</p></li></ul><h2 id="配置-1">配置</h2><ul><li><p>前往飞牛设置，创建储存空间，Linear模式，选择刚才直通的硬盘</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/581cf01462df545a8662acbb5e20e1676bd17744.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>前往飞牛应用中心安装qBittorrent、影视，并且在设置给予目录读取权限</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/92a2e0bf25d630db4858775fdbb6c907f419c25d.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>配置qBittorrent的用户名和密码</p></li><li><p>打开飞牛Docker，初始化</p></li><li><p>拉取并运行AutoBangumi Docker镜像：</p><pre><code class="language-shell">docker run -d \
+--name=AutoBangumi \
+-v /vol1/1000/AutoBangumi/config:/app/config \
+-v /vol1/1000/AutoBangumi/data:/app/data \
+-p 7892:7892 \
+-e TZ=Asia/Shanghai \
+-e PUID=$(id -u) \
+-e PGID=$(id -g) \
+-e UMASK=022 \
+--network=bridge \
+--dns=8.8.8.8 \
+--restart unless-stopped \
+ghcr.onani.cn/estrellaxd/auto_bangumi:latest
+</code></pre></li><li><p>进入<code>host:7892</code> 让AutoBangumi连接qBittorrent并配置下载地址</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/82c4a003d2399f82a7ccf5849cd1d5858d5f1f61.webp" alt="" data-is-external-image="true"></figure><p></p></li><li><p>添加RSS。可前往<a href="https://mikanime.tv/" class="extlink extlink-icon-1">蜜柑计划 - Mikan Project</a>获得各个字幕组的RSS</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/f36daae968d8043bbcd1e4a2bbb9b9cd2d707cee.webp" alt="" data-is-external-image="true"></figure><p>注意：使用<a href="https://mikanime.tv/" class="extlink extlink-icon-1">蜜柑计划 - Mikan Project</a>时，请订阅单个字幕组的RSS，不要使用个人的RSS，会导致<strong>只能获取到你所有追番的最新一集而不是单个番的全部剧集</strong></p></li><li><p>打开飞牛影视，初始化并设置媒体库</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/269b78c3b7dffe7f8cdb861098f44147552b5eb4.webp" alt="" data-is-external-image="true"></figure><p></p><ul><li><p>注意：如果要刮削旧集旧番，请规范重命名，可以使用自动化工具：<a href="https://alist.onani.cn/Episode-ReName.zip" class="extlink extlink-icon-1">Episode-ReName.zip | AcoFork-AList</a></p><ul><li><p>一级目录：即qb下载目录，无需重命名</p></li><li><p>二级目录：番剧名称</p></li><li><p>三级目录：季，如<code>Season 1</code></p></li><li><p>四级目录：集和字幕，如<code>S01E01.mp4</code> <code>S01E01.chs.ass</code></p></li></ul></li></ul></li></ul><h1 id="3-debian">3. Debian</h1><h2 id="安装-2">安装</h2><ul><li><p>下载Debian12 ISO（USTC镜像源）（建议选择DVD镜像，包更全，安装更快）</p><p><a href="https://mirrors.ustc.edu.cn/help/debian-cd.html" class="extlink extlink-icon-1">https://mirrors.ustc.edu.cn/help/debian-cd.html</a></p></li><li><p>上传至PVE，创建Debian虚拟机，CPU类型选择host，步骤略</p></li></ul><h3 id="安装1panel：">安装1Panel：</h3><p><a href="https://1panel.cn/docs/installation/online_installation/" class="extlink extlink-icon-1">https://1panel.cn/docs/installation/online_installation/</a></p><ul><li>在1Panel中安装<code>Openresty</code> <code>MySQL</code> <code>Halo</code> <code>AList</code> <code>Cloudflared</code> 配置步骤略</li></ul><h3 id="搭建qqbot">搭建QQBot</h3><h4 id="安装onebotv11协议实现：lagrangeonebot">安装OneBotv11协议实现：Lagrange.OneBot</h4><ul><li><p>Docker Run：<code>docker run -td -p 8081:8081 -v /root/qqbot/lo:/app/data -e UID=$UID -e GID=$(id -g) ghcr.onani.cn/lagrangedev/lagrange.onebot:edge</code></p></li><li><p>修改配置文件：<code>appsettings.json</code></p><pre><code class="language-json">{
+    &quot;Logging&quot;: {
+        &quot;LogLevel&quot;: {
+            &quot;Default&quot;: &quot;Information&quot;,
+            &quot;Microsoft&quot;: &quot;Warning&quot;,
+            &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;
+        }
+    },
+    &quot;SignServerUrl&quot;: &quot;&quot;,
+    &quot;SignProxyUrl&quot;: &quot;&quot;,
+    &quot;MusicSignServerUrl&quot;: &quot;&quot;,
+    &quot;Account&quot;: {
+        &quot;Uin&quot;: 0,
+        &quot;Password&quot;: &quot;&quot;,
+        &quot;Protocol&quot;: &quot;Linux&quot;,
+        &quot;AutoReconnect&quot;: true,
+        &quot;GetOptimumServer&quot;: true
+    },
+    &quot;Message&quot;: {
+        &quot;IgnoreSelf&quot;: true,
+        &quot;StringPost&quot;: false
+    },
+    &quot;QrCode&quot;: {
+        &quot;ConsoleCompatibilityMode&quot;: false
+    },
+    &quot;Implementations&quot;: [
+        {
+            &quot;Type&quot;: &quot;ReverseWebSocket&quot;,
+            &quot;Host&quot;: &quot;192.168.124.34&quot;,
+            &quot;Port&quot;: 9090,
+            &quot;Suffix&quot;: &quot;/onebot/v11/ws&quot;,
+            &quot;ReconnectInterval&quot;: 5000,
+            &quot;HeartBeatInterval&quot;: 5000,
+            &quot;AccessToken&quot;: &quot;&quot;
+        }
+    ]
+}
+</code></pre></li><li><p>重启容器，扫码登录</p></li></ul><h4 id="安装nonebot2">安装NoneBot2</h4><ul><li><p>安装pip：<code>apt install python3-pip</code></p></li><li><p>配置pip USTC源：<code>pip config set global.index-url https://mirrors.ustc.edu.cn/pypi/simple</code></p></li><li><p>安装pipx：<code>apt install pipx</code></p></li><li><p>安装nb-cli：<code>pipx install nb-cli</code></p></li><li><p>设置pipx变量：<code>pipx ensurepath</code></p></li><li><p>安装nb bootstrap：<code>nb self install nb-cli-plugin-bootstrap</code></p></li><li><p>创建新NoneBot2项目：<code>nb bs</code></p></li><li><pre><code>root@n100-debian:~# nb bs
+加载适配器列表中……
+请输入项目名称
+[?] 请输入 &gt; onani
+[?] 请选择你想要使用的适配器 OneBot V11 (OneBot V11 协议)
+请输入 Bot 超级用户，超级用户拥有对 Bot 的最高权限（如对接 QQ 填 QQ 号即可）（留空回车结束输入）
+[?] 第 1 项 &gt; 666
+[?] 第 2 项 &gt;
+请输入 Bot 昵称，消息以 Bot 昵称开头可以代替艾特（留空回车结束输入）
+[?] 第 1 项 &gt;
+请输入 Bot 命令起始字符，消息以起始符开头将被识别为命令，
+如果有一个指令为 查询，当该配置项中有 &quot;/&quot; 时使用 &quot;/查询&quot; 才能够触发，
+留空将使用默认值 [&#39;&#39;, &#39;/&#39;, &#39;#&#39;]（留空回车结束输入）
+[?] 第 1 项 &gt;
+请输入 Bot 命令分隔符，一般用于二级指令，
+留空将使用默认值 [&#39;.&#39;, &#39; &#39;]（留空回车结束输入）
+[?] 第 1 项 &gt;
+请输入 NoneBot2 监听地址，如果要对公网开放，改为 0.0.0.0 即可
+[?] 请输入 &gt; 0.0.0.0
+请输入 NoneBot2 监听端口，范围 1 ~ 65535，请保证该端口号与连接端配置相同，或与端口映射配置相关
+[?] 请输入 &gt; 9090
+[?] 是否在项目目录中释出快捷启动脚本？ Yes
+[?] 是否将 localstore 插件的存储路径重定向到项目路径下以便于后续迁移 Bot？ Yes
+[?] 是否使用超级用户 Ping 指令回复插件？ Yes
+[?] 是否安装 logpile 插件提供日志记录到文件功能？ Yes
+[?] 是否在启动脚本中使用 webui 插件启动项目以使用网页管理 NoneBot？（该插件仍在开发中，不推荐用于生产环境） No
+成功新建项目 onani
+[?] 是否新建虚拟环境？ Yes
+正在 /root/onani/.venv 中创建虚拟环境
+创建虚拟环境成功
+[?] 是否需要修改或清除 pip 的 PyPI 镜像源配置？ No
+[?] 是否立即安装项目依赖？ Yes
+正在安装项目依赖
+依赖安装成功
+[?] 请选择需要启用的内置插件
+项目配置完毕，开始使用吧！
+</code></pre></li></ul><h1 id="成果展示（域名已弃用）">成果展示（域名已弃用）</h1><figure class="post__image"><img decoding="async" src="../assets/images/4b4680cc548e0c59ec18cef537c9b1f5412fbbcd.webp" alt="" data-is-external-image="true"></figure><p><a href="https://blog.onani.cn" class="extlink extlink-icon-1">https://blog.onani.cn</a></p><p><a href="https://alist.onani.cn" class="extlink extlink-icon-1">https://alist.onani.cn</a></p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/7c24ff7d54b2e0ccaecce4b2ef79155c54124fa4.webp" alt="" data-is-external-image="true"></figure></div><footer class="content__footer"><div class="entry-wrapper"><p class="content__updated">This article was updated on 25/12/29 17:12:06</p><div class="content__actions"><div class="content__share"><button class="btn--icon content__share-button js-content__share-button"><svg width="20" height="20" aria-hidden="true"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#share"></use></svg> <span>Share It</span></button><div class="content__share-popup js-content__share-popup"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F" class="js-share facebook" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#facebook"/></svg> <span>Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F&amp;via=AcoFork%20Blog%20(Beta)&amp;text=N100%20-%20PVE%EF%BC%88fnOS%2BDebian%EF%BC%89%E5%9F%BA%E5%BB%BA%E8%AE%B0%E5%BD%95" class="js-share twitter" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#twitter"/></svg> <span>Twitter</span> </a><a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F&amp;media=https%3A%2F%2Fbeta.acofork.com%2Fmedia%2Fposts%2F75%2FN100-PVE_cover.DSrIFFcr.webp&amp;description=N100%20-%20PVE%EF%BC%88fnOS%2BDebian%EF%BC%89%E5%9F%BA%E5%BB%BA%E8%AE%B0%E5%BD%95" class="js-share pinterest" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#pinterest"/></svg> <span>Pinterest</span> </a><a href="https://mix.com/add?url=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F" class="js-share mix" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#mix"/></svg> <span>Mix</span> </a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F" class="js-share linkedin" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#linkedin"/></svg> <span>LinkedIn</span> </a><a href="https://buffer.com/add?text=N100%20-%20PVE%EF%BC%88fnOS%2BDebian%EF%BC%89%E5%9F%BA%E5%BB%BA%E8%AE%B0%E5%BD%95&amp;url=https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F" class="js-share buffer" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#buffer"/></svg> <span>Buffer</span> </a><a href="https://api.whatsapp.com/send?text=N100%20-%20PVE%EF%BC%88fnOS%2BDebian%EF%BC%89%E5%9F%BA%E5%BB%BA%E8%AE%B0%E5%BD%95 https%3A%2F%2Fbeta.acofork.com%2Fn100-pvefnosdebianji-jian-ji-lu%2F" class="js-share whatsapp" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#whatsapp"/></svg> <span>WhatsApp</span></a></div></div></div><div class="content__bio bio"><div><h3 class="h4 bio__name"><a href="https://beta.acofork.com/authors/acofork/" rel="author">AcoFork</a></h3></div></div></div><nav class="content__nav"><div class="wrapper"><div class="content__nav-inner"><div class="content__nav-prev"><a href="https://beta.acofork.com/jiu-ji-wei-fan-jiao-chengshou-ba-shou-jiao-ni-nei-wang-chuan-tou/" class="content__nav-link" rel="prev"><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/5/responsive/2024-10-28-17-00-25-image.CSsoOyOp-xs.webp" class="lazyload" loading="lazy" alt="" height="1366" width="1366"></figure><div><span>Previous</span> 究极喂饭教程，手把手教你内网穿透</div></a></div><div class="content__nav-next"><a href="https://beta.acofork.com/shi-yong-nonebot2da-jian-ni-de-qqbot/" class="content__nav-link" rel="next"><div><span>Next</span> 使用NoneBot2搭建你的QQBot！</div><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/90/responsive/QmcMSSKysZmgUCUk9W7hQUvZCtVSFH6hGKHctg99yo1yDE.DwFVm4DV-xs.webp" class="lazyload" loading="lazy" alt="" height="1090" width="1090"></figure></a></div></div></div></nav></footer></article><div class="banner banner--after-content"><div class="wrapper"><script src="https://giscus.app/client.js" data-repo="afoim/giscus-fuwari" data-repo-id="R_kgDOOi8quw" data-category="Announcements" data-category-id="DIC_kwDOOi8qu84CprDV" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script></div></div></main><footer class="footer footer--glued"><div class="wrapper"><div class="footer__copyright"><p>Powered by <a href="https://getpublii.com">Publii</a> / <a href="https://beian.miit.gov.cn/#/Integrated/index">皖ICP备2025099787号-2</a></p></div><button id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg width="20" height="20"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#toparrow"/></svg></button></div></footer><script defer="defer" src="https://beta.acofork.com/assets/js/scripts.min.js?v=700105c316933a8202041b6415abb233"></script><script>window.publiiThemeMenuConfig={mobileMenuMode:'sidebar',animationSpeed:300,submenuWidth: 'auto',doubleClickTime:500,mobileMenuExpandableSubmenus:true,relatedContainerForOverlayMenuSelector:'.top'};</script><script>var images = document.querySelectorAll('img[loading]');
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].complete) {
+                images[i].classList.add('is-loaded');
+            } else {
+                images[i].addEventListener('load', function () {
+                    this.classList.add('is-loaded');
+                }, false);
+            }
+        }</script><script>(function() {
+			var originalTitle = document.title;
+			var timeout;
+			document.addEventListener("visibilitychange", function() {
+				if (document.hidden) {
+					document.title = "👀 我想你了！快回来吧！";
+				} else {
+					clearTimeout(timeout);
+					document.title = "🎉 欢迎回来！";
+							setTimeout(function() {
+								document.title = originalTitle;
+							}, 2000);
+				}
+			});
+		})();</script><script src="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid.min.js"></script><script>mermaid.initialize({ startOnLoad: true, theme: "default" });</script><script src="https://beta.acofork.com/media/plugins/pagePrefetching/quicklink.umd.js"></script><script>window.addEventListener('load', () => {
+					quicklink.listen({
+						prerender: false,
+						el: document.querySelector('body'),
+						delay: 0,
+						limit: Infinity,
+						throttle: Infinity,
+						timeout: 2000
+					});
+				});</script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-line-numbers.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-copy-to-clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-autolinker.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-show-invisibles.min.js"></script><div class="pcb" data-behaviour="badge" data-behaviour-link="#cookie-settings" data-revision="1" data-config-ttl="90" data-debug-mode="false"><div role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-title" aria-describedby="pcb-txt" class="pcb__banner"><div class="pcb__inner"><div id="pcb-title" role="heading" aria-level="2" class="pcb__title">本网站使用Cookie！</div><div id="pcb-txt" class="pcb__txt">通过下面的复选框选择您同意接收的 Cookie；我们的网站使用 Cookie 来分析网站流量和用户在本站的活动，用于营销以及提供社交媒体功能。</div><div class="pcb__buttons"><button type="button" class="pcb__btn pcb__btn--link pcb__btn--configure" aria-haspopup="dialog"></button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button></div></div></div><div class="pcb__popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-popup-title"><div class="pcb__popup__wrapper"><div class="pcb__inner pcb__popup__inner"><div class="pcb__popup__heading"><div id="pcb-popup-title" role="heading" aria-level="2" class="pcb__title">Cookie设置</div><button class="pcb__popup__close" aria-label="Close"></button></div><div class="pcb__popup__content"><div class="pcb__txt pcb__popup__txt">我们使用 cookies 来提升您的浏览体验，提供个性化广告或内容，并分析我们的流量。点击“全部接受”即表示您同意我们使用 cookies。</div><ul class="pcb__groups"><li class="pcb__group"><details><summary class="pcb__group__title">站点分析</summary><p class="pcb__group__txt">允许发送匿名访问数据至第三方统计服务，用于网站分析（不包含任何隐私信息）。</p></details><div class="pcb__popup__switch"><input type="checkbox" data-group-name="analytics" id="analytics-cookies"> <label for="analytics-cookies">站点分析</label></div></li></ul></div><div class="pcb__buttons pcb__popup__buttons"><button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--save">保存设置</button></div></div></div></div><div class="pcb__overlay" aria-hidden="true"></div><button class="pcb__badge" aria-label="Cookie 设置" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 23 23" fill="currentColor"><path d="M21.41 12.71c-.08-.01-.15 0-.22 0h-.03c-.03 0-.05 0-.08.01-.07 0-.13.01-.19.04-.52.21-1.44.19-2.02-.22-.44-.31-.65-.83-.62-1.53a.758.758 0 0 0-.27-.61.73.73 0 0 0-.65-.14c-1.98.51-3.49.23-4.26-.78-.82-1.08-.73-2.89.24-4.49.14-.23.14-.52 0-.75a.756.756 0 0 0-.67-.36c-.64.03-1.11-.1-1.31-.35-.19-.26-.13-.71-.01-1.29.04-.18.06-.38.03-.59-.05-.4-.4-.7-.81-.66C5.1 1.54 1 6.04 1 11.48 1 17.28 5.75 22 11.6 22c5.02 0 9.39-3.54 10.39-8.42.08-.4-.18-.78-.58-.87Zm-9.81 7.82c-5.03 0-9.12-4.06-9.12-9.06 0-4.34 3.05-8 7.25-8.86-.08.7.05 1.33.42 1.81.24.32.66.67 1.38.84-.76 1.86-.65 3.78.36 5.11.61.81 2.03 2 4.95 1.51.18.96.71 1.54 1.18 1.87.62.43 1.38.62 2.1.62.05 0 .09 0 .13-.01-1.23 3.64-4.7 6.18-8.64 6.18ZM13 17c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1Zm5.29-12.3a.99.99 0 0 1-.29-.71c0-.55.45-.99 1-.99a1 1 0 0 1 .71.3c.19.19.29.44.29.71 0 .55-.45.99-1 .99a1 1 0 0 1-.71-.3ZM9 13.5c0 .83-.67 1.5-1.5 1.5S6 14.33 6 13.5 6.67 12 7.5 12s1.5.67 1.5 1.5Zm3.25.81a.744.744 0 0 1-.06-1.05c.28-.32.75-.34 1.05-.06.31.28.33.75.05 1.06-.15.16-.35.25-.56.25-.18 0-.36-.06-.5-.19ZM8.68 7.26c.41.37.44 1 .07 1.41-.2.22-.47.33-.75.33a.96.96 0 0 1-.67-.26c-.41-.37-.44-1-.07-1.41.37-.42 1-.45 1.41-.08Zm11.48 1.88c.18-.19.52-.19.7 0 .05.04.09.1.11.16.03.06.04.12.04.19 0 .13-.05.26-.15.35-.09.1-.22.15-.35.15s-.26-.05-.35-.15a.355.355 0 0 1-.11-.16.433.433 0 0 1-.04-.19c0-.13.05-.26.15-.35Zm-4.93-1.86a.75.75 0 1 1 1.059-1.06.75.75 0 0 1-1.059 1.06Z"/></svg></button></div><script>(function(win) {
+    if (!document.querySelector('.pcb')) {
+        return;
+    }
+
+    var cbConfig = {
+        behaviour: document.querySelector('.pcb').getAttribute('data-behaviour'),
+        behaviourLink: document.querySelector('.pcb').getAttribute('data-behaviour-link'),
+        revision: document.querySelector('.pcb').getAttribute('data-revision'),
+        configTTL: parseInt(document.querySelector('.pcb').getAttribute('data-config-ttl'), 10),
+        debugMode: document.querySelector('.pcb').getAttribute('data-debug-mode') === 'true',
+        initialState: null,
+        initialLsState: null,
+        previouslyAccepted: []
+    };
+
+    var cbUI = {
+        wrapper: document.querySelector('.pcb'),
+        banner: {
+            element: null,
+            btnAccept: null,
+            btnReject: null,
+            btnConfigure: null
+        },
+        popup: {
+            element: null,
+            btnClose: null,
+            btnSave: null,
+            btnAccept: null,
+            btnReject: null,
+            checkboxes: null,
+        },
+        overlay: null,
+        badge: null,
+        blockedScripts: document.querySelectorAll('script[type^="gdpr-blocker/"]'),
+        triggerLinks: cbConfig.behaviourLink ? document.querySelectorAll('a[href*="' + cbConfig.behaviourLink + '"]') : null
+    };
+
+    function initUI () {
+        // setup banner elements
+        cbUI.banner.element = cbUI.wrapper.querySelector('.pcb__banner');
+        cbUI.banner.btnAccept = cbUI.banner.element.querySelector('.pcb__btn--accept');
+        cbUI.banner.btnReject = cbUI.banner.element.querySelector('.pcb__btn--reject');
+        cbUI.banner.btnConfigure = cbUI.banner.element.querySelector('.pcb__btn--configure');
+
+        // setup popup elements
+        if (cbUI.wrapper.querySelector('.pcb__popup')) {
+            cbUI.popup.element = cbUI.wrapper.querySelector('.pcb__popup');
+            cbUI.popup.btnClose = cbUI.wrapper.querySelector('.pcb__popup__close');
+            cbUI.popup.btnSave = cbUI.popup.element.querySelector('.pcb__btn--save');
+            cbUI.popup.btnAccept = cbUI.popup.element.querySelector('.pcb__btn--accept');
+            cbUI.popup.btnReject = cbUI.popup.element.querySelector('.pcb__btn--reject');
+            cbUI.popup.checkboxes = cbUI.popup.element.querySelector('input[type="checkbox"]');
+            // setup overlay
+            cbUI.overlay = cbUI.wrapper.querySelector('.pcb__overlay');
+        }
+
+        cbUI.badge = cbUI.wrapper.querySelector('.pcb__badge');
+
+        if (cbConfig.behaviour.indexOf('link') > -1) {
+            for (var i = 0; i < cbUI.triggerLinks.length; i++) {
+                cbUI.triggerLinks[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showBannerOrPopup();
+                });
+            }
+        }
+    }
+
+    function initState () {
+        var lsKeyName = getConfigName();
+        var currentConfig = localStorage.getItem(lsKeyName);
+        var configIsFresh = checkIfConfigIsFresh();
+
+        if (!configIsFresh || currentConfig === null) {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config not found, or configuration expired');
+            }
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                    'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                    'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                    'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                    'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                    'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                    'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                });  
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                        'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                        'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                        'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                        'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                        'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                        'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                    }));
+                }
+            }
+
+            showBanner();
+        } else if (typeof currentConfig === 'string') {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config founded');
+            }
+
+            cbConfig.initialLsState = currentConfig.split(',');
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                    'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                    'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                    'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                    'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                    'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                    'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                });
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                        'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                        'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                        'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                        'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                        'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                        'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                    }));
+                }
+            }
+
+            showBadge();
+
+            if (cbUI.popup.element) {
+                var allowedGroups = currentConfig.split(',');
+                var checkedCheckboxes = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+
+                for (var j = 0; j < checkedCheckboxes.length; j++) {
+                    var name = checkedCheckboxes[j].getAttribute('data-group-name');
+
+                    if (name && name !== '-' && allowedGroups.indexOf(name) === -1) {
+                        checkedCheckboxes[j].checked = false;
+                    }
+                }
+
+                for (var i = 0; i < allowedGroups.length; i++) {
+                    var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + allowedGroups[i] + '"]');
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+
+                    allowCookieGroup(allowedGroups[i]);
+                }
+            }
+        }
+
+        setTimeout(function () {
+            cbConfig.initialState = getInitialStateOfConsents();
+        }, 0);
+    }
+
+    function checkIfConfigIsFresh () {
+        var lastConfigSave = localStorage.getItem('publii-gdpr-cookies-config-save-date');
+
+        if (lastConfigSave === null) {
+            return false;
+        }
+
+        lastConfigSave = parseInt(lastConfigSave, 10);
+
+        if (lastConfigSave === 0) {
+            return true;
+        }
+
+        if (+new Date() - lastConfigSave < cbConfig.configTTL * 24 * 60 * 60 * 1000) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function getDefaultConsentState (currentConfig, consentGroup) {
+        let configGroups = currentConfig.split(',');
+
+        for (let i = 0; i < configGroups.length; i++) {
+            let groupName = configGroups[i];
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === groupName);
+
+            if (group && group[consentGroup]) {
+                return 'granted';
+            }
+        }  
+        
+        if (window.publiiCBGCM.defaultState[consentGroup]) {
+            return 'granted'; 
+        }
+        
+        return 'denied';
+    }
+
+    function initBannerEvents () {
+        cbUI.banner.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('banner');
+            showBadge();
+        }, false);
+
+        if (cbUI.banner.btnReject) {
+            cbUI.banner.btnReject.addEventListener('click', function (e) {
+                e.preventDefault();
+                rejectAllCookies();
+                showBadge();
+            }, false);
+        }
+
+        if (cbUI.banner.btnConfigure) {
+            cbUI.banner.btnConfigure.addEventListener('click', function (e) {
+                e.preventDefault();
+                hideBanner();
+                showAdvancedPopup();
+                showBadge();
+            }, false);
+        }
+    }
+
+    function initPopupEvents () {
+        if (!cbUI.popup.element) {
+            return;
+        }
+
+        cbUI.overlay.addEventListener('click', function (e) {
+            hideAdvancedPopup();
+        }, false);
+
+        cbUI.popup.element.addEventListener('click', function (e) {
+            e.stopPropagation();
+        }, false);
+
+        cbUI.popup.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('popup');
+        }, false);
+
+        cbUI.popup.btnReject.addEventListener('click', function (e) {
+            e.preventDefault();
+            rejectAllCookies();
+        }, false);
+
+        cbUI.popup.btnSave.addEventListener('click', function (e) {
+            e.preventDefault();
+            saveConfiguration();
+        }, false);
+
+        cbUI.popup.btnClose.addEventListener('click', function (e) {
+            e.preventDefault();
+            hideAdvancedPopup();
+        }, false);
+    }
+
+    function initBadgeEvents () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.addEventListener('click', function (e) {
+            showBannerOrPopup();
+        }, false);
+    }
+
+    initUI();
+    initState();
+    initBannerEvents();
+    initPopupEvents();
+    initBadgeEvents();
+
+    /**
+     * API
+     */
+    function addScript (src, inline) {
+        var newScript = document.createElement('script');
+
+        if (src) {
+            newScript.setAttribute('src', src);
+        }
+
+        if (inline) {
+            newScript.text = inline;
+        }
+
+        document.body.appendChild(newScript);
+    }
+
+    function allowCookieGroup (allowedGroup) {
+        var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + allowedGroup + '"]');
+        cbConfig.previouslyAccepted.push(allowedGroup);
+    
+        for (var j = 0; j < scripts.length; j++) {
+            addScript(scripts[j].src, scripts[j].text);
+        }
+
+        var groupEvent = new Event('publii-cookie-banner-unblock-' + allowedGroup);
+        document.body.dispatchEvent(groupEvent);
+        unlockEmbeds(allowedGroup);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Allowed group: ' + allowedGroup);
+        }
+
+        if (window.publiiCBGCM && (!cbConfig.initialLsState || cbConfig.initialLsState.indexOf(allowedGroup) === -1)) {
+            let consentResult = {};
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === allowedGroup);
+
+            if (group) {
+                let foundSomeConsents = false;
+
+                Object.keys(group).forEach(key => {
+                    if (key !== 'cookieGroup' && group[key] === true) {
+                        consentResult[key] = 'granted';
+                        foundSomeConsents = true;
+                    }
+                });
+
+                if (foundSomeConsents) {
+                    gtag('consent', 'update', consentResult);   
+
+                    if (cbConfig.debugMode) {
+                        console.log('🍪 GCMv2 UPDATE: ' + JSON.stringify(consentResult));
+                    }
+                }
+            }
+        }
+    }
+
+    function showBannerOrPopup () {
+        if (cbUI.popup.element) {
+            showAdvancedPopup();
+        } else {
+            showBanner();
+        }
+    }
+
+    function showAdvancedPopup () {
+        cbUI.popup.element.classList.add('is-visible');
+        cbUI.overlay.classList.add('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'false');
+        cbUI.overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideAdvancedPopup () {
+        cbUI.popup.element.classList.remove('is-visible');
+        cbUI.overlay.classList.remove('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'true');
+        cbUI.overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBanner () {
+        cbUI.banner.element.classList.add('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideBanner () {
+        cbUI.banner.element.classList.remove('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBadge () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.classList.add('is-visible');
+        cbUI.badge.setAttribute('aria-hidden', 'false');
+    }
+
+    function getConfigName () {
+        var lsKeyName = 'publii-gdpr-allowed-cookies';
+
+        if (cbConfig.revision) {
+            lsKeyName = lsKeyName + '-v' + parseInt(cbConfig.revision, 10);
+        }
+
+        return lsKeyName;
+    }
+
+    function storeConfiguration (allowedGroups) {
+        var lsKeyName = getConfigName();
+        var dataToStore = allowedGroups.join(',');
+        localStorage.setItem(lsKeyName, dataToStore);
+
+        if (cbConfig.configTTL === 0) {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', 0);
+
+            if (cbConfig.debugMode) {
+                console.log('🍪 Store never expiring configuration');
+            }
+        } else {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', +new Date());
+        }
+    }
+
+    function getInitialStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Initial state: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getCurrentStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 State to save: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getAllGroups () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        return groups;
+    }
+
+    function acceptAllCookies (source) {
+        var groupsToAccept = getAllGroups();
+        storeConfiguration(groupsToAccept);
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        if (cbUI.popup.element) {
+            var checkboxesToCheck = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+
+            for (var j = 0; j < checkboxesToCheck.length; j++) {
+                checkboxesToCheck[j].checked = true;
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Accept all cookies: ', groupsToAccept.join(', '));
+        }
+
+        if (source === 'popup') {
+            hideAdvancedPopup();
+        } else if (source === 'banner') {
+            hideBanner();
+        }
+    }
+
+    function rejectAllCookies () {
+        if (cbConfig.debugMode) {
+            console.log('🍪 Reject all cookies');
+        }
+
+        storeConfiguration([]);
+        setTimeout(function () {
+            window.location.reload();
+        }, 100);
+    }
+
+    function saveConfiguration () {
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+
+        if (reloadIsNeeded(groupsToAccept)) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 100);
+            return;
+        }
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        hideAdvancedPopup();
+    }
+
+    function reloadIsNeeded (groupsToAccept) {
+        // check if user rejected consent for initial groups
+        var initialGroups = cbConfig.initialState;
+        var previouslyAcceptedGroups = cbConfig.previouslyAccepted;
+        var groupsToCheck = initialGroups.concat(previouslyAcceptedGroups);
+
+        for (var i = 0; i < groupsToCheck.length; i++) {
+            var groupToCheck = groupsToCheck[i];
+
+            if (groupToCheck !== '' && groupsToAccept.indexOf(groupToCheck) === -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Reload is needed due lack of: ', groupToCheck);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function unlockEmbeds (cookieGroup) {
+        var iframesToUnlock = document.querySelectorAll('.pec-wrapper[data-consent-group-id="' + cookieGroup + '"]');
+
+        for (var i = 0; i < iframesToUnlock.length; i++) {
+            var iframeWrapper = iframesToUnlock[i];
+            iframeWrapper.querySelector('.pec-overlay').classList.remove('is-active');
+            iframeWrapper.querySelector('.pec-overlay').setAttribute('aria-hidden', 'true');
+            var iframe = iframeWrapper.querySelector('iframe');
+            iframe.setAttribute('src', iframe.getAttribute('data-consent-src'));
+        }
+    }
+
+    win.publiiEmbedConsentGiven = function (cookieGroup) {
+        // it will unlock embeds
+        allowCookieGroup(cookieGroup);
+
+        var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + cookieGroup + '"]');
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+    }
+})(window);</script></body></html>

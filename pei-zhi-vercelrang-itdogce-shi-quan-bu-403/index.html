@@ -1,0 +1,2090 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>配置Vercel让ITDog测试全部403！ - AcoFork Blog (Beta)</title><meta name="description" content="配套视频 https://www.bilibili.com/video/BV1w7GTzMEy7&hellip;"><meta name="generator" content="Publii Open-Source CMS for Static Site"><script type="gdpr-blocker/analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-GCK58D6070"></script><script type="gdpr-blocker/analytics">window.dataLayer = window.dataLayer || [];
+				  function gtag(){dataLayer.push(arguments);}
+				  gtag('js', new Date());
+				  gtag('config', 'G-GCK58D6070' , { 'anonymize_ip': true });</script><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid-invert-filter.css"><meta name="theme-color" content="#17181E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#D73A42" media="(prefers-color-scheme: light)"><meta name="msapplication-navbutton-color" content="#D73A42"><meta name="apple-mobile-web-app-status-bar-style" content="#D73A42"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-black.css"><link rel="stylesheet" href="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.css"><script async defer="defer" type="gdpr-blocker/analytics" src="https://umami.acofork.com/script.js" data-website-id="a3c761fb-d328-4521-9bcb-98c6e076b1bb" data-auto-track="true" data-do-not-track="true" data-cache="false"></script><link rel="canonical" href="https://beta.acofork.com/pei-zhi-vercelrang-itdogce-shi-quan-bu-403/"><link rel="alternate" type="application/atom+xml" href="https://beta.acofork.com/feed.xml" title="AcoFork Blog (Beta) - RSS"><link rel="alternate" type="application/json" href="https://beta.acofork.com/feed.json" title="AcoFork Blog (Beta) - JSON"><meta property="og:title" content="配置Vercel让ITDog测试全部403！"><meta property="og:image" content="https://beta.acofork.com/media/posts/117/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT.webp"><meta property="og:image:width" content="469"><meta property="og:image:height" content="344"><meta property="og:site_name" content="AcoFork Blog (Beta)"><meta property="og:description" content="配套视频 https://www.bilibili.com/video/BV1w7GTzMEy7&hellip;"><meta property="og:url" content="https://beta.acofork.com/pei-zhi-vercelrang-itdogce-shi-quan-bu-403/"><meta property="og:type" content="article"><link rel="shortcut icon" href="https://beta.acofork.com/media/website/b_53bb4f7fa91d684e72b6604e3fcc189.jpg" type="image/x-icon"><link rel="stylesheet" href="https://beta.acofork.com/assets/css/style.css?v=bb5e85e6ce5f66a897d88a8939c26399"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://beta.acofork.com/pei-zhi-vercelrang-itdogce-shi-quan-bu-403/"},"headline":"配置Vercel让ITDog测试全部403！","datePublished":"2025-07-10T17:40+08:00","dateModified":"2025-12-29T17:40+08:00","image":{"@type":"ImageObject","url":"https://beta.acofork.com/media/posts/117/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT.webp","height":344,"width":469},"description":"配套视频 https://www.bilibili.com/video/BV1w7GTzMEy7&hellip;","author":{"@type":"Person","name":"AcoFork","url":"https://beta.acofork.com/authors/acofork/"},"publisher":{"@type":"Organization","name":"AcoFork"}}</script><noscript><style>img[loading] {
+                    opacity: 1;
+                }</style></noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>(function () {
+  function enhancePostImages() {
+    const images = document.querySelectorAll(".post__image img");
+
+    images.forEach(img => {
+      // 已经被 <a> 包裹，跳过
+      if (img.parentElement && img.parentElement.tagName === "A") return;
+
+      const src = img.currentSrc || img.src;
+      if (!src) return;
+
+      // 排除极小图片（icon 等）
+      if (img.complete && img.naturalWidth && img.naturalWidth < 120) return;
+
+      const a = document.createElement("a");
+      a.href = src;
+      a.dataset.fancybox = "post-gallery";
+
+      if (img.alt) {
+        a.dataset.caption = img.alt;
+      }
+
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // 首次执行
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhancePostImages);
+  } else {
+    enhancePostImages();
+  }
+
+  // 监听 SPA / 动态渲染
+  const observer = new MutationObserver(enhancePostImages);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // FancyBox 初始化
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.Fancybox) return;
+
+    Fancybox.bind('[data-fancybox="post-gallery"]', {
+      animated: true,
+      dragToClose: true,
+      placeFocusBack: false,
+      Toolbar: {
+        display: ["zoom", "slideshow", "fullscreen", "close"]
+      },
+      Images: {
+        zoom: true
+      }
+    });
+
+    // ✅ 唯一保留的日志
+    console.log("%cFancyBox 已加载 √", "color:#16a34a;font-weight:bold");
+  });
+})();</script><style>.extlink::after {
+				background-color: currentColor;
+				content: "";
+				display: inline-block;
+				height: 16px;
+				margin-left: 5px;
+				position: relative;
+				top: 0px;
+				width: 16px;
+			}
+		
+					.extlink.extlink-icon-1::after {
+						mask-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>");
+						mask-repeat: no-repeat;
+						mask-size: contain;
+					}</style></head><body class="post-template"><header class="top js-header"><a class="logo" href="https://beta.acofork.com/">AcoFork Blog (Beta)</a><nav class="navbar js-navbar"><button class="navbar__toggle js-toggle" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><span class="navbar__toggle-box"><span class="navbar__toggle-inner">Menu</span></span></button><ul class="navbar__menu"><li><a href="https://blog.acofork.com" target="_self">切换到Stable</a></li><li><a href="https://umami.acofork.com/share/KLPh73NpJRrPlard" target="_blank">统计</a></li><li><a href="https://beta.acofork.com/sponsors/" target="_self">赞助</a></li></ul></nav><div class="search"><div class="search__overlay js-search-overlay"><div class="wrapper search__overlay-inner"><form action="https://beta.acofork.com/search.html" class="search__form"><input class="search__input" type="search" name="q" placeholder="search..." aria-label="search..." required></form></div></div><button class="search__btn btn--icon js-search-btn" aria-label="Search"><svg height="18" width="18" role="presentation" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#search"/></svg></button></div></header><main class="post"><article class="content"><div class="hero"><header class="hero__content"><div class="wrapper"><h1>配置Vercel让ITDog测试全部403！</h1><div class="feed__meta content__meta"><a href="https://beta.acofork.com/authors/acofork/" class="feed__author">AcoFork</a> <time datetime="2025-07-10T17:40" class="feed__date">25/07/10 17:40:00 </time><span class="reading-time" aria-label="8 min read">8 min read</span></div></div></header><figure class="hero__image"><div class="hero__image-wrapper"><img src="https://beta.acofork.com/media/posts/117/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT.webp" srcset="https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-xs.webp 640w, https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-sm.webp 768w, https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-md.webp 1024w, https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-lg.webp 1366w, https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-xl.webp 1600w, https://beta.acofork.com/media/posts/117/responsive/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT-2xl.webp 1920w" sizes="88vw" loading="eager" height="344" width="469" alt=""></div></figure></div><div class="entry-wrapper content__entry"><h1 id="配套视频">配套视频</h1><p><a href="https://www.bilibili.com/video/BV1w7GTzMEy7" class="extlink extlink-icon-1">https://www.bilibili.com/video/BV1w7GTzMEy7</a></p><h1 id="获取itdog等拨测服务的ip">获取ITDog等拨测服务的IP</h1><blockquote><p>因为Vercel不支持IPv6，所以我们只需要获取v4IP</p></blockquote><ul><li><p>如果你有VPS，直接写一个Py脚本创建一个HTTP服务器记录IP去重即可</p></li><li><p>如果你只有家里云，可以使用Cloudflare Tunnel，然后获取 <code>CF-Connecting-IP</code> 来曲线救国</p></li></ul><p>结论，你已经获得了你要屏蔽的拨测网站的IP</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/91daff1e-b248-4f90-9b97-31bff7fa2c14.webp" alt="" data-is-external-image="true"></figure><h1 id="创建vercel-api-token">创建Vercel API Token</h1><p>前往 <a href="https://vercel.com/account/settings/tokens" class="extlink extlink-icon-1">https://vercel.com/account/settings/tokens</a> 创建一个Token</p><h1 id="抓取防火墙创建更新接口">抓取防火墙创建/更新接口</h1><p>前往 <a href="https://vercel.com/your-projects/fuwari/firewall" class="extlink extlink-icon-1">https://vercel.com/your-projects/fuwari/firewall</a></p><p>新增规则</p><figure class="post__image"><img decoding="async" src="../assets/images/84645ada-92bd-42f7-827f-96a93bd54997.webp" alt="" data-is-external-image="true"></figure><p>随便写点东西然后抓包</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/0f60d87a-df45-42d3-a692-c172982899cc.webp" alt="" data-is-external-image="true"></figure><pre><code class="language-http">PATCH https://vercel.com/api/v1/security/firewall/config/draft?projectId=prj_UfvbpIvawjL2eAETAiZT7hPLR8W2&amp;teamId=team_lemndzHQNJAcTipIF6elB5Md
+</code></pre><p>将主机名 <code>vercel.com</code> 改为 <code>api.vercel.com</code> 。并携带请求头 <code>Authorization</code> ，值为刚才获取的Token</p><p>复制刚才的响应并且稍作修改进行测试，看是否能更新成功</p><p>可以看到已经200 OK</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/b87a06b5-e33c-4d1d-aede-18ecba95d8cc.webp" alt="" data-is-external-image="true"></figure><h1 id="使用python脚本创建大批量ip拒绝规则">使用Python脚本创建大批量IP拒绝规则</h1><p>根据本人测试，Vercel虽然在创建规则的时候有一个 <code>is any of</code> 支持填入多个IP，但是单规则最多只能填写<strong>75</strong>个，所以我们需要一个Python脚本批量帮我们规划。脚本已经写好</p><p>使用： <code>python app.py ip.txt</code></p><p>作用：自动获取指定TXT中的内容并将其中的所有IP添加到拒绝规则</p><pre><code class="language-python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&quot;&quot;&quot;
+Vercel防火墙规则更新脚本
+用法: python vercelnoitdog.py xxx.txt
+&quot;&quot;&quot;
+
+import sys
+import json
+import requests
+import ipaddress
+from typing import List, Dict, Any
+
+# Vercel API配置
+API_BASE_URL = &quot;https://api.vercel.com/v1/security/firewall/config/draft&quot;
+PROJECT_ID = &quot;prj_UfvbpIvawjL2eAETAiZT7hPLR8W2&quot;
+TEAM_ID = &quot;team_lemndzHQNJAcTipIF6elB5Md&quot;
+AUTH_TOKEN = &quot;你的Token&quot;
+RULE_ID = &quot;rule_noitdog_eGxdcK&quot;
+
+# 每组最大IP数量
+MAX_IPS_PER_GROUP = 75
+
+def validate_ip_or_cidr(ip_str: str) -&gt; bool:
+    &quot;&quot;&quot;
+    验证IP地址或CIDR格式是否有效
+    &quot;&quot;&quot;
+    try:
+        # 尝试解析为IP地址或网络
+        ipaddress.ip_address(ip_str)
+        return True
+    except ValueError:
+        try:
+            # 尝试解析为CIDR网络
+            ipaddress.ip_network(ip_str, strict=False)
+            return True
+        except ValueError:
+            return False
+
+def read_ips_from_file(file_path: str) -&gt; List[str]:
+    &quot;&quot;&quot;
+    从文件中读取IP地址和CIDR网段
+    &quot;&quot;&quot;
+    ips = []
+    invalid_entries = []
+
+    try:
+        with open(file_path, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
+            for line_num, line in enumerate(f, 1):
+                ip = line.strip()
+                if ip and not ip.startswith(&#39;#&#39;):  # 忽略空行和注释
+                    if validate_ip_or_cidr(ip):
+                        ips.append(ip)
+                    else:
+                        invalid_entries.append(f&quot;第{line_num}行: {ip}&quot;)
+
+        print(f&quot;从文件 {file_path} 读取到 {len(ips)} 个有效的IP地址/CIDR网段&quot;)
+
+        if invalid_entries:
+            print(f&quot;⚠️  发现 {len(invalid_entries)} 个无效条目:&quot;)
+            for entry in invalid_entries[:5]:  # 只显示前5个
+                print(f&quot;   {entry}&quot;)
+            if len(invalid_entries) &gt; 5:
+                print(f&quot;   ... 还有 {len(invalid_entries) - 5} 个无效条目&quot;)
+
+        return ips
+    except FileNotFoundError:
+        print(f&quot;错误: 文件 {file_path} 不存在&quot;)
+        sys.exit(1)
+    except Exception as e:
+        print(f&quot;读取文件时出错: {e}&quot;)
+        sys.exit(1)
+
+def chunk_ips(ips: List[str], chunk_size: int = MAX_IPS_PER_GROUP) -&gt; List[List[str]]:
+    &quot;&quot;&quot;
+    将IP列表分组，每组最多包含指定数量的IP
+    &quot;&quot;&quot;
+    chunks = []
+    for i in range(0, len(ips), chunk_size):
+        chunks.append(ips[i:i + chunk_size])
+    return chunks
+
+def create_condition_groups(ip_chunks: List[List[str]]) -&gt; List[Dict[str, Any]]:
+    &quot;&quot;&quot;
+    创建条件组，每个组包含一个IP列表
+    &quot;&quot;&quot;
+    condition_groups = []
+    for ip_chunk in ip_chunks:
+        condition_group = {
+            &quot;conditions&quot;: [
+                {
+                    &quot;op&quot;: &quot;inc&quot;,
+                    &quot;type&quot;: &quot;ip_address&quot;,
+                    &quot;value&quot;: ip_chunk
+                }
+            ]
+        }
+        condition_groups.append(condition_group)
+    return condition_groups
+
+def create_request_payload(condition_groups: List[Dict[str, Any]]) -&gt; Dict[str, Any]:
+    &quot;&quot;&quot;
+    创建请求负载
+    &quot;&quot;&quot;
+    payload = {
+        &quot;action&quot;: &quot;rules.update&quot;,
+        &quot;id&quot;: RULE_ID,
+        &quot;value&quot;: {
+            &quot;name&quot;: &quot;noitdog&quot;,
+            &quot;active&quot;: True,
+            &quot;description&quot;: &quot;&quot;,
+            &quot;conditionGroup&quot;: condition_groups,
+            &quot;action&quot;: {
+                &quot;mitigate&quot;: {
+                    &quot;action&quot;: &quot;deny&quot;,
+                }
+            }
+        }
+    }
+    return payload
+
+def send_request(payload: Dict[str, Any]) -&gt; bool:
+    &quot;&quot;&quot;
+    发送PATCH请求到Vercel API
+    &quot;&quot;&quot;
+    url = f&quot;{API_BASE_URL}?projectId={PROJECT_ID}&amp;teamId={TEAM_ID}&quot;
+
+    headers = {
+        &quot;Authorization&quot;: f&quot;Bearer {AUTH_TOKEN}&quot;,
+        &quot;Content-Type&quot;: &quot;application/json&quot;
+    }
+
+    try:
+        print(f&quot;发送请求到: {url}&quot;)
+        print(f&quot;请求数据: {json.dumps(payload, indent=2, ensure_ascii=False)}&quot;)
+
+        response = requests.patch(url, headers=headers, json=payload)
+
+        print(f&quot;响应状态码: {response.status_code}&quot;)
+        print(f&quot;响应内容: {response.text}&quot;)
+
+        if response.status_code == 200:
+            print(&quot;✅ 请求成功&quot;)
+            return True
+        else:
+            print(f&quot;❌ 请求失败: {response.status_code} - {response.text}&quot;)
+            return False
+
+    except requests.exceptions.RequestException as e:
+        print(f&quot;❌ 网络请求错误: {e}&quot;)
+        return False
+    except Exception as e:
+        print(f&quot;❌ 发送请求时出错: {e}&quot;)
+        return False
+
+def main():
+    &quot;&quot;&quot;
+    主函数
+    &quot;&quot;&quot;
+    if len(sys.argv) != 2:
+        print(&quot;用法: python vercelnoitdog.py &lt;ip_file.txt&gt;&quot;)
+        print(&quot;示例: python vercelnoitdog.py ips.txt&quot;)
+        sys.exit(1)
+
+    ip_file = sys.argv[1]
+
+    # 读取IP地址
+    ips = read_ips_from_file(ip_file)
+
+    if not ips:
+        print(&quot;❌ 没有找到有效的IP地址或CIDR网段&quot;)
+        sys.exit(1)
+
+    # 去重
+    unique_ips = list(set(ips))
+    print(f&quot;去重后共有 {len(unique_ips)} 个唯一IP地址/CIDR网段&quot;)
+
+    # 分组
+    ip_chunks = chunk_ips(unique_ips)
+    print(f&quot;IP地址被分为 {len(ip_chunks)} 组&quot;)
+
+    for i, chunk in enumerate(ip_chunks, 1):
+        print(f&quot;第 {i} 组: {len(chunk)} 个IP/CIDR&quot;)
+
+    # 创建条件组
+    condition_groups = create_condition_groups(ip_chunks)
+
+    # 创建请求负载
+    payload = create_request_payload(condition_groups)
+
+    # 发送请求
+    success = send_request(payload)
+
+    if success:
+        print(&quot;\n🎉 防火墙规则更新成功!&quot;)
+    else:
+        print(&quot;\n💥 防火墙规则更新失败!&quot;)
+        sys.exit(1)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre><p>示例ip.txt</p><pre><code class="language-bash">223.26.78.6
+182.101.26.81
+101.226.41.74
+117.148.172.71
+183.194.216.135
+119.96.16.87
+112.65.95.205
+59.36.216.50
+124.225.103.136
+125.73.215.4
+221.130.18.132
+42.81.156.75
+59.49.86.70
+120.220.190.144
+116.153.63.68
+219.151.141.70
+118.213.140.68
+1.180.239.80
+36.158.204.68
+218.30.71.80
+218.98.53.88
+182.242.83.133
+111.6.225.75
+101.207.252.75
+221.204.62.68
+42.202.219.70
+111.13.153.72
+121.31.236.73
+180.130.113.72
+113.207.73.135
+36.104.133.71
+42.185.158.68
+116.176.33.201
+60.28.203.70
+124.160.160.70
+202.108.15.148
+116.177.229.5
+111.48.137.135
+211.139.55.70
+156.253.8.27
+112.90.210.132
+42.63.75.72
+36.163.196.91
+117.187.182.132
+115.231.43.69
+153.0.230.8
+45.251.101.5
+112.48.150.134
+116.136.19.134
+218.57.21.135
+49.71.77.84
+123.6.70.5
+111.32.145.8
+59.80.45.132
+112.29.205.70
+36.250.8.132
+36.147.38.70
+220.181.53.87
+125.211.192.35
+150.139.140.70
+223.244.186.68
+183.2.175.12
+113.240.100.81
+117.157.235.95
+117.161.136.74
+1.193.215.70
+111.51.76.68
+36.150.79.4
+120.233.53.26
+58.211.13.98
+101.28.250.72
+125.64.2.134
+113.62.118.132
+36.136.125.68
+117.177.67.5
+211.91.67.89
+115.223.6.243
+27.185.235.70
+111.26.149.68
+111.12.212.73
+183.201.192.68
+111.62.174.73
+222.75.5.70
+119.147.118.127
+218.61.211.101
+180.97.244.136
+220.162.119.71
+125.77.129.206
+111.42.192.68
+111.29.45.133
+117.168.153.198
+109.248.18.86
+171.15.110.73
+116.178.236.69
+116.172.154.17
+120.201.243.134
+183.240.228.133
+112.90.40.216
+221.8.93.95
+120.232.121.180
+43.163.239.208
+222.79.71.253
+150.109.245.197
+117.180.235.132
+221.181.52.171
+120.71.150.171
+154.23.241.34
+23.225.146.6
+194.147.100.44
+43.156.69.84
+146.185.214.41
+43.130.151.11
+43.131.29.194
+185.99.132.104
+38.54.126.18
+38.60.209.194
+38.54.45.156
+38.54.59.59
+58.19.20.71
+113.201.9.12
+116.162.51.68
+112.123.37.68
+38.54.63.220
+125.74.47.33
+72.52.114.230
+173.255.209.253
+192.73.244.230
+35.221.248.87
+165.227.48.82
+144.202.112.137
+35.197.10.99
+45.77.19.32
+103.134.34.7
+66.220.18.238
+71.19.144.157
+174.137.48.255
+209.177.156.46
+154.21.82.74
+128.199.126.228
+50.7.8.99
+209.177.158.115
+192.73.242.50
+104.4.224.169
+45.45.236.19
+103.14.244.246
+23.150.40.100
+24.86.248.28
+216.66.0.234
+107.173.182.190
+104.225.8.133
+103.6.87.164
+45.76.118.224
+23.237.26.69
+103.131.159.213
+59.153.100.154
+185.40.234.177
+163.47.179.246
+27.147.166.142
+176.58.90.129
+65.20.71.66
+192.95.26.127
+45.114.84.2
+50.7.114.87
+103.204.80.222
+45.159.97.148
+123.49.9.6
+185.224.3.114
+185.44.82.20
+103.244.145.149
+157.119.186.4
+45.159.99.200
+93.114.194.138
+185.243.217.223
+103.109.59.222
+51.158.147.91
+119.45.133.212
+183.245.146.101
+51.15.190.186
+162.254.84.55
+36.151.192.162
+101.43.53.133
+47.101.65.208
+114.130.57.222
+139.186.177.82
+113.56.218.178
+2.58.57.254
+148.163.223.19
+185.123.101.33
+61.164.246.102
+154.70.207.18
+58.218.205.215
+2.189.254.219
+148.163.220.22
+37.32.6.150
+147.78.2.180
+103.72.136.138
+139.59.35.197
+103.85.239.77
+45.40.252.184
+185.34.3.179
+185.30.166.165
+60.12.124.101
+47.104.185.98
+185.106.103.26
+43.139.250.146
+1.95.214.189
+103.81.104.242
+45.202.210.37
+59.38.99.166
+180.153.91.3
+119.97.171.14
+120.204.196.162
+116.153.81.2
+1.32.216.91
+15.235.167.152
+140.207.232.18
+58.243.202.72
+223.111.24.198
+116.253.27.152
+59.83.222.20
+211.91.243.88
+101.71.160.163
+124.225.162.194
+59.63.230.4
+175.6.41.195
+220.202.21.129
+112.28.234.140
+115.236.144.231
+125.39.11.1
+153.0.192.167
+61.190.114.193
+121.31.231.89
+58.144.173.98
+123.6.27.10
+58.215.177.156
+182.140.221.2
+219.144.80.136
+111.32.157.133
+120.223.242.157
+111.47.215.148
+1.71.11.171
+180.213.48.172
+150.138.178.3
+112.48.221.77
+117.169.16.203
+124.239.250.80
+111.62.70.129
+111.6.251.227
+59.80.37.156
+36.102.218.76
+119.188.148.129
+42.63.65.201
+36.158.254.130
+180.130.96.143
+111.206.4.152
+61.240.153.196
+116.176.35.201
+1.31.130.68
+116.177.252.82
+61.128.145.14
+221.204.45.134
+117.24.3.143
+125.74.24.2
+183.201.231.162
+101.206.203.18
+182.242.140.26
+111.10.63.136
+183.232.11.45
+36.99.143.1
+123.184.205.46
+111.13.102.12
+117.187.142.66
+139.215.167.76
+218.25.106.113
+117.161.24.21
+111.19.212.248
+219.147.74.6
+117.174.129.181
+218.203.117.72
+111.12.63.131
+210.76.62.60
+117.157.22.134
+36.104.140.200
+111.26.55.11
+111.40.189.229
+111.12.157.228
+222.75.58.106
+111.29.42.34
+183.224.38.14
+36.131.159.78
+116.178.71.245
+117.180.232.165
+43.242.167.44
+110.157.249.53
+134.122.151.96
+34.80.186.23
+221.181.56.200
+139.99.134.84
+154.38.106.211
+141.164.56.18
+51.38.70.219
+51.77.203.76
+54.38.242.242
+148.113.173.25
+162.19.154.159
+139.84.235.192
+172.233.24.182
+36.250.246.34
+123.6.27.64
+157.122.209.77
+223.87.182.211
+182.106.155.131
+58.216.15.29
+211.91.166.53
+47.97.228.5
+221.194.161.44
+60.221.194.28
+1.31.130.66
+120.27.18.28
+58.251.56.177
+60.223.217.164
+39.175.4.28
+8.138.119.222
+36.251.255.37
+36.143.233.41
+121.31.231.115
+115.236.144.236
+61.174.43.24
+223.109.76.167
+218.8.164.49
+123.157.148.149
+119.147.156.156
+47.106.151.176
+113.5.183.26
+120.204.196.133
+125.39.11.14
+61.241.123.180
+140.207.232.23
+111.123.41.34
+101.133.148.180
+111.39.146.24
+47.94.20.35
+180.153.91.21
+183.134.36.167
+125.64.129.30
+116.153.81.66
+60.188.118.173
+220.181.126.38
+111.123.254.134
+36.143.193.156
+42.56.67.155
+111.40.189.252
+211.91.243.95
+183.36.24.28
+116.177.250.162
+1.193.218.40
+111.62.98.78
+42.63.65.199
+36.102.218.86
+1.71.11.181
+120.201.104.153
+112.26.229.30
+182.242.140.10
+120.232.248.163
+180.213.48.223
+219.147.74.22
+183.224.33.198
+116.176.35.214
+116.136.135.148
+60.5.252.39
+110.166.65.78
+112.28.209.220
+113.96.150.162
+58.144.173.72
+42.59.4.156
+111.10.63.158
+111.32.157.154
+111.29.42.54
+58.241.27.162
+153.0.192.185
+120.39.201.14
+222.186.18.152
+112.48.141.175
+221.204.45.136
+101.67.10.151
+61.164.147.152
+39.98.49.59
+1.28.232.27
+101.206.203.29
+120.223.242.149
+117.157.22.147
+111.1.160.153
+120.232.98.168
+58.220.82.34
+125.74.24.15
+116.253.27.146
+111.77.198.151
+36.150.43.34
+112.122.156.166
+111.47.248.69
+139.215.162.44
+111.63.179.37
+58.215.177.5
+61.243.17.23
+112.29.220.176
+110.157.249.48
+221.231.92.31
+222.81.122.157
+117.169.16.130
+27.128.221.166
+111.13.102.147
+36.158.254.168
+219.144.80.133
+202.104.186.160
+111.206.4.206
+111.172.239.72
+221.195.21.15
+61.168.100.167
+120.220.212.22
+111.12.63.173
+120.238.155.29
+121.228.188.15
+218.205.74.153
+117.66.50.176
+111.6.251.218
+117.161.24.26
+119.188.3.89
+113.201.180.80
+36.104.140.208
+111.12.157.239
+221.181.56.132
+121.17.123.41
+218.203.117.84
+183.201.231.176
+175.6.41.150
+1.190.42.161
+124.236.43.188
+101.200.214.185
+43.242.167.59
+116.136.134.161
+27.159.72.27
+124.232.169.149
+124.225.162.228
+180.110.204.95
+183.232.250.130
+112.85.251.136
+1.194.235.25
+125.94.37.14
+1.190.198.188
+59.83.222.19
+223.111.24.209
+116.178.73.205
+223.111.193.162
+61.128.145.22
+113.96.108.38
+219.128.78.149
+183.232.147.27
+150.138.40.179
+124.229.60.35
+117.135.215.165
+36.135.11.5
+8.130.23.178
+182.140.221.50
+183.246.206.155
+61.240.153.224
+59.63.230.28
+183.232.48.165
+101.71.160.27
+36.131.141.25
+150.138.74.152
+120.210.112.160
+220.185.164.153
+117.180.232.175
+125.72.124.21
+124.165.205.158
+34.150.84.19
+121.11.2.164
+183.240.84.160
+113.113.101.178
+58.243.202.94
+39.104.16.158
+117.21.225.154
+150.138.178.22
+111.48.182.22
+223.111.255.46
+58.222.35.25
+36.156.181.50
+20.24.72.70
+106.117.244.9
+180.121.81.39
+119.249.48.33
+36.150.210.23
+182.201.241.181
+111.51.100.158
+120.233.177.163
+120.233.0.35
+16.163.131.38
+8.137.53.211
+113.62.172.189
+120.233.177.165
+115.236.144.235
+180.153.91.20
+111.6.251.219
+54.220.191.101
+113.201.180.79
+153.3.232.187
+120.27.109.210
+183.232.250.171
+117.161.24.25
+121.11.2.163
+223.111.24.210
+61.164.147.168
+8.208.8.92
+34.101.254.179
+120.233.0.41
+111.12.63.176
+119.188.3.86
+39.107.137.48
+101.133.173.51
+47.113.114.116
+140.207.232.22
+150.138.74.171
+219.147.74.24
+112.122.156.164
+123.6.27.65
+58.243.202.102
+120.232.248.154
+180.213.48.215
+111.13.102.148
+47.99.106.232
+20.74.239.192
+223.109.76.169
+220.181.126.39
+111.206.4.204
+120.220.212.35
+8.213.210.244
+47.74.36.66
+52.243.66.112
+3.110.8.122
+3.37.93.47
+54.215.39.119
+20.106.77.49
+58.144.173.114
+120.204.196.151
+34.77.123.66
+3.228.90.224
+15.160.99.228
+34.102.85.154
+15.152.134.0
+34.124.147.129
+3.96.235.198
+35.203.120.96
+1.28.232.24
+8.220.206.175
+20.113.137.203
+39.100.89.75
+20.70.168.217
+34.88.215.233
+120.223.242.152
+54.252.17.196
+34.105.151.212
+34.150.213.129
+202.104.186.166
+1.193.218.25
+101.67.10.149
+13.49.141.212
+20.73.66.155
+54.251.99.254
+34.97.52.174
+108.136.71.175
+15.184.90.0
+221.195.21.9
+34.118.30.85
+47.237.17.19
+8.209.136.9
+20.194.2.123
+8.215.60.204
+223.87.182.208
+124.165.205.149
+13.77.219.191
+111.3.88.40
+106.117.244.16
+65.52.234.249
+183.232.147.31
+60.188.118.172
+104.198.91.239
+180.97.251.43
+182.106.155.132
+223.111.255.38
+121.31.231.114
+51.140.189.31
+112.48.141.173
+183.201.231.177
+175.6.41.185
+121.228.188.17
+40.89.179.182
+1.31.130.65
+124.236.43.190
+112.29.220.166
+34.138.235.109
+150.138.40.178
+112.85.251.138
+183.246.206.151
+220.185.164.177
+36.135.11.6
+1.190.198.186
+104.42.170.197
+40.77.126.226
+116.178.71.248
+51.137.188.42
+116.153.81.65
+36.150.43.21
+125.72.124.30
+150.138.178.23
+47.108.210.10
+47.252.40.117
+222.81.122.173
+18.169.141.195
+182.140.221.49
+113.96.150.157
+47.91.106.49
+8.211.36.84
+211.91.166.33
+182.242.140.13
+125.39.11.22
+52.229.73.86
+211.91.243.96
+36.131.141.36
+116.177.250.149
+117.180.232.172
+116.176.35.216
+52.140.120.6
+116.253.27.156
+13.69.137.62
+34.71.216.82
+47.251.22.110
+1.71.11.180
+120.238.155.30
+20.41.234.167
+20.97.31.166
+34.125.140.25
+18.198.169.212
+47.250.83.225
+34.216.180.221
+8.212.168.4
+34.106.36.80
+34.80.25.50
+34.141.72.86
+117.157.22.159
+34.130.170.189
+52.67.7.168
+15.237.134.31
+116.136.135.139
+34.64.76.211
+20.206.67.205
+102.133.191.17
+120.210.112.149
+3.130.130.218
+52.249.251.97
+20.203.191.125
+13.245.240.194
+34.151.203.21
+113.5.183.21
+47.76.234.71
+35.74.182.183
+13.73.237.220
+34.93.125.50
+36.158.254.166
+47.87.10.135
+20.212.147.238
+34.131.245.4
+34.129.133.149
+20.63.56.18
+34.91.245.249
+35.201.15.13
+34.127.120.136
+34.65.109.86
+20.210.115.182
+14.119.108.97
+36.250.8.143
+175.6.198.123
+122.13.156.93
+119.96.16.112
+116.153.80.135
+112.65.92.24
+124.225.43.76
+124.160.160.85
+115.223.45.12
+117.68.65.13
+112.132.229.80
+180.153.30.124
+153.0.230.10
+36.140.98.185
+222.84.188.147
+36.134.84.172
+106.227.27.10
+116.162.91.15
+119.36.116.72
+112.85.242.37
+36.137.123.208
+59.80.45.236
+121.31.236.105
+123.6.67.55
+49.67.73.113
+60.28.203.96
+150.138.239.152
+113.201.9.13
+106.38.195.210
+202.108.29.83
+123.151.105.90
+113.207.73.136
+113.142.203.39
+221.204.79.137
+180.130.113.83
+211.90.25.90
+36.134.81.132
+27.221.106.135
+36.139.239.145
+27.151.24.14
+101.207.252.83
+27.185.235.86
+36.140.22.122
+116.176.33.212
+125.64.35.87
+36.137.22.118
+36.148.0.84
+111.124.196.23
+36.138.180.78
+36.134.79.10
+118.183.211.82
+171.15.110.93
+59.49.86.80
+42.63.75.92
+182.242.214.118
+42.202.219.83
+116.136.19.158
+219.151.141.87
+222.75.5.73
+36.134.47.198
+118.213.140.85
+36.137.89.73
+36.137.250.224
+43.242.183.208
+36.138.53.214
+42.59.0.91
+36.137.50.99
+36.134.87.242
+36.138.125.196
+36.133.106.196
+36.97.229.180
+36.137.46.212
+36.138.129.114
+36.133.212.236
+36.104.135.11
+42.101.84.87
+125.211.192.50
+139.209.203.85
+36.138.249.96
+36.139.217.42
+36.137.133.156
+36.134.76.220
+36.134.67.30
+36.102.223.206
+116.172.154.10
+36.139.213.132
+36.134.223.27
+113.62.118.143
+222.81.124.106
+116.178.236.108
+36.139.215.4
+36.133.109.86
+112.43.36.140
+199.119.65.155
+45.135.229.199
+170.39.226.168
+130.51.40.113
+23.159.160.29
+45.45.216.219
+79.133.121.42
+213.255.209.128
+170.39.227.192
+23.145.48.232
+92.223.102.61
+92.38.176.123
+209.209.57.64
+5.188.111.165
+162.253.42.95
+209.209.59.201
+45.9.10.253
+38.175.100.1
+194.49.68.59
+74.118.138.59
+104.245.12.220
+213.156.157.23
+103.170.232.190
+103.173.178.158
+154.31.112.24
+103.121.211.146
+51.158.190.4
+185.189.72.131
+38.175.119.130
+185.222.219.5
+154.12.190.9
+103.170.232.255
+45.87.60.12
+5.161.74.145
+89.37.99.43
+5.75.183.245
+45.11.104.130
+45.142.244.202
+185.217.109.206
+38.175.116.132
+45.11.106.130
+5.75.244.23
+45.150.240.129
+92.223.105.223
+38.175.120.128
+45.150.242.130
+83.138.55.28
+45.150.242.131
+194.156.162.128
+194.156.163.130
+45.146.4.70
+209.146.104.21
+45.11.104.140
+103.167.150.110
+38.175.114.129
+65.109.164.100
+128.14.227.111
+185.254.74.188
+185.248.86.134
+45.61.175.191
+213.156.142.202
+103.213.246.25
+45.91.94.193
+185.126.238.219
+213.183.62.132
+170.39.225.200
+38.175.117.128
+45.87.62.74
+5.189.221.103
+83.138.53.220
+45.131.71.128
+38.175.115.131
+185.234.213.129
+145.14.131.223
+5.188.36.17
+45.142.247.129
+194.99.78.14
+106.75.189.151
+78.142.195.191
+103.136.144.101
+170.39.230.26
+103.181.45.35
+45.142.246.177
+45.131.69.99
+45.131.70.138
+38.175.113.128
+146.185.248.29
+85.215.238.211
+27.148.249.91
+106.75.8.5
+103.45.78.243
+165.154.120.79
+185.105.0.67
+91.148.134.231
+152.32.249.61
+38.175.108.20
+154.17.1.69
+38.175.121.129
+213.156.136.76
+45.11.105.149
+5.78.52.50
+180.149.44.87
+38.175.122.129
+37.143.128.230
+209.209.57.133
+89.43.111.60
+103.208.86.58
+213.156.137.109
+45.91.92.175
+194.156.155.253
+185.194.53.117
+38.175.112.134
+103.213.245.15
+91.148.135.223
+102.130.48.128
+85.215.117.222
+102.130.49.151
+5.188.6.10
+63.250.61.72
+45.150.243.145
+45.126.125.125
+103.117.100.75
+87.121.99.217
+36.139.22.48
+173.245.48.0/20
+103.21.244.0/22
+103.22.200.0/22
+103.31.4.0/22
+141.101.64.0/18
+108.162.192.0/18
+190.93.240.0/20
+188.114.96.0/20
+197.234.240.0/22
+198.41.128.0/17
+162.158.0.0/15
+104.16.0.0/13
+104.24.0.0/14
+172.64.0.0/13
+131.0.72.0/22
+1.14.231.0/24
+1.194.174.0/24
+1.56.100.0/24
+1.71.146.0/23
+1.71.88.0/24
+101.226.85.128/25
+101.33.195.0/24
+101.33.222.0/24
+101.42.63.0/24
+101.71.100.0/23
+101.71.105.0/24
+101.72.227.0/24
+111.12.215.0/24
+111.20.28.0/23
+111.20.30.0/24
+111.22.252.0/24
+111.29.14.0/24
+111.31.238.0/24
+111.4.224.0/23
+111.42.114.0/24
+111.51.158.0/24
+111.6.217.0/24
+111.6.218.0/24
+111.62.160.0/24
+112.13.210.0/24
+112.29.209.0/24
+112.46.51.0/24
+112.49.30.0/23
+112.49.69.0/24
+112.64.213.0/24
+112.84.131.0/24
+112.90.154.0/24
+113.125.206.0/24
+113.142.27.0/24
+113.194.51.0/24
+113.200.123.0/24
+113.201.154.0/24
+113.201.158.0/24
+113.219.202.0/23
+113.240.66.0/24
+113.240.91.0/24
+113.59.44.0/24
+114.230.198.0/24
+114.237.67.0/24
+114.66.246.0/23
+114.66.250.0/24
+115.150.39.0/24
+116.136.15.0/24
+116.153.83.0/24
+116.153.84.0/23
+116.162.152.0/23
+116.169.184.0/24
+116.172.74.0/24
+116.177.240.0/24
+116.178.78.0/24
+116.196.152.0/23
+116.207.184.0/24
+116.253.60.0/24
+117.139.140.0/24
+117.147.229.0/24
+117.147.230.0/23
+117.161.38.0/24
+117.161.86.0/24
+117.162.50.0/23
+117.162.61.0/24
+117.163.59.0/24
+117.187.145.0/24
+117.40.82.0/24
+117.44.77.0/24
+117.69.71.0/24
+117.85.64.0/23
+117.85.66.0/24
+119.188.140.0/24
+119.188.209.0/24
+119.36.225.0/24
+119.84.242.0/24
+119.91.175.0/24
+120.221.164.0/24
+120.221.181.0/24
+120.221.238.0/24
+120.226.27.0/24
+120.232.126.0/24
+120.232.97.0/24
+120.233.185.0/24
+120.233.186.0/23
+120.233.43.0/24
+120.240.100.0/24
+120.240.94.0/24
+122.192.132.0/24
+122.246.0.0/24
+122.246.30.0/23
+123.125.3.0/24
+123.138.25.0/24
+123.172.121.0/24
+123.182.162.0/24
+123.6.40.0/24
+124.225.117.0/24
+124.225.161.0/24
+124.225.72.0/24
+124.238.112.0/24
+124.72.128.0/24
+125.76.83.0/24
+125.94.247.0/24
+125.94.248.0/23
+14.116.174.0/24
+14.205.93.0/24
+150.139.230.0/24
+175.43.193.0/24
+175.6.193.0/24
+182.140.210.0/24
+182.247.248.0/24
+183.131.59.0/24
+183.136.219.0/24
+183.192.184.0/24
+183.201.109.0/24
+183.201.110.0/24
+183.230.68.0/24
+183.253.58.0/24
+183.255.104.0/24
+183.47.119.128/25
+183.61.174.0/24
+211.136.106.0/24
+211.97.84.0/24
+219.144.88.0/23
+219.144.90.0/24
+220.197.201.0/24
+221.204.26.0/23
+221.5.96.0/23
+222.189.172.0/24
+222.79.116.0/23
+222.79.126.0/24
+222.94.224.0/23
+223.109.0.0/23
+223.109.2.0/24
+223.109.210.0/24
+223.113.137.0/24
+223.221.177.0/24
+223.247.117.0/24
+27.44.206.0/24
+36.131.221.0/24
+36.142.6.0/24
+36.147.58.0/23
+36.150.103.0/24
+36.150.72.0/24
+36.158.202.0/24
+36.158.253.0/24
+36.159.70.0/24
+36.189.11.0/24
+36.248.57.0/24
+36.249.64.0/24
+36.250.235.0/24
+36.250.238.0/24
+36.250.5.0/24
+36.250.8.0/24
+39.173.183.0/24
+42.177.83.0/24
+42.202.164.0/24
+42.202.170.0/24
+43.136.126.0/24
+43.137.230.0/23
+43.137.87.0/24
+43.137.88.0/22
+43.138.125.0/24
+43.141.10.0/23
+43.141.109.0/24
+43.141.110.0/24
+43.141.131.0/24
+43.141.132.0/24
+43.141.49.0/24
+43.141.50.0/24
+43.141.52.0/24
+43.141.68.0/23
+43.141.70.0/24
+43.141.9.0/24
+43.141.99.0/24
+43.142.196.0/24
+43.142.205.0/24
+43.145.16.0/22
+43.145.44.0/23
+49.119.123.0/24
+49.7.250.128/25
+58.144.195.0/24
+58.212.47.0/24
+58.217.176.0/22
+58.222.36.0/24
+58.250.127.0/24
+58.251.127.0/24
+58.251.87.0/24
+59.55.137.0/24
+59.83.206.0/24
+60.28.220.0/24
+61.161.0.0/24
+61.170.82.0/24
+61.240.216.0/24
+61.240.220.0/24
+61.241.148.0/24
+61.49.23.0/24
+81.71.192.0/23
+101.33.0.0/19
+162.14.40.0/21
+43.132.64.0/19
+43.152.0.0/18
+43.152.128.0/18
+43.159.64.0/18
+107.155.58.0/24
+110.238.81.0/24
+110.238.84.0/24
+116.103.105.0/24
+116.103.106.0/24
+116.206.195.0/24
+119.160.60.0/24
+128.1.102.0/24
+128.1.106.0/24
+128.14.246.0/24
+129.227.189.0/24
+129.227.213.0/24
+129.227.246.0/24
+13.244.60.0/24
+13.246.171.0/24
+13.246.201.0/24
+15.220.184.0/24
+15.220.187.0/24
+150.109.190.0/23
+150.109.192.0/24
+150.109.222.0/23
+154.223.40.0/24
+156.227.203.0/24
+156.229.29.0/24
+156.240.62.0/24
+156.251.71.0/24
+158.79.1.0/24
+161.49.44.0/24
+171.244.192.0/23
+175.97.130.0/23
+175.97.175.0/24
+181.78.96.0/24
+203.205.136.0/23
+203.205.191.0/24
+203.205.193.0/24
+203.205.220.0/23
+203.96.243.0/24
+211.152.128.0/23
+211.152.132.0/23
+211.152.148.0/23
+211.152.154.0/23
+23.236.104.0/24
+23.236.99.0/24
+3.105.21.0/24
+3.24.201.0/24
+31.171.99.0/24
+38.52.124.0/24
+38.60.181.0/24
+42.115.108.0/24
+43.155.126.0/24
+43.155.149.0/24
+43.174.0.0/15
+49.51.64.0/24
+54.94.99.0/24
+62.201.197.0/24
+63.32.163.0/24
+72.255.2.0/24
+81.21.9.0/24
+84.54.102.0/24
+86.51.92.0/24
+</code></pre><h1 id="调用脚本更新规则">调用脚本更新规则</h1><figure class="post__image"><img decoding="async" src="../assets/images/3b44fed2-5dda-4dec-a009-8618b18370ee.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/c9fa44c0-c313-47b1-8b03-804b2b4324b9.webp" alt="" data-is-external-image="true"></figure><p>最后 <code>Review Changes</code> 并且 <code>Publish</code> 即可</p><figure class="post__image"><img decoding="async" src="../assets/images/aada66d2-b090-4959-b031-cbdb738def50.webp" alt="" data-is-external-image="true"></figure><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/831bf953-5895-4a62-894c-ab8b24dc8697.webp" alt="" data-is-external-image="true"></figure><h1 id="itdog测试">ITDog测试</h1><p>大部分测试节点已经403</p><figure class="post__image"><img decoding="async" loading="lazy" src="../assets/images/127a5bc0-6504-4c98-a573-1e3da60b9c8e.webp" alt="" data-is-external-image="true"></figure><h1 id="有什么用？">有什么用？</h1><p>纯好玩 纯闲着没事干 汐汐 有空点下<a href="https://www.afo.im/posts/pin" class="extlink extlink-icon-1">这</a>来加群或者下方评论吧！</p></div><footer class="content__footer"><div class="entry-wrapper"><p class="content__updated">This article was updated on 25/12/29 17:40:47</p><div class="content__actions"><div class="content__share"><button class="btn--icon content__share-button js-content__share-button"><svg width="20" height="20" aria-hidden="true"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#share"></use></svg> <span>Share It</span></button><div class="content__share-popup js-content__share-popup"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F" class="js-share facebook" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#facebook"/></svg> <span>Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F&amp;via=AcoFork%20Blog%20(Beta)&amp;text=%E9%85%8D%E7%BD%AEVercel%E8%AE%A9ITDog%E6%B5%8B%E8%AF%95%E5%85%A8%E9%83%A8403%EF%BC%81" class="js-share twitter" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#twitter"/></svg> <span>Twitter</span> </a><a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F&amp;media=https%3A%2F%2Fbeta.acofork.com%2Fmedia%2Fposts%2F117%2Fd81562f3-8efb-45f3-8dd1-72cb9c032bc2.CjZ52EMT.webp&amp;description=%E9%85%8D%E7%BD%AEVercel%E8%AE%A9ITDog%E6%B5%8B%E8%AF%95%E5%85%A8%E9%83%A8403%EF%BC%81" class="js-share pinterest" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#pinterest"/></svg> <span>Pinterest</span> </a><a href="https://mix.com/add?url=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F" class="js-share mix" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#mix"/></svg> <span>Mix</span> </a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F" class="js-share linkedin" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#linkedin"/></svg> <span>LinkedIn</span> </a><a href="https://buffer.com/add?text=%E9%85%8D%E7%BD%AEVercel%E8%AE%A9ITDog%E6%B5%8B%E8%AF%95%E5%85%A8%E9%83%A8403%EF%BC%81&amp;url=https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F" class="js-share buffer" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#buffer"/></svg> <span>Buffer</span> </a><a href="https://api.whatsapp.com/send?text=%E9%85%8D%E7%BD%AEVercel%E8%AE%A9ITDog%E6%B5%8B%E8%AF%95%E5%85%A8%E9%83%A8403%EF%BC%81 https%3A%2F%2Fbeta.acofork.com%2Fpei-zhi-vercelrang-itdogce-shi-quan-bu-403%2F" class="js-share whatsapp" rel="nofollow noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#whatsapp"/></svg> <span>WhatsApp</span></a></div></div></div><div class="content__bio bio"><div><h3 class="h4 bio__name"><a href="https://beta.acofork.com/authors/acofork/" rel="author">AcoFork</a></h3></div></div></div><nav class="content__nav"><div class="wrapper"><div class="content__nav-inner"><div class="content__nav-prev"><a href="https://beta.acofork.com/rang-ni-de-wang-zhan-dui-jie-gao-ji-de-umamitong-ji/" class="content__nav-link" rel="prev"><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/114/responsive/6eedb10a-08d3-4268-8caf-370bc093a668.Cr4XA2Sc-xs.webp" class="lazyload" loading="lazy" alt="" height="1152" width="1152"></figure><div><span>Previous</span> 让你的网站对接高级的Umami统计！</div></a></div><div class="content__nav-next"><a href="https://beta.acofork.com/li-yong-cloudflare-pageti-gong-de-chong-ding-xiang-gong-neng-shi-xian-wu-sun-haobu-xian-shu-liang-de-jing-tai-chong-ding-xiang-2/" class="content__nav-link" rel="next"><div><span>Next</span> 利用Cloudflare Page提供的重定向功能实现无损耗、不限数量的静态重定向！</div><figure class="content__nav-image"><img src="https://beta.acofork.com/media/posts/21/responsive/530d7a11-c9ea-45ed-905a-1e3965f3e3b3.xHjthbMm-xs.webp" class="lazyload" loading="lazy" alt="" height="333" width="333"></figure></a></div></div></div></nav></footer></article><div class="banner banner--after-content"><div class="wrapper"><script src="https://giscus.app/client.js" data-repo="afoim/giscus-fuwari" data-repo-id="R_kgDOOi8quw" data-category="Announcements" data-category-id="DIC_kwDOOi8qu84CprDV" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async></script></div></div></main><footer class="footer footer--glued"><div class="wrapper"><div class="footer__copyright"><p>Powered by <a href="https://getpublii.com">Publii</a> / <a href="https://beian.miit.gov.cn/#/Integrated/index">皖ICP备2025099787号-2</a></p></div><button id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg width="20" height="20"><use xlink:href="https://beta.acofork.com/assets/svg/svg-map.svg#toparrow"/></svg></button></div></footer><script defer="defer" src="https://beta.acofork.com/assets/js/scripts.min.js?v=700105c316933a8202041b6415abb233"></script><script>window.publiiThemeMenuConfig={mobileMenuMode:'sidebar',animationSpeed:300,submenuWidth: 'auto',doubleClickTime:500,mobileMenuExpandableSubmenus:true,relatedContainerForOverlayMenuSelector:'.top'};</script><script>var images = document.querySelectorAll('img[loading]');
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].complete) {
+                images[i].classList.add('is-loaded');
+            } else {
+                images[i].addEventListener('load', function () {
+                    this.classList.add('is-loaded');
+                }, false);
+            }
+        }</script><script>(function() {
+			var originalTitle = document.title;
+			var timeout;
+			document.addEventListener("visibilitychange", function() {
+				if (document.hidden) {
+					document.title = "👀 我想你了！快回来吧！";
+				} else {
+					clearTimeout(timeout);
+					document.title = "🎉 欢迎回来！";
+							setTimeout(function() {
+								document.title = originalTitle;
+							}, 2000);
+				}
+			});
+		})();</script><script src="https://beta.acofork.com/media/plugins/mermaidSupport/mermaid.min.js"></script><script>mermaid.initialize({ startOnLoad: true, theme: "default" });</script><script src="https://beta.acofork.com/media/plugins/pagePrefetching/quicklink.umd.js"></script><script>window.addEventListener('load', () => {
+					quicklink.listen({
+						prerender: false,
+						el: document.querySelector('body'),
+						delay: 0,
+						limit: Infinity,
+						throttle: Infinity,
+						timeout: 2000
+					});
+				});</script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-line-numbers.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-copy-to-clipboard.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-inline-color.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-autolinker.min.js"></script><script defer="defer" src="https://beta.acofork.com/media/plugins/syntaxHighlighter/prism-show-invisibles.min.js"></script><div class="pcb" data-behaviour="badge" data-behaviour-link="#cookie-settings" data-revision="1" data-config-ttl="90" data-debug-mode="false"><div role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-title" aria-describedby="pcb-txt" class="pcb__banner"><div class="pcb__inner"><div id="pcb-title" role="heading" aria-level="2" class="pcb__title">本网站使用Cookie！</div><div id="pcb-txt" class="pcb__txt">通过下面的复选框选择您同意接收的 Cookie；我们的网站使用 Cookie 来分析网站流量和用户在本站的活动，用于营销以及提供社交媒体功能。</div><div class="pcb__buttons"><button type="button" class="pcb__btn pcb__btn--link pcb__btn--configure" aria-haspopup="dialog"></button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button></div></div></div><div class="pcb__popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pcb-popup-title"><div class="pcb__popup__wrapper"><div class="pcb__inner pcb__popup__inner"><div class="pcb__popup__heading"><div id="pcb-popup-title" role="heading" aria-level="2" class="pcb__title">Cookie设置</div><button class="pcb__popup__close" aria-label="Close"></button></div><div class="pcb__popup__content"><div class="pcb__txt pcb__popup__txt">我们使用 cookies 来提升您的浏览体验，提供个性化广告或内容，并分析我们的流量。点击“全部接受”即表示您同意我们使用 cookies。</div><ul class="pcb__groups"><li class="pcb__group"><details><summary class="pcb__group__title">站点分析</summary><p class="pcb__group__txt">允许发送匿名访问数据至第三方统计服务，用于网站分析（不包含任何隐私信息）。</p></details><div class="pcb__popup__switch"><input type="checkbox" data-group-name="analytics" id="analytics-cookies"> <label for="analytics-cookies">站点分析</label></div></li></ul></div><div class="pcb__buttons pcb__popup__buttons"><button type="button" class="pcb__btn pcb__btn--solid pcb__btn--accept">同意所有</button> <button type="button" class="pcb__btn pcb__btn--reject">拒绝所有</button> <button type="button" class="pcb__btn pcb__btn--save">保存设置</button></div></div></div></div><div class="pcb__overlay" aria-hidden="true"></div><button class="pcb__badge" aria-label="Cookie 设置" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 23 23" fill="currentColor"><path d="M21.41 12.71c-.08-.01-.15 0-.22 0h-.03c-.03 0-.05 0-.08.01-.07 0-.13.01-.19.04-.52.21-1.44.19-2.02-.22-.44-.31-.65-.83-.62-1.53a.758.758 0 0 0-.27-.61.73.73 0 0 0-.65-.14c-1.98.51-3.49.23-4.26-.78-.82-1.08-.73-2.89.24-4.49.14-.23.14-.52 0-.75a.756.756 0 0 0-.67-.36c-.64.03-1.11-.1-1.31-.35-.19-.26-.13-.71-.01-1.29.04-.18.06-.38.03-.59-.05-.4-.4-.7-.81-.66C5.1 1.54 1 6.04 1 11.48 1 17.28 5.75 22 11.6 22c5.02 0 9.39-3.54 10.39-8.42.08-.4-.18-.78-.58-.87Zm-9.81 7.82c-5.03 0-9.12-4.06-9.12-9.06 0-4.34 3.05-8 7.25-8.86-.08.7.05 1.33.42 1.81.24.32.66.67 1.38.84-.76 1.86-.65 3.78.36 5.11.61.81 2.03 2 4.95 1.51.18.96.71 1.54 1.18 1.87.62.43 1.38.62 2.1.62.05 0 .09 0 .13-.01-1.23 3.64-4.7 6.18-8.64 6.18ZM13 17c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1Zm5.29-12.3a.99.99 0 0 1-.29-.71c0-.55.45-.99 1-.99a1 1 0 0 1 .71.3c.19.19.29.44.29.71 0 .55-.45.99-1 .99a1 1 0 0 1-.71-.3ZM9 13.5c0 .83-.67 1.5-1.5 1.5S6 14.33 6 13.5 6.67 12 7.5 12s1.5.67 1.5 1.5Zm3.25.81a.744.744 0 0 1-.06-1.05c.28-.32.75-.34 1.05-.06.31.28.33.75.05 1.06-.15.16-.35.25-.56.25-.18 0-.36-.06-.5-.19ZM8.68 7.26c.41.37.44 1 .07 1.41-.2.22-.47.33-.75.33a.96.96 0 0 1-.67-.26c-.41-.37-.44-1-.07-1.41.37-.42 1-.45 1.41-.08Zm11.48 1.88c.18-.19.52-.19.7 0 .05.04.09.1.11.16.03.06.04.12.04.19 0 .13-.05.26-.15.35-.09.1-.22.15-.35.15s-.26-.05-.35-.15a.355.355 0 0 1-.11-.16.433.433 0 0 1-.04-.19c0-.13.05-.26.15-.35Zm-4.93-1.86a.75.75 0 1 1 1.059-1.06.75.75 0 0 1-1.059 1.06Z"/></svg></button></div><script>(function(win) {
+    if (!document.querySelector('.pcb')) {
+        return;
+    }
+
+    var cbConfig = {
+        behaviour: document.querySelector('.pcb').getAttribute('data-behaviour'),
+        behaviourLink: document.querySelector('.pcb').getAttribute('data-behaviour-link'),
+        revision: document.querySelector('.pcb').getAttribute('data-revision'),
+        configTTL: parseInt(document.querySelector('.pcb').getAttribute('data-config-ttl'), 10),
+        debugMode: document.querySelector('.pcb').getAttribute('data-debug-mode') === 'true',
+        initialState: null,
+        initialLsState: null,
+        previouslyAccepted: []
+    };
+
+    var cbUI = {
+        wrapper: document.querySelector('.pcb'),
+        banner: {
+            element: null,
+            btnAccept: null,
+            btnReject: null,
+            btnConfigure: null
+        },
+        popup: {
+            element: null,
+            btnClose: null,
+            btnSave: null,
+            btnAccept: null,
+            btnReject: null,
+            checkboxes: null,
+        },
+        overlay: null,
+        badge: null,
+        blockedScripts: document.querySelectorAll('script[type^="gdpr-blocker/"]'),
+        triggerLinks: cbConfig.behaviourLink ? document.querySelectorAll('a[href*="' + cbConfig.behaviourLink + '"]') : null
+    };
+
+    function initUI () {
+        // setup banner elements
+        cbUI.banner.element = cbUI.wrapper.querySelector('.pcb__banner');
+        cbUI.banner.btnAccept = cbUI.banner.element.querySelector('.pcb__btn--accept');
+        cbUI.banner.btnReject = cbUI.banner.element.querySelector('.pcb__btn--reject');
+        cbUI.banner.btnConfigure = cbUI.banner.element.querySelector('.pcb__btn--configure');
+
+        // setup popup elements
+        if (cbUI.wrapper.querySelector('.pcb__popup')) {
+            cbUI.popup.element = cbUI.wrapper.querySelector('.pcb__popup');
+            cbUI.popup.btnClose = cbUI.wrapper.querySelector('.pcb__popup__close');
+            cbUI.popup.btnSave = cbUI.popup.element.querySelector('.pcb__btn--save');
+            cbUI.popup.btnAccept = cbUI.popup.element.querySelector('.pcb__btn--accept');
+            cbUI.popup.btnReject = cbUI.popup.element.querySelector('.pcb__btn--reject');
+            cbUI.popup.checkboxes = cbUI.popup.element.querySelector('input[type="checkbox"]');
+            // setup overlay
+            cbUI.overlay = cbUI.wrapper.querySelector('.pcb__overlay');
+        }
+
+        cbUI.badge = cbUI.wrapper.querySelector('.pcb__badge');
+
+        if (cbConfig.behaviour.indexOf('link') > -1) {
+            for (var i = 0; i < cbUI.triggerLinks.length; i++) {
+                cbUI.triggerLinks[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showBannerOrPopup();
+                });
+            }
+        }
+    }
+
+    function initState () {
+        var lsKeyName = getConfigName();
+        var currentConfig = localStorage.getItem(lsKeyName);
+        var configIsFresh = checkIfConfigIsFresh();
+
+        if (!configIsFresh || currentConfig === null) {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config not found, or configuration expired');
+            }
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                    'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                    'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                    'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                    'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                    'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                    'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                });  
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': window.publiiCBGCM.defaultState.ad_storage ? 'granted' : 'denied',
+                        'ad_personalization': window.publiiCBGCM.defaultState.ad_personalization ? 'granted' : 'denied',
+                        'ad_user_data': window.publiiCBGCM.defaultState.ad_user_data ? 'granted' : 'denied',
+                        'analytics_storage': window.publiiCBGCM.defaultState.analytics_storage ? 'granted' : 'denied',
+                        'personalization_storage': window.publiiCBGCM.defaultState.personalization_storage ? 'granted' : 'denied',
+                        'functionality_storage': window.publiiCBGCM.defaultState.functionality_storage ? 'granted' : 'denied',
+                        'security_storage': window.publiiCBGCM.defaultState.security_storage ? 'granted' : 'denied'
+                    }));
+                }
+            }
+
+            showBanner();
+        } else if (typeof currentConfig === 'string') {
+            if (cbConfig.debugMode) {
+                console.log('🍪 Config founded');
+            }
+
+            cbConfig.initialLsState = currentConfig.split(',');
+
+            if (window.publiiCBGCM) {
+                gtag('consent', 'default', {
+                    'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                    'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                    'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                    'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                    'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                    'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                    'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                });
+                
+                if (cbConfig.debugMode) {
+                    console.log('🍪 GCMv2 DEFAULT STATE: ' + JSON.stringify({
+                        'ad_storage': getDefaultConsentState(currentConfig, 'ad_storage'),
+                        'ad_personalization': getDefaultConsentState(currentConfig, 'ad_personalization'),
+                        'ad_user_data': getDefaultConsentState(currentConfig, 'ad_user_data'),
+                        'analytics_storage': getDefaultConsentState(currentConfig, 'analytics_storage'),
+                        'personalization_storage': getDefaultConsentState(currentConfig, 'personalization_storage'),
+                        'functionality_storage': getDefaultConsentState(currentConfig, 'functionality_storage'),
+                        'security_storage': getDefaultConsentState(currentConfig, 'security_storage')
+                    }));
+                }
+            }
+
+            showBadge();
+
+            if (cbUI.popup.element) {
+                var allowedGroups = currentConfig.split(',');
+                var checkedCheckboxes = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+
+                for (var j = 0; j < checkedCheckboxes.length; j++) {
+                    var name = checkedCheckboxes[j].getAttribute('data-group-name');
+
+                    if (name && name !== '-' && allowedGroups.indexOf(name) === -1) {
+                        checkedCheckboxes[j].checked = false;
+                    }
+                }
+
+                for (var i = 0; i < allowedGroups.length; i++) {
+                    var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + allowedGroups[i] + '"]');
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+
+                    allowCookieGroup(allowedGroups[i]);
+                }
+            }
+        }
+
+        setTimeout(function () {
+            cbConfig.initialState = getInitialStateOfConsents();
+        }, 0);
+    }
+
+    function checkIfConfigIsFresh () {
+        var lastConfigSave = localStorage.getItem('publii-gdpr-cookies-config-save-date');
+
+        if (lastConfigSave === null) {
+            return false;
+        }
+
+        lastConfigSave = parseInt(lastConfigSave, 10);
+
+        if (lastConfigSave === 0) {
+            return true;
+        }
+
+        if (+new Date() - lastConfigSave < cbConfig.configTTL * 24 * 60 * 60 * 1000) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function getDefaultConsentState (currentConfig, consentGroup) {
+        let configGroups = currentConfig.split(',');
+
+        for (let i = 0; i < configGroups.length; i++) {
+            let groupName = configGroups[i];
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === groupName);
+
+            if (group && group[consentGroup]) {
+                return 'granted';
+            }
+        }  
+        
+        if (window.publiiCBGCM.defaultState[consentGroup]) {
+            return 'granted'; 
+        }
+        
+        return 'denied';
+    }
+
+    function initBannerEvents () {
+        cbUI.banner.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('banner');
+            showBadge();
+        }, false);
+
+        if (cbUI.banner.btnReject) {
+            cbUI.banner.btnReject.addEventListener('click', function (e) {
+                e.preventDefault();
+                rejectAllCookies();
+                showBadge();
+            }, false);
+        }
+
+        if (cbUI.banner.btnConfigure) {
+            cbUI.banner.btnConfigure.addEventListener('click', function (e) {
+                e.preventDefault();
+                hideBanner();
+                showAdvancedPopup();
+                showBadge();
+            }, false);
+        }
+    }
+
+    function initPopupEvents () {
+        if (!cbUI.popup.element) {
+            return;
+        }
+
+        cbUI.overlay.addEventListener('click', function (e) {
+            hideAdvancedPopup();
+        }, false);
+
+        cbUI.popup.element.addEventListener('click', function (e) {
+            e.stopPropagation();
+        }, false);
+
+        cbUI.popup.btnAccept.addEventListener('click', function (e) {
+            e.preventDefault();
+            acceptAllCookies('popup');
+        }, false);
+
+        cbUI.popup.btnReject.addEventListener('click', function (e) {
+            e.preventDefault();
+            rejectAllCookies();
+        }, false);
+
+        cbUI.popup.btnSave.addEventListener('click', function (e) {
+            e.preventDefault();
+            saveConfiguration();
+        }, false);
+
+        cbUI.popup.btnClose.addEventListener('click', function (e) {
+            e.preventDefault();
+            hideAdvancedPopup();
+        }, false);
+    }
+
+    function initBadgeEvents () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.addEventListener('click', function (e) {
+            showBannerOrPopup();
+        }, false);
+    }
+
+    initUI();
+    initState();
+    initBannerEvents();
+    initPopupEvents();
+    initBadgeEvents();
+
+    /**
+     * API
+     */
+    function addScript (src, inline) {
+        var newScript = document.createElement('script');
+
+        if (src) {
+            newScript.setAttribute('src', src);
+        }
+
+        if (inline) {
+            newScript.text = inline;
+        }
+
+        document.body.appendChild(newScript);
+    }
+
+    function allowCookieGroup (allowedGroup) {
+        var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + allowedGroup + '"]');
+        cbConfig.previouslyAccepted.push(allowedGroup);
+    
+        for (var j = 0; j < scripts.length; j++) {
+            addScript(scripts[j].src, scripts[j].text);
+        }
+
+        var groupEvent = new Event('publii-cookie-banner-unblock-' + allowedGroup);
+        document.body.dispatchEvent(groupEvent);
+        unlockEmbeds(allowedGroup);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Allowed group: ' + allowedGroup);
+        }
+
+        if (window.publiiCBGCM && (!cbConfig.initialLsState || cbConfig.initialLsState.indexOf(allowedGroup) === -1)) {
+            let consentResult = {};
+            let group = window.publiiCBGCM.groups.find(group => group.cookieGroup === allowedGroup);
+
+            if (group) {
+                let foundSomeConsents = false;
+
+                Object.keys(group).forEach(key => {
+                    if (key !== 'cookieGroup' && group[key] === true) {
+                        consentResult[key] = 'granted';
+                        foundSomeConsents = true;
+                    }
+                });
+
+                if (foundSomeConsents) {
+                    gtag('consent', 'update', consentResult);   
+
+                    if (cbConfig.debugMode) {
+                        console.log('🍪 GCMv2 UPDATE: ' + JSON.stringify(consentResult));
+                    }
+                }
+            }
+        }
+    }
+
+    function showBannerOrPopup () {
+        if (cbUI.popup.element) {
+            showAdvancedPopup();
+        } else {
+            showBanner();
+        }
+    }
+
+    function showAdvancedPopup () {
+        cbUI.popup.element.classList.add('is-visible');
+        cbUI.overlay.classList.add('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'false');
+        cbUI.overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideAdvancedPopup () {
+        cbUI.popup.element.classList.remove('is-visible');
+        cbUI.overlay.classList.remove('is-visible');
+        cbUI.popup.element.setAttribute('aria-hidden', 'true');
+        cbUI.overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBanner () {
+        cbUI.banner.element.classList.add('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideBanner () {
+        cbUI.banner.element.classList.remove('is-visible');
+        cbUI.banner.element.setAttribute('aria-hidden', 'true');
+    }
+
+    function showBadge () {
+        if (!cbUI.badge) {
+            return;
+        }
+
+        cbUI.badge.classList.add('is-visible');
+        cbUI.badge.setAttribute('aria-hidden', 'false');
+    }
+
+    function getConfigName () {
+        var lsKeyName = 'publii-gdpr-allowed-cookies';
+
+        if (cbConfig.revision) {
+            lsKeyName = lsKeyName + '-v' + parseInt(cbConfig.revision, 10);
+        }
+
+        return lsKeyName;
+    }
+
+    function storeConfiguration (allowedGroups) {
+        var lsKeyName = getConfigName();
+        var dataToStore = allowedGroups.join(',');
+        localStorage.setItem(lsKeyName, dataToStore);
+
+        if (cbConfig.configTTL === 0) {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', 0);
+
+            if (cbConfig.debugMode) {
+                console.log('🍪 Store never expiring configuration');
+            }
+        } else {
+            localStorage.setItem('publii-gdpr-cookies-config-save-date', +new Date());
+        }
+    }
+
+    function getInitialStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Initial state: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getCurrentStateOfConsents () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]:checked');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 State to save: ' + groups.join(', '));
+        }
+
+        return groups;
+    }
+
+    function getAllGroups () {
+        if (!cbUI.popup.element) {
+            return [];
+        }
+
+        var checkedGroups = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+        var groups = [];
+
+        for (var i = 0; i < checkedGroups.length; i++) {
+            var allowedGroup = checkedGroups[i].getAttribute('data-group-name');
+
+            if (allowedGroup !== '') {
+                groups.push(allowedGroup);
+            }
+        }
+
+        return groups;
+    }
+
+    function acceptAllCookies (source) {
+        var groupsToAccept = getAllGroups();
+        storeConfiguration(groupsToAccept);
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        if (cbUI.popup.element) {
+            var checkboxesToCheck = cbUI.popup.element.querySelectorAll('input[type="checkbox"]');
+
+            for (var j = 0; j < checkboxesToCheck.length; j++) {
+                checkboxesToCheck[j].checked = true;
+            }
+        }
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Accept all cookies: ', groupsToAccept.join(', '));
+        }
+
+        if (source === 'popup') {
+            hideAdvancedPopup();
+        } else if (source === 'banner') {
+            hideBanner();
+        }
+    }
+
+    function rejectAllCookies () {
+        if (cbConfig.debugMode) {
+            console.log('🍪 Reject all cookies');
+        }
+
+        storeConfiguration([]);
+        setTimeout(function () {
+            window.location.reload();
+        }, 100);
+    }
+
+    function saveConfiguration () {
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+
+        if (reloadIsNeeded(groupsToAccept)) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 100);
+            return;
+        }
+
+        for (var i = 0; i < groupsToAccept.length; i++) {
+            var group = groupsToAccept[i];
+
+            if (cbConfig.initialState.indexOf(group) > -1 || cbConfig.previouslyAccepted.indexOf(group) > -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Skip previously activated group: ' + group);
+                }
+
+                continue;
+            }
+
+            allowCookieGroup(group);
+        }
+
+        hideAdvancedPopup();
+    }
+
+    function reloadIsNeeded (groupsToAccept) {
+        // check if user rejected consent for initial groups
+        var initialGroups = cbConfig.initialState;
+        var previouslyAcceptedGroups = cbConfig.previouslyAccepted;
+        var groupsToCheck = initialGroups.concat(previouslyAcceptedGroups);
+
+        for (var i = 0; i < groupsToCheck.length; i++) {
+            var groupToCheck = groupsToCheck[i];
+
+            if (groupToCheck !== '' && groupsToAccept.indexOf(groupToCheck) === -1) {
+                if (cbConfig.debugMode) {
+                    console.log('🍪 Reload is needed due lack of: ', groupToCheck);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function unlockEmbeds (cookieGroup) {
+        var iframesToUnlock = document.querySelectorAll('.pec-wrapper[data-consent-group-id="' + cookieGroup + '"]');
+
+        for (var i = 0; i < iframesToUnlock.length; i++) {
+            var iframeWrapper = iframesToUnlock[i];
+            iframeWrapper.querySelector('.pec-overlay').classList.remove('is-active');
+            iframeWrapper.querySelector('.pec-overlay').setAttribute('aria-hidden', 'true');
+            var iframe = iframeWrapper.querySelector('iframe');
+            iframe.setAttribute('src', iframe.getAttribute('data-consent-src'));
+        }
+    }
+
+    win.publiiEmbedConsentGiven = function (cookieGroup) {
+        // it will unlock embeds
+        allowCookieGroup(cookieGroup);
+
+        var checkbox = cbUI.popup.element.querySelector('input[type="checkbox"][data-group-name="' + cookieGroup + '"]');
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        var groupsToAccept = getCurrentStateOfConsents();
+        storeConfiguration(groupsToAccept);
+
+        if (cbConfig.debugMode) {
+            console.log('🍪 Save new config: ', groupsToAccept.join(', '));
+        }
+    }
+})(window);</script></body></html>
